@@ -1,0 +1,35 @@
+/* ============================================
+   Bouton Thème — Toggle Mode Sombre
+   ============================================ */
+
+.bouton-theme {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--couleur-gris-sombre);
+    background-color: transparent;
+    border: none;
+    border-radius: var(--rayon-md);
+    cursor: pointer;
+    transition: all var(--transition-rapide);
+}
+
+.bouton-theme:hover {
+    background-color: var(--couleur-fond);
+    color: var(--couleur-noir);
+}
+
+.bouton-theme:active {
+    transform: scale(0.95);
+}
+
+/* Animation de rotation lors du changement */
+.bouton-theme svg {
+    transition: transform var(--transition-base);
+}
+
+.bouton-theme:hover svg {
+    transform: rotate(20deg);
+}

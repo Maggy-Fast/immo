@@ -1,0 +1,57 @@
+.modal--petit {
+  max-width: 500px;
+}
+
+.modal-paiement {
+  padding: 1.5rem;
+}
+
+.modal-paiement__info {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-paiement__ligne {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.modal-paiement__ligne:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-paiement__label {
+  color: var(--couleur-gris);
+  font-size: 0.875rem;
+}
+
+.modal-paiement__valeur {
+  color: var(--couleur-noir);
+  font-weight: 500;
+}
+
+.modal-paiement__valeur--montant {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--couleur-primaire);
+}
+
+.modal-paiement__formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-paiement__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}

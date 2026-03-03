@@ -1,0 +1,255 @@
+/* ============================================
+   Page Connexion — Design Professionnel
+   ============================================ */
+
+.page-connexion {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--couleur-blanc);
+}
+
+/* ========== PANNEAU GAUCHE - BRANDING ========== */
+.page-connexion__panneau-gauche {
+    flex: 1;
+    background: linear-gradient(135deg, var(--couleur-primaire) 0%, var(--couleur-primaire-sombre) 100%);
+    padding: var(--espace-12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-connexion__panneau-gauche::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+}
+
+.page-connexion__branding {
+    max-width: 500px;
+    color: var(--couleur-blanc);
+    position: relative;
+    z-index: 1;
+}
+
+.page-connexion__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-4);
+    margin-bottom: var(--espace-12);
+}
+
+.page-connexion__logo-image {
+    max-width: 200px;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.page-connexion__logo-icone {
+    width: 56px;
+    height: 56px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--rayon-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--couleur-blanc);
+}
+
+.page-connexion__logo-texte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-1);
+}
+
+.page-connexion__logo-nom {
+    font-size: var(--taille-2xl);
+    font-weight: var(--poids-bold);
+    letter-spacing: -0.02em;
+}
+
+.page-connexion__logo-sous-titre {
+    font-size: var(--taille-sm);
+    opacity: 0.9;
+}
+
+.page-connexion__description {
+    margin-bottom: var(--espace-10);
+}
+
+.page-connexion__description h1 {
+    font-size: var(--taille-3xl);
+    font-weight: var(--poids-bold);
+    line-height: 1.2;
+    margin-bottom: var(--espace-4);
+    color: var(--couleur-blanc);
+}
+
+.page-connexion__description p {
+    font-size: var(--taille-base);
+    line-height: 1.6;
+    opacity: 0.9;
+    color: var(--couleur-blanc);
+}
+
+.page-connexion__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-4);
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-3);
+}
+
+.feature__icone {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--taille-sm);
+    flex-shrink: 0;
+}
+
+.feature__texte {
+    font-size: var(--taille-sm);
+    opacity: 0.95;
+}
+
+/* ========== PANNEAU DROIT - FORMULAIRE ========== */
+.page-connexion__panneau-droit {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espace-8);
+    background-color: var(--couleur-fond);
+}
+
+.page-connexion__formulaire-conteneur {
+    width: 100%;
+    max-width: 420px;
+}
+
+.page-connexion__entete {
+    margin-bottom: var(--espace-8);
+}
+
+.page-connexion__entete h2 {
+    font-size: var(--taille-3xl);
+    font-weight: var(--poids-bold);
+    color: var(--couleur-noir);
+    margin-bottom: var(--espace-2);
+}
+
+.page-connexion__entete p {
+    font-size: var(--taille-sm);
+    color: var(--couleur-gris);
+}
+
+.formulaire-connexion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-5);
+    margin-bottom: var(--espace-6);
+}
+
+.champ-mot-de-passe {
+    position: relative;
+}
+
+.champ-mot-de-passe__toggle {
+    position: absolute;
+    right: var(--espace-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--couleur-gris);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--espace-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-rapide);
+}
+
+.champ-mot-de-passe__toggle:hover {
+    color: var(--couleur-noir);
+}
+
+/* ========== DEMO ========== */
+.page-connexion__demo {
+    margin-top: var(--espace-6);
+}
+
+.separateur {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: var(--espace-6) 0;
+}
+
+.separateur::before,
+.separateur::after {
+    content: '';
+    flex: 1;
+    border-bottom: var(--bordure-fine);
+}
+
+.separateur span {
+    padding: 0 var(--espace-3);
+    font-size: var(--taille-xs);
+    color: var(--couleur-gris);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ========== PIED ========== */
+.page-connexion__pied {
+    text-align: center;
+    margin-top: var(--espace-8);
+    font-size: var(--taille-sm);
+    color: var(--couleur-gris);
+}
+
+.page-connexion__pied a {
+    color: var(--couleur-primaire);
+    font-weight: var(--poids-medium);
+}
+
+.page-connexion__pied a:hover {
+    text-decoration: underline;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .page-connexion__panneau-gauche {
+        display: none;
+    }
+    
+    .page-connexion__panneau-droit {
+        flex: 1;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-connexion__panneau-droit {
+        padding: var(--espace-4);
+    }
+    
+    .page-connexion__entete h2 {
+        font-size: var(--taille-2xl);
+    }
+}

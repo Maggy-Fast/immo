@@ -1,0 +1,220 @@
+/* ============================================
+   MAGGYFAST IMMO — Styles Globaux Professionnels
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import './variables.css';
+
+/* Reset */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+body {
+    font-family: var(--police-principale);
+    font-size: var(--taille-base);
+    font-weight: var(--poids-normal);
+    color: var(--couleur-noir);
+    background-color: var(--couleur-fond);
+    line-height: 1.5;
+    min-height: 100vh;
+    transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+#root {
+    min-height: 100vh;
+}
+
+/* Typographie */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--police-titres);
+    font-weight: var(--poids-semibold);
+    line-height: 1.2;
+    color: var(--couleur-noir);
+    letter-spacing: -0.02em;
+}
+
+h1 { font-size: var(--taille-4xl); font-weight: var(--poids-bold); }
+h2 { font-size: var(--taille-3xl); }
+h3 { font-size: var(--taille-2xl); }
+h4 { font-size: var(--taille-xl); }
+h5 { font-size: var(--taille-lg); }
+h6 { font-size: var(--taille-md); }
+
+p {
+    color: var(--couleur-gris-sombre);
+    line-height: 1.6;
+}
+
+/* Liens */
+a {
+    color: var(--couleur-primaire);
+    text-decoration: none;
+    transition: color var(--transition-rapide);
+}
+
+a:hover {
+    color: var(--couleur-primaire-sombre);
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Inputs */
+input, select, textarea, button {
+    font-family: var(--police-principale);
+    font-size: var(--taille-base);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+}
+
+/* Listes */
+ul, ol {
+    list-style: none;
+}
+
+/* Boutons */
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* Scrollbar minimaliste */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--couleur-gris-clair);
+    border-radius: var(--rayon-complet);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--couleur-gris);
+}
+
+/* Utilitaires */
+.conteneur {
+    width: 100%;
+    max-width: var(--largeur-max-contenu);
+    margin: 0 auto;
+    padding: 0 var(--espace-6);
+}
+
+.conteneur--etroit {
+    max-width: var(--largeur-max-contenu-etroit);
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-centre {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-entre {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.grille {
+    display: grid;
+    gap: var(--espace-6);
+}
+
+.texte-centre { text-align: center; }
+.texte-droite { text-align: right; }
+.texte-gras { font-weight: var(--poids-semibold); }
+.texte-medium { font-weight: var(--poids-medium); }
+.texte-gris { color: var(--couleur-gris); }
+.texte-primaire { color: var(--couleur-primaire); }
+.texte-succes { color: var(--couleur-succes); }
+.texte-erreur { color: var(--couleur-erreur); }
+
+.tronquer {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Chargement professionnel */
+.chargement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espace-12);
+}
+
+.chargement__spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--couleur-gris-tres-clair);
+    border-top-color: var(--couleur-primaire);
+    border-radius: 50%;
+    animation: rotation 0.6s linear infinite;
+}
+
+@keyframes rotation {
+    to { transform: rotate(360deg); }
+}
+
+/* Animations subtiles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .conteneur {
+        padding: 0 var(--espace-4);
+    }
+}

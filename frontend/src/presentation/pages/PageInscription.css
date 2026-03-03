@@ -1,0 +1,263 @@
+/* ============================================
+   Page Inscription — Design Professionnel
+   ============================================ */
+
+.page-inscription {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--couleur-blanc);
+}
+
+/* ========== PANNEAU GAUCHE - BRANDING ========== */
+.page-inscription__panneau-gauche {
+    flex: 1;
+    background: linear-gradient(135deg, var(--couleur-secondaire) 0%, var(--couleur-secondaire-sombre) 100%);
+    padding: var(--espace-12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-inscription__panneau-gauche::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(196, 30, 58, 0.15) 0%, transparent 70%);
+}
+
+.page-inscription__branding {
+    max-width: 500px;
+    color: var(--couleur-blanc);
+    position: relative;
+    z-index: 1;
+}
+
+.page-inscription__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-4);
+    margin-bottom: var(--espace-12);
+}
+
+.page-inscription__logo-icone {
+    width: 56px;
+    height: 56px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: var(--rayon-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--couleur-blanc);
+}
+
+.page-inscription__logo-texte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-1);
+}
+
+.page-inscription__logo-nom {
+    font-size: var(--taille-2xl);
+    font-weight: var(--poids-bold);
+    letter-spacing: -0.02em;
+}
+
+.page-inscription__logo-sous-titre {
+    font-size: var(--taille-sm);
+    opacity: 0.9;
+}
+
+.page-inscription__description {
+    margin-bottom: var(--espace-10);
+}
+
+.page-inscription__description h1 {
+    font-size: var(--taille-3xl);
+    font-weight: var(--poids-bold);
+    line-height: 1.2;
+    margin-bottom: var(--espace-4);
+    color: var(--couleur-blanc);
+}
+
+.page-inscription__description p {
+    font-size: var(--taille-base);
+    line-height: 1.6;
+    opacity: 0.9;
+    color: var(--couleur-blanc);
+}
+
+.page-inscription__features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-4);
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-3);
+}
+
+.feature__icone {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--taille-sm);
+    flex-shrink: 0;
+}
+
+.feature__texte {
+    font-size: var(--taille-sm);
+    opacity: 0.95;
+}
+
+/* ========== PANNEAU DROIT - FORMULAIRE ========== */
+.page-inscription__panneau-droit {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espace-8);
+    background-color: var(--couleur-fond);
+    overflow-y: auto;
+}
+
+.page-inscription__formulaire-conteneur {
+    width: 100%;
+    max-width: 420px;
+    padding: var(--espace-4) 0;
+}
+
+.page-inscription__entete {
+    margin-bottom: var(--espace-6);
+}
+
+.page-inscription__entete h2 {
+    font-size: var(--taille-3xl);
+    font-weight: var(--poids-bold);
+    color: var(--couleur-noir);
+    margin-bottom: var(--espace-2);
+}
+
+.page-inscription__entete p {
+    font-size: var(--taille-sm);
+    color: var(--couleur-gris);
+}
+
+.formulaire-inscription {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-4);
+    margin-bottom: var(--espace-5);
+}
+
+/* Champs avec icônes */
+.champ-avec-icone {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.champ-icone {
+    position: absolute;
+    left: var(--espace-3);
+    color: var(--couleur-gris);
+    pointer-events: none;
+}
+
+.champ__input--avec-icone {
+    padding-left: var(--espace-10);
+}
+
+.champ-mot-de-passe {
+    position: relative;
+}
+
+.champ-mot-de-passe__toggle {
+    position: absolute;
+    right: var(--espace-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--couleur-gris);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--espace-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-rapide);
+    z-index: 1;
+}
+
+.champ-mot-de-passe__toggle:hover {
+    color: var(--couleur-noir);
+}
+
+/* ========== CONDITIONS ========== */
+.page-inscription__conditions {
+    font-size: var(--taille-xs);
+    color: var(--couleur-gris);
+    line-height: 1.5;
+    margin-bottom: var(--espace-6);
+}
+
+.page-inscription__conditions a {
+    color: var(--couleur-primaire);
+    font-weight: var(--poids-medium);
+}
+
+.page-inscription__conditions a:hover {
+    text-decoration: underline;
+}
+
+/* ========== PIED ========== */
+.page-inscription__pied {
+    text-align: center;
+    font-size: var(--taille-sm);
+    color: var(--couleur-gris);
+}
+
+.page-inscription__pied a {
+    color: var(--couleur-primaire);
+    font-weight: var(--poids-medium);
+}
+
+.page-inscription__pied a:hover {
+    text-decoration: underline;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+    .page-inscription__panneau-gauche {
+        display: none;
+    }
+    
+    .page-inscription__panneau-droit {
+        flex: 1;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-inscription__panneau-droit {
+        padding: var(--espace-4);
+    }
+    
+    .page-inscription__entete h2 {
+        font-size: var(--taille-2xl);
+    }
+    
+    .formulaire-inscription {
+        gap: var(--espace-3);
+    }
+}

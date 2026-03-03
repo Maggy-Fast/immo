@@ -1,0 +1,78 @@
+.page-lotissements {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-lotissements__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.page-lotissements__titre {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--couleur-noir);
+  margin-bottom: 0.5rem;
+}
+
+.page-lotissements__description {
+  color: var(--couleur-gris);
+  font-size: 1rem;
+}
+
+.page-lotissements__barre-recherche {
+  margin-bottom: 1.5rem;
+}
+
+.page-lotissements__contenu {
+  min-height: 400px;
+}
+
+.page-lotissements__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.page-lotissements__chargement,
+.page-lotissements__erreur,
+.page-lotissements__vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  background: var(--couleur-blanc);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.page-lotissements__chargement p,
+.page-lotissements__erreur p,
+.page-lotissements__vide p {
+  color: var(--couleur-gris);
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .page-lotissements {
+    padding: 1rem;
+  }
+
+  .page-lotissements__entete {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .page-lotissements__entete button {
+    width: 100%;
+  }
+
+  .page-lotissements__grille {
+    grid-template-columns: 1fr;
+  }
+}

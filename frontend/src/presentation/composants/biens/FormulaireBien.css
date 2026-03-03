@@ -1,0 +1,32 @@
+.formulaire-bien {
+  padding: 1.5rem;
+}
+
+.formulaire-bien__grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.champ-formulaire--pleine-largeur {
+  grid-column: 1 / -1;
+}
+
+.formulaire-bien__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.requis {
+  color: var(--couleur-primaire);
+}
+
+@media (max-width: 768px) {
+  .formulaire-bien__grille {
+    grid-template-columns: 1fr;
+  }
+}

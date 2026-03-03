@@ -1,0 +1,118 @@
+.carte-lotissement {
+  background: var(--couleur-blanc);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carte-lotissement:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.carte-lotissement__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.carte-lotissement__nom {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--couleur-noir);
+}
+
+.carte-lotissement__geo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(228, 64, 61, 0.1);
+  color: var(--couleur-primaire);
+}
+
+.carte-lotissement__corps {
+  margin-bottom: 1rem;
+}
+
+.carte-lotissement__localisation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--couleur-gris-sombre);
+  font-size: 0.9375rem;
+  margin-bottom: 1rem;
+}
+
+.carte-lotissement__localisation svg {
+  color: var(--couleur-gris);
+}
+
+.carte-lotissement__details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.carte-lotissement__detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.carte-lotissement__detail svg {
+  color: var(--couleur-gris);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.carte-lotissement__detail > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.carte-lotissement__label {
+  font-size: 0.75rem;
+  color: var(--couleur-gris);
+  font-weight: 500;
+}
+
+.carte-lotissement__valeur {
+  font-size: 0.9375rem;
+  color: var(--couleur-noir);
+  font-weight: 600;
+}
+
+.carte-lotissement__stats {
+  padding-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.carte-lotissement__stat {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--couleur-gris-sombre);
+  font-size: 0.875rem;
+}
+
+.carte-lotissement__stat svg {
+  color: var(--couleur-primaire);
+}
+
+.carte-lotissement__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+  flex-wrap: wrap;
+}

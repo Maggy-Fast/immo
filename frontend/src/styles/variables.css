@@ -1,0 +1,168 @@
+/* ============================================
+   MAGGYFAST IMMO — Design System Professionnel
+   ============================================ */
+
+:root {
+    /* Couleurs primaires — Rouge corporate Maggyfast */
+    --couleur-primaire: #C41E3A;
+    --couleur-primaire-sombre: #8B0000;
+    --couleur-primaire-claire: #DC143C;
+    --couleur-primaire-tres-claire: #FFE5E9;
+
+    /* Couleur secondaire — Noir élégant */
+    --couleur-secondaire: #1A1A1A;
+    --couleur-secondaire-sombre: #000000;
+    --couleur-secondaire-claire: #2D2D2D;
+    --couleur-secondaire-tres-claire: #F5F5F5;
+
+    /* Couleurs neutres — Palette professionnelle */
+    --couleur-noir: #0A0A0A;
+    --couleur-gris-fonce: #1F1F1F;
+    --couleur-gris-sombre: #4A4A4A;
+    --couleur-gris: #6B6B6B;
+    --couleur-gris-moyen: #9E9E9E;
+    --couleur-gris-clair: #D4D4D4;
+    --couleur-gris-tres-clair: #EFEFEF;
+    --couleur-fond: #FAFAFA;
+    --couleur-blanc: #FFFFFF;
+
+    /* Couleurs sémantiques */
+    --couleur-succes: #059669;
+    --couleur-succes-claire: #D1FAE5;
+    --couleur-avertissement: #D97706;
+    --couleur-avertissement-claire: #FEF3C7;
+    --couleur-erreur: #DC2626;
+    --couleur-erreur-claire: #FEE2E2;
+    --couleur-info: #0284C7;
+    --couleur-info-claire: #E0F2FE;
+
+    /* Typographie — Corporate & Professionnelle */
+    --police-principale: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --police-titres: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --police-mono: 'SF Mono', 'Monaco', 'Consolas', monospace;
+
+    --taille-xs: 0.6875rem;    /* 11px */
+    --taille-sm: 0.8125rem;    /* 13px */
+    --taille-base: 0.9375rem;  /* 15px */
+    --taille-md: 1rem;         /* 16px */
+    --taille-lg: 1.125rem;     /* 18px */
+    --taille-xl: 1.375rem;     /* 22px */
+    --taille-2xl: 1.75rem;     /* 28px */
+    --taille-3xl: 2.25rem;     /* 36px */
+    --taille-4xl: 3rem;        /* 48px */
+
+    --poids-light: 300;
+    --poids-normal: 400;
+    --poids-medium: 500;
+    --poids-semibold: 600;
+    --poids-bold: 700;
+
+    /* Espacements — Système 4px */
+    --espace-1: 0.25rem;   /* 4px */
+    --espace-2: 0.5rem;    /* 8px */
+    --espace-3: 0.75rem;   /* 12px */
+    --espace-4: 1rem;      /* 16px */
+    --espace-5: 1.25rem;   /* 20px */
+    --espace-6: 1.5rem;    /* 24px */
+    --espace-8: 2rem;      /* 32px */
+    --espace-10: 2.5rem;   /* 40px */
+    --espace-12: 3rem;     /* 48px */
+    --espace-16: 4rem;     /* 64px */
+
+    /* Bordures — Minimalistes */
+    --rayon-xs: 0.125rem;  /* 2px */
+    --rayon-sm: 0.25rem;   /* 4px */
+    --rayon-md: 0.375rem;  /* 6px */
+    --rayon-lg: 0.5rem;    /* 8px */
+    --rayon-xl: 0.75rem;   /* 12px */
+    --rayon-complet: 9999px;
+
+    --bordure-fine: 1px solid var(--couleur-gris-tres-clair);
+    --bordure-moyenne: 1px solid var(--couleur-gris-clair);
+    --bordure-epaisse: 2px solid var(--couleur-gris-clair);
+
+    /* Ombres — Subtiles et professionnelles */
+    --ombre-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    --ombre-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    --ombre-md: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+    --ombre-lg: 0 4px 16px 0 rgba(0, 0, 0, 0.08);
+    --ombre-xl: 0 8px 24px 0 rgba(0, 0, 0, 0.10);
+    --ombre-2xl: 0 16px 48px 0 rgba(0, 0, 0, 0.12);
+
+    /* Transitions — Fluides */
+    --transition-rapide: 120ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-lente: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Layout */
+    --largeur-sidebar: 260px;
+    --largeur-sidebar-reduite: 72px;
+    --hauteur-entete: 64px;
+    --largeur-max-contenu: 1400px;
+    --largeur-max-contenu-etroit: 960px;
+
+    /* Z-index */
+    --z-base: 0;
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-entete: 300;
+    --z-sidebar: 400;
+    --z-modal-fond: 500;
+    --z-modal: 501;
+    --z-popover: 502;
+    --z-notification: 600;
+    --z-tooltip: 700;
+}
+
+/* ============================================
+   MODE SOMBRE — Thème Professionnel Doux
+   ============================================ */
+
+[data-theme="dark"] {
+    /* Couleurs primaires — Rouge ajusté pour le sombre */
+    --couleur-primaire: #E63946;
+    --couleur-primaire-sombre: #C41E3A;
+    --couleur-primaire-claire: #FF4D5A;
+    --couleur-primaire-tres-claire: #2D1215;
+
+    /* Couleur secondaire */
+    --couleur-secondaire: #E5E5E5;
+    --couleur-secondaire-sombre: #FFFFFF;
+    --couleur-secondaire-claire: #CCCCCC;
+    --couleur-secondaire-tres-claire: #2D2D2D;
+
+    /* Couleurs neutres — Tons plus doux */
+    --couleur-noir: #E8E8E8;
+    --couleur-gris-fonce: #D0D0D0;
+    --couleur-gris-sombre: #B8B8B8;
+    --couleur-gris: #9E9E9E;
+    --couleur-gris-moyen: #7A7A7A;
+    --couleur-gris-clair: #404040;
+    --couleur-gris-tres-clair: #2F2F2F;
+    --couleur-fond: #1E1E1E;
+    --couleur-blanc: #252525;
+
+    /* Couleurs sémantiques ajustées */
+    --couleur-succes: #10B981;
+    --couleur-succes-claire: #1F3A2E;
+    --couleur-avertissement: #F59E0B;
+    --couleur-avertissement-claire: #3A2E1A;
+    --couleur-erreur: #EF4444;
+    --couleur-erreur-claire: #3A1A1A;
+    --couleur-info: #3B82F6;
+    --couleur-info-claire: #1F2A3A;
+
+    /* Bordures ajustées */
+    --bordure-fine: 1px solid var(--couleur-gris-tres-clair);
+    --bordure-moyenne: 1px solid var(--couleur-gris-clair);
+    --bordure-epaisse: 2px solid var(--couleur-gris-clair);
+
+    /* Ombres plus subtiles */
+    --ombre-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+    --ombre-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    --ombre-md: 0 2px 8px 0 rgba(0, 0, 0, 0.4);
+    --ombre-lg: 0 4px 16px 0 rgba(0, 0, 0, 0.5);
+    --ombre-xl: 0 8px 24px 0 rgba(0, 0, 0, 0.6);
+    --ombre-2xl: 0 16px 48px 0 rgba(0, 0, 0, 0.7);
+}
+

@@ -1,0 +1,71 @@
+.ligne-loyer {
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s ease;
+}
+
+.ligne-loyer:hover {
+  background-color: #f9fafb;
+}
+
+.ligne-loyer td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+.ligne-loyer__mois {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  color: var(--couleur-noir);
+  text-transform: capitalize;
+}
+
+.ligne-loyer__mois svg {
+  color: var(--couleur-gris);
+}
+
+.ligne-loyer__contrat {
+  color: var(--couleur-noir);
+}
+
+.ligne-loyer__locataire {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--couleur-gris);
+  margin-top: 0.25rem;
+}
+
+.ligne-loyer__montant {
+  font-weight: 600;
+  color: var(--couleur-noir);
+}
+
+.ligne-loyer__statut {
+  text-align: center;
+}
+
+.ligne-loyer__paiement {
+  font-size: 0.875rem;
+}
+
+.ligne-loyer__info-paiement {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.ligne-loyer__mode {
+  color: var(--couleur-gris);
+  font-size: 0.8125rem;
+}
+
+.ligne-loyer__non-paye {
+  color: var(--couleur-gris);
+}
+
+.ligne-loyer__actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}

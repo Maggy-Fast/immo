@@ -1,0 +1,202 @@
+/* ============================================
+   Barre Latérale — Design Professionnel
+   ============================================ */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--largeur-sidebar);
+    background-color: var(--couleur-blanc);
+    border-right: var(--bordure-fine);
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition-base);
+    z-index: var(--z-sidebar);
+}
+
+.sidebar--reduite {
+    width: var(--largeur-sidebar-reduite);
+}
+
+/* Logo */
+.sidebar__logo {
+    height: var(--hauteur-entete);
+    padding: 0 var(--espace-6);
+    display: flex;
+    align-items: center;
+    gap: var(--espace-3);
+    border-bottom: var(--bordure-fine);
+}
+
+.sidebar__logo-icone {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--couleur-primaire), var(--couleur-primaire-sombre));
+    border-radius: var(--rayon-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--couleur-blanc);
+    flex-shrink: 0;
+}
+
+.sidebar__logo-texte {
+    font-size: var(--taille-lg);
+    font-weight: var(--poids-bold);
+    color: var(--couleur-noir);
+    letter-spacing: -0.02em;
+}
+
+.sidebar__logo-texte span {
+    color: var(--couleur-primaire);
+}
+
+.sidebar--reduite .sidebar__logo {
+    padding: 0 var(--espace-5);
+    justify-content: center;
+}
+
+/* Toggle */
+.sidebar__toggle {
+    position: absolute;
+    top: 20px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+    background-color: var(--couleur-blanc);
+    border: var(--bordure-fine);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-rapide);
+    color: var(--couleur-gris);
+    z-index: 1;
+}
+
+.sidebar__toggle:hover {
+    background-color: var(--couleur-primaire);
+    border-color: var(--couleur-primaire);
+    color: var(--couleur-blanc);
+}
+
+/* Navigation */
+.sidebar__nav {
+    flex: 1;
+    padding: var(--espace-4) var(--espace-3);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebar__lien {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-3);
+    padding: 0 var(--espace-4);
+    height: 40px;
+    font-size: var(--taille-sm);
+    font-weight: var(--poids-medium);
+    color: var(--couleur-gris-sombre);
+    border-radius: var(--rayon-md);
+    transition: all var(--transition-rapide);
+    margin-bottom: var(--espace-1);
+    position: relative;
+}
+
+.sidebar__lien:hover {
+    background-color: var(--couleur-fond);
+    color: var(--couleur-noir);
+}
+
+.sidebar__lien--actif {
+    background-color: var(--couleur-primaire);
+    color: var(--couleur-blanc);
+}
+
+.sidebar__lien--actif:hover {
+    background-color: var(--couleur-primaire-sombre);
+}
+
+.sidebar--reduite .sidebar__lien {
+    justify-content: center;
+    padding: 0;
+}
+
+.sidebar--reduite .sidebar__lien span {
+    display: none;
+}
+
+/* Pied */
+.sidebar__pied {
+    padding: var(--espace-4) var(--espace-3);
+    border-top: var(--bordure-fine);
+}
+
+.sidebar__utilisateur {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-3);
+    padding: var(--espace-3);
+    margin-bottom: var(--espace-3);
+    border-radius: var(--rayon-md);
+    background-color: var(--couleur-fond);
+}
+
+.sidebar__avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--couleur-primaire), var(--couleur-primaire-sombre));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--couleur-blanc);
+    font-size: var(--taille-sm);
+    font-weight: var(--poids-semibold);
+    flex-shrink: 0;
+}
+
+.sidebar__utilisateur-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.sidebar__utilisateur-nom {
+    font-size: var(--taille-sm);
+    font-weight: var(--poids-medium);
+    color: var(--couleur-noir);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar__utilisateur-role {
+    font-size: var(--taille-xs);
+    color: var(--couleur-gris);
+    text-transform: capitalize;
+}
+
+.sidebar__deconnexion {
+    color: var(--couleur-erreur);
+}
+
+.sidebar__deconnexion:hover {
+    background-color: var(--couleur-erreur-claire);
+    color: var(--couleur-erreur);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    
+    .sidebar--ouvert {
+        transform: translateX(0);
+    }
+}

@@ -1,0 +1,33 @@
+/* ============================================
+   Mise en Page Principale — Layout Professionnel
+   ============================================ */
+
+.mise-en-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--couleur-fond);
+}
+
+.mise-en-page__contenu {
+    flex: 1;
+    margin-left: var(--largeur-sidebar);
+    display: flex;
+    flex-direction: column;
+    transition: margin-left var(--transition-base);
+}
+
+.mise-en-page__contenu--reduit {
+    margin-left: var(--largeur-sidebar-reduite);
+}
+
+.mise-en-page__principal {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .mise-en-page__contenu {
+        margin-left: 0;
+    }
+}

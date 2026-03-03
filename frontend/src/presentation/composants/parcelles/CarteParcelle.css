@@ -1,0 +1,104 @@
+.carte-parcelle {
+  background: var(--couleur-blanc);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carte-parcelle:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.carte-parcelle__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.carte-parcelle__numero {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--couleur-noir);
+}
+
+.carte-parcelle__numero svg {
+  color: var(--couleur-gris);
+}
+
+.carte-parcelle__corps {
+  margin-bottom: 1rem;
+}
+
+.carte-parcelle__lotissement {
+  font-size: 0.875rem;
+  color: var(--couleur-gris);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.carte-parcelle__details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.carte-parcelle__detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.carte-parcelle__detail svg {
+  color: var(--couleur-gris);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.carte-parcelle__detail > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.carte-parcelle__label {
+  font-size: 0.75rem;
+  color: var(--couleur-gris);
+  font-weight: 500;
+}
+
+.carte-parcelle__valeur {
+  font-size: 0.9375rem;
+  color: var(--couleur-noir);
+  font-weight: 600;
+}
+
+.carte-parcelle__prix-m2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+.carte-parcelle__valeur-m2 {
+  font-size: 0.9375rem;
+  color: var(--couleur-primaire);
+  font-weight: 600;
+}
+
+.carte-parcelle__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}

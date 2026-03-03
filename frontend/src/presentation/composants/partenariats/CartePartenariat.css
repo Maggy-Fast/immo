@@ -1,0 +1,149 @@
+.carte-partenariat {
+  background: var(--couleur-blanc);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carte-partenariat:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.carte-partenariat__entete {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.carte-partenariat__icone {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--couleur-primaire), var(--couleur-primaire-sombre));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--couleur-blanc);
+}
+
+.carte-partenariat__titre {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--couleur-noir);
+}
+
+.carte-partenariat__corps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.carte-partenariat__section {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+
+.carte-partenariat__section svg {
+  color: var(--couleur-gris);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.carte-partenariat__section > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.carte-partenariat__label {
+  font-size: 0.75rem;
+  color: var(--couleur-gris);
+  font-weight: 500;
+}
+
+.carte-partenariat__valeur {
+  font-size: 0.9375rem;
+  color: var(--couleur-noir);
+  font-weight: 500;
+}
+
+.carte-partenariat__ticket {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+}
+
+.carte-partenariat__ticket svg {
+  color: var(--couleur-primaire);
+  margin-top: 0.125rem;
+}
+
+.carte-partenariat__ticket > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.carte-partenariat__valeur-montant {
+  font-size: 1.125rem;
+  color: var(--couleur-primaire);
+  font-weight: 700;
+}
+
+.carte-partenariat__repartition {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.carte-partenariat__repartition svg {
+  color: var(--couleur-gris);
+  flex-shrink: 0;
+}
+
+.carte-partenariat__pourcentages {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.carte-partenariat__pourcentage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.carte-partenariat__pct {
+  font-size: 1.25rem;
+  color: var(--couleur-noir);
+  font-weight: 700;
+}
+
+.carte-partenariat__separateur {
+  color: #e5e7eb;
+  font-size: 1.25rem;
+}
+
+.carte-partenariat__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+  flex-wrap: wrap;
+}
