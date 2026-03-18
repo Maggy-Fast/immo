@@ -1,0 +1,111 @@
+# Fichier Docker Compose pour le backend Laravel IMMO
+version: '3.8'
+
+services:
+  # Service PHP-FPM
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: immo-backend-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/storage:/var/www/html/storage
+    networks:
+      - immo-network
+    depends_on:
+      - database
+      - redis
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_DATABASE=immo
+      - DB_USERNAME=immo_user
+      - DB_PASSWORD=immo_password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CACHE_DRIVER=redis
+      - SESSION_DRIVER=redis
+      - QUEUE_CONNECTION=redis
+
+  # Service Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: immo-backend-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./backend:/var/www/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/sites/:/etc/nginx/sites-available/
+      - ./docker/nginx/ssl/:/etc/nginx/ssl/
+    networks:
+      - immo-network
+    depends_on:
+      - app
+
+  # Service PostgreSQL
+  database:
+    image: postgres:15-alpine
+    container_name: immo-backend-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=immo
+      - POSTGRES_USER=immo_user
+      - POSTGRES_PASSWORD=immo_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - immo-network
+
+  # Service Redis
+  redis:
+    image: redis:7-alpine
+    container_name: immo-backend-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - immo-network
+
+  # Service Worker pour les queues
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: immo-backend-worker
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/storage:/var/www/html/storage
+    networks:
+      - immo-network
+    depends_on:
+      - database
+      - redis
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_DATABASE=immo
+      - DB_USERNAME=immo_user
+      - DB_PASSWORD=immo_password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  immo-network:
+    driver: bridge

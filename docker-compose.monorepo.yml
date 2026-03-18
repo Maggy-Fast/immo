@@ -1,0 +1,113 @@
+# Docker Compose pour mono-repo - Déploiement complet
+version: '3.8'
+
+services:
+  # Backend Laravel
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: immo-backend-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+      - backend_storage:/var/www/html/storage
+    networks:
+      - immo-network
+    depends_on:
+      - database
+      - redis
+    environment:
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - DB_HOST=database
+      - REDIS_HOST=redis
+
+  # Frontend React (optionnel pour le déploiement AWS)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: immo-frontend-app
+    restart: unless-stopped
+    volumes:
+      - frontend_build:/app/build
+    networks:
+      - immo-network
+    profiles:
+      - full
+
+  # Nginx (sert les deux applications)
+  nginx:
+    image: nginx:alpine
+    container_name: immo-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./backend:/var/www/html/backend
+      - frontend_build:/var/www/html/frontend
+      - ./docker/nginx/mono-repo.conf:/etc/nginx/nginx.conf
+    networks:
+      - immo-network
+    depends_on:
+      - backend
+      - frontend
+
+  # Database
+  database:
+    image: postgres:15-alpine
+    container_name: immo-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=immo
+      - POSTGRES_USER=immo_user
+      - POSTGRES_PASSWORD=immo_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - immo-network
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: immo-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - immo-network
+
+  # Worker Laravel
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: immo-worker
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./backend:/var/www/html
+      - backend_storage:/var/www/html/storage
+    networks:
+      - immo-network
+    depends_on:
+      - database
+      - redis
+    command: php artisan queue:work --sleep=3 --tries=3
+    environment:
+      - APP_ENV=production
+      - DB_HOST=database
+      - REDIS_HOST=redis
+
+volumes:
+  postgres_data:
+  redis_data:
+  backend_storage:
+  frontend_build:
+
+networks:
+  immo-network:
+    driver: bridge

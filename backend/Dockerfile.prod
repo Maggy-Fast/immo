@@ -1,0 +1,74 @@
+# Dockerfile optimisé pour la production AWS
+
+FROM php:8.2-fpm-alpine
+
+# Installer les dépendances Alpine
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng \
+    libzip \
+    zip \
+    unzip \
+    postgresql-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    nginx \
+    supervisor
+
+# Installer les extensions PHP
+RUN docker-php-ext-install \
+    pdo \
+    pdo_pgsql \
+    pgsql \
+    zip \
+    bcmath \
+    gd \
+    opcache \
+    pcntl
+
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Configurer PHP pour la production
+RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.max_accelerated_files=4000" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.revalidate_freq=0" >> /usr/local/etc/php/conf.d/opcache.ini
+
+# Configurer Nginx
+COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Configurer Supervisor
+COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Définir le répertoire de travail
+WORKDIR /var/www/html
+
+# Copier les fichiers de l'application
+COPY . .
+
+# Installer les dépendances PHP
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# Copier le fichier .env
+COPY .env.aws .env
+
+# Générer la clé d'application
+RUN php artisan key:generate
+
+# Optimiser l'application
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
+
+# Donner les permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage \
+    && chmod -R 755 /var/www/html/bootstrap/cache
+
+# Exposer le port 80
+EXPOSE 80
+
+# Démarrer Supervisor
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
