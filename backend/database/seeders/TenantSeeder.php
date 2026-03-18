@@ -16,7 +16,7 @@ class TenantSeeder extends Seeder
     {
         // Créer un tenant de test
         $tenant = Tenant::create([
-            'nom' => 'Maggyfast Immo Demo',
+            'nom' => 'Maggyfast Immo',
             'domaine' => 'demo.maggyfast.com',
             'plan' => 'premium',
             'actif' => true,
@@ -25,7 +25,7 @@ class TenantSeeder extends Seeder
         // Créer un utilisateur admin pour ce tenant
         Utilisateur::create([
             'id_tenant' => $tenant->id,
-            'nom' => 'Admin Demo',
+            'nom' => 'Admin',
             'email' => 'admin@demo.com',
             'password' => Hash::make('password'),
             'role' => 'admin',

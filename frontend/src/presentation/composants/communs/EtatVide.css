@@ -1,0 +1,52 @@
+/* ============================================
+   ETAT VIDE — Composant pour listes vides
+   ============================================ */
+
+.etat-vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espace-12) var(--espace-6);
+  text-align: center;
+}
+
+.etat-vide__image {
+  width: 200px;
+  height: auto;
+  margin-bottom: var(--espace-6);
+  opacity: 0.8;
+}
+
+.etat-vide__titre {
+  font-size: var(--taille-texte-xl);
+  font-weight: 600;
+  color: var(--couleur-texte);
+  margin: 0 0 var(--espace-2) 0;
+}
+
+.etat-vide__description {
+  font-size: var(--taille-texte-base);
+  color: var(--couleur-gris);
+  margin: 0 0 var(--espace-6) 0;
+  max-width: 400px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .etat-vide {
+    padding: var(--espace-8) var(--espace-4);
+  }
+
+  .etat-vide__image {
+    width: 150px;
+  }
+
+  .etat-vide__titre {
+    font-size: var(--taille-texte-lg);
+  }
+
+  .etat-vide__description {
+    font-size: var(--taille-texte-sm);
+  }
+}

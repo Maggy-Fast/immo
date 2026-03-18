@@ -5,11 +5,13 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { serviceContrat } from '../../infrastructure/api/serviceContrat';
+import { useToast } from '../../presentation/composants/communs';
 
 const CLE_REQUETE = 'contrats';
 
 export function utiliserContrats(filtres = {}) {
   const clientRequete = useQueryClient();
+  const { notifier } = useToast();
 
   // Lister les contrats
   const {
@@ -29,6 +31,10 @@ export function utiliserContrats(filtres = {}) {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
       clientRequete.invalidateQueries({ queryKey: ['biens'] });
       clientRequete.invalidateQueries({ queryKey: ['locataires'] });
+      notifier('Contrat créé avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la création du contrat', 'error');
     },
   });
 
@@ -37,6 +43,10 @@ export function utiliserContrats(filtres = {}) {
     mutationFn: ({ id, donnees }) => serviceContrat.modifier(id, donnees),
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Contrat modifié avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la modification du contrat', 'error');
     },
   });
 
@@ -47,6 +57,10 @@ export function utiliserContrats(filtres = {}) {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
       clientRequete.invalidateQueries({ queryKey: ['biens'] });
       clientRequete.invalidateQueries({ queryKey: ['locataires'] });
+      notifier('Contrat supprimé avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la suppression du contrat', 'error');
     },
   });
 

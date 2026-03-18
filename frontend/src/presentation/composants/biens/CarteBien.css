@@ -1,22 +1,66 @@
 .carte-bien {
   background: var(--couleur-blanc);
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.25rem;
+  border-radius: 12px;
+  overflow: hidden;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .carte-bien:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* Image du bien */
+.carte-bien__image {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+
+.carte-bien__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.carte-bien:hover .carte-bien__image img {
+  transform: scale(1.05);
+}
+
+.carte-bien__badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenu */
+.carte-bien__contenu {
+  padding: 1.25rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .carte-bien__entete {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .carte-bien__type {
@@ -29,6 +73,7 @@
 }
 
 .carte-bien__corps {
+  flex: 1;
   margin-bottom: 1rem;
 }
 
@@ -37,6 +82,7 @@
   font-weight: 600;
   color: var(--couleur-noir);
   margin-bottom: 0.5rem;
+  line-height: 1.4;
 }
 
 .carte-bien__description {
@@ -54,6 +100,7 @@
   display: flex;
   gap: 1.5rem;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .carte-bien__detail {
@@ -98,6 +145,7 @@
   border-top: 1px solid #f3f4f6;
 }
 
+/* Badges */
 .badge {
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
@@ -108,21 +156,40 @@
 }
 
 .badge--success {
-  background: #d1fae5;
-  color: #065f46;
+  background: rgba(16, 185, 129, 0.9);
+  color: white;
 }
 
 .badge--info {
-  background: #dbeafe;
-  color: #1e40af;
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
 }
 
 .badge--warning {
-  background: #fef3c7;
-  color: #92400e;
+  background: rgba(245, 158, 11, 0.9);
+  color: white;
 }
 
 .badge--secondary {
-  background: #f3f4f6;
-  color: #374151;
+  background: rgba(107, 114, 128, 0.9);
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .carte-bien__image {
+    height: 180px;
+  }
+
+  .carte-bien__contenu {
+    padding: 1rem;
+  }
+
+  .carte-bien__adresse {
+    font-size: 1rem;
+  }
+
+  .carte-bien__details {
+    gap: 1rem;
+  }
 }

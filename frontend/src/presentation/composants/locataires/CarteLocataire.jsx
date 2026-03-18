@@ -2,16 +2,20 @@
  * Composant — Carte d'affichage d'un locataire
  */
 
-import { User, Phone, Mail, CreditCard, Briefcase, CheckCircle, XCircle } from 'lucide-react';
+import { Phone, Mail, CreditCard, Briefcase, CheckCircle, XCircle } from 'lucide-react';
+import Avatar from '../communs/Avatar';
 import './CarteLocataire.css';
 
 export default function CarteLocataire({ locataire, surClic, surModifier, surSupprimer }) {
   return (
     <div className="carte-locataire" onClick={() => surClic?.(locataire)}>
       <div className="carte-locataire__entete">
-        <div className="carte-locataire__avatar">
-          <User size={24} />
-        </div>
+        <Avatar
+          src={locataire.photo}
+          nom={locataire.nom}
+          taille="grand"
+          forme="cercle"
+        />
         <div className="carte-locataire__info-principale">
           <h3 className="carte-locataire__nom">{locataire.nom}</h3>
           {locataire.contratActif !== undefined && (

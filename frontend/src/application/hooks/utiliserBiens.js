@@ -5,11 +5,14 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { serviceBien } from '../../infrastructure/api/serviceBien';
+import { useToast } from '../../presentation/composants/communs';
 
 const CLE_REQUETE = 'biens';
 
 export function utiliserBiens(filtres = {}) {
   const clientRequete = useQueryClient();
+
+  const { notifier } = useToast();
 
   // Lister les biens
   const {
@@ -27,6 +30,10 @@ export function utiliserBiens(filtres = {}) {
     mutationFn: serviceBien.creer,
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Bien créé avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la création du bien', 'error');
     },
   });
 
@@ -35,6 +42,10 @@ export function utiliserBiens(filtres = {}) {
     mutationFn: ({ id, donnees }) => serviceBien.modifier(id, donnees),
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Bien modifié avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la modification du bien', 'error');
     },
   });
 
@@ -43,6 +54,10 @@ export function utiliserBiens(filtres = {}) {
     mutationFn: serviceBien.supprimer,
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Bien supprimé avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la suppression du bien', 'error');
     },
   });
 

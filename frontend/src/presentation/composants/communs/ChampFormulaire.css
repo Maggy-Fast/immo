@@ -1,0 +1,166 @@
+/* ============================================
+   Champ Formulaire - Design Moderne
+   ============================================ */
+
+.champ-formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-2);
+}
+
+.champ-formulaire__label {
+  font-size: var(--taille-sm);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+  display: flex;
+  align-items: center;
+  gap: var(--espace-1);
+}
+
+.champ-formulaire__requis {
+  color: var(--couleur-erreur);
+  font-weight: var(--poids-semibold);
+}
+
+.champ-formulaire__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.champ-formulaire__icone {
+  position: absolute;
+  left: var(--espace-3);
+  color: var(--couleur-gris-sombre);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.champ-formulaire__input,
+.champ-formulaire__select,
+.champ-formulaire__textarea {
+  width: 100%;
+  padding: var(--espace-3) var(--espace-4);
+  font-size: var(--taille-base);
+  color: var(--couleur-noir);
+  background-color: var(--couleur-blanc);
+  border: 2px solid var(--couleur-bordure);
+  border-radius: var(--rayon-md);
+  transition: all var(--transition-rapide);
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.champ-formulaire__input--avec-icone {
+  padding-left: var(--espace-10);
+}
+
+.champ-formulaire__input::placeholder,
+.champ-formulaire__textarea::placeholder {
+  color: var(--couleur-gris);
+  opacity: 0.7;
+}
+
+.champ-formulaire__input:hover,
+.champ-formulaire__select:hover,
+.champ-formulaire__textarea:hover {
+  border-color: var(--couleur-gris-sombre);
+}
+
+.champ-formulaire__input:focus,
+.champ-formulaire__select:focus,
+.champ-formulaire__textarea:focus {
+  outline: none;
+  border-color: var(--couleur-primaire);
+  box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
+  background-color: var(--couleur-blanc);
+}
+
+.champ-formulaire__input:disabled,
+.champ-formulaire__select:disabled,
+.champ-formulaire__textarea:disabled {
+  background-color: #f3f4f6;
+  color: var(--couleur-gris);
+  cursor: not-allowed;
+  opacity: 0.6;
+  border-color: #e5e7eb;
+}
+
+.champ-formulaire__input--erreur,
+.champ-formulaire__select--erreur,
+.champ-formulaire__textarea--erreur {
+  border-color: var(--couleur-erreur);
+  background-color: #fef2f2;
+}
+
+.champ-formulaire__input--erreur:focus,
+.champ-formulaire__select--erreur:focus,
+.champ-formulaire__textarea--erreur:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.champ-formulaire__textarea {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+.champ-formulaire__select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--espace-3) center;
+  padding-right: var(--espace-10);
+}
+
+.champ-formulaire__aide {
+  font-size: var(--taille-xs);
+  color: var(--couleur-gris-sombre);
+  line-height: 1.4;
+  margin-top: var(--espace-1);
+}
+
+.champ-formulaire__erreur {
+  font-size: var(--taille-xs);
+  color: var(--couleur-erreur);
+  font-weight: var(--poids-semibold);
+  line-height: 1.4;
+  margin-top: var(--espace-1);
+}
+
+/* Variantes de taille */
+.champ-formulaire--pleine-largeur,
+.champ-formulaire.largeur-complete {
+  grid-column: 1 / -1;
+}
+
+/* Input de type number - masquer les flèches */
+.champ-formulaire__input[type='number']::-webkit-inner-spin-button,
+.champ-formulaire__input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.champ-formulaire__input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Amélioration du contraste pour les inputs de type date */
+.champ-formulaire__input[type='date'],
+.champ-formulaire__input[type='month'] {
+  color: var(--couleur-noir);
+}
+
+.champ-formulaire__input[type='date']::-webkit-calendar-picker-indicator,
+.champ-formulaire__input[type='month']::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.champ-formulaire__input[type='date']::-webkit-calendar-picker-indicator:hover,
+.champ-formulaire__input[type='month']::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}

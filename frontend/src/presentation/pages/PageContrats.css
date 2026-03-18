@@ -1,49 +1,61 @@
+/* ============================================
+   PAGE CONTRATS — Design Moderne
+   ============================================ */
+
 .page-contrats {
-  padding: 2rem;
-  max-width: 1400px;
+  padding: var(--espace-6);
+  max-width: var(--largeur-max-contenu);
   margin: 0 auto;
+  background: var(--couleur-fond);
+  min-height: 100vh;
 }
 
 .page-contrats__entete {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
+  align-items: center;
+  margin-bottom: var(--espace-6);
+  gap: var(--espace-4);
 }
 
 .page-contrats__titre {
-  font-size: 1.875rem;
-  font-weight: 700;
+  font-size: var(--taille-2xl);
+  font-weight: var(--poids-bold);
   color: var(--couleur-noir);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--espace-1);
 }
 
 .page-contrats__description {
   color: var(--couleur-gris);
-  font-size: 1rem;
+  font-size: var(--taille-sm);
+  margin: 0;
 }
 
+/* ========== BARRE DE RECHERCHE ========== */
 .page-contrats__barre-recherche {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: var(--espace-3);
+  margin-bottom: var(--espace-5);
 }
 
+/* ========== FILTRES ========== */
 .page-contrats__filtres {
   background: var(--couleur-blanc);
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  border: var(--bordure-fine);
+  border-radius: var(--rayon-lg);
+  padding: var(--espace-5);
+  margin-bottom: var(--espace-5);
+  box-shadow: var(--ombre-xs);
 }
 
 .page-contrats__filtres-grille {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--espace-4);
+  margin-bottom: var(--espace-3);
 }
 
+/* ========== CONTENU ========== */
 .page-contrats__contenu {
   min-height: 400px;
 }
@@ -51,9 +63,10 @@
 .page-contrats__grille {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+  gap: var(--espace-4);
 }
 
+/* ========== ÉTATS ========== */
 .page-contrats__chargement,
 .page-contrats__erreur,
 .page-contrats__vide {
@@ -61,32 +74,39 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: var(--espace-12);
   text-align: center;
   background: var(--couleur-blanc);
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 2px dashed var(--couleur-bordure);
+  border-radius: var(--rayon-lg);
 }
 
 .page-contrats__chargement p,
 .page-contrats__erreur p,
 .page-contrats__vide p {
   color: var(--couleur-gris);
-  margin-bottom: 1rem;
+  margin-bottom: var(--espace-4);
+  font-size: var(--taille-sm);
 }
 
+/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .page-contrats {
-    padding: 1rem;
+    padding: var(--espace-4);
   }
 
   .page-contrats__entete {
     flex-direction: column;
-    gap: 1rem;
+    align-items: flex-start;
+    gap: var(--espace-3);
   }
 
   .page-contrats__entete button {
     width: 100%;
+  }
+
+  .page-contrats__titre {
+    font-size: var(--taille-xl);
   }
 
   .page-contrats__barre-recherche {

@@ -48,6 +48,7 @@ class ParcelleController extends Controller
             'superficie' => 'required|numeric|min:0',
             'prix' => 'required|numeric|min:0',
             'statut' => 'nullable|in:disponible,vendue,reservee',
+            'plan' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -82,6 +83,7 @@ class ParcelleController extends Controller
             'superficie' => 'sometimes|numeric|min:0',
             'prix' => 'sometimes|numeric|min:0',
             'statut' => 'sometimes|in:disponible,vendue,reservee',
+            'plan' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120',
         ]);
 
         if ($validator->fails()) {

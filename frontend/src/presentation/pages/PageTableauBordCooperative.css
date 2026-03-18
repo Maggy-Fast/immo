@@ -1,0 +1,180 @@
+/* Page Tableau de Bord Coopérative */
+
+.page-cooperative {
+  padding: 2rem;
+}
+
+.page-cooperative__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.page-cooperative__titre {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--couleur-noir);
+  margin-bottom: 0.5rem;
+}
+
+.page-cooperative__description {
+  color: var(--couleur-gris);
+  font-size: 0.875rem;
+}
+
+/* Grille de statistiques */
+.page-cooperative__grille-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.carte-stat {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.carte-stat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carte-stat__icone {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.carte-stat--bleu .carte-stat__icone {
+  background: #EBF5FF;
+  color: #2563EB;
+}
+
+.carte-stat--vert .carte-stat__icone {
+  background: #ECFDF5;
+  color: #10B981;
+}
+
+.carte-stat--violet .carte-stat__icone {
+  background: #F3E8FF;
+  color: #9333EA;
+}
+
+.carte-stat--rouge .carte-stat__icone {
+  background: #FEF2F2;
+  color: #EF4444;
+}
+
+.carte-stat__contenu {
+  flex: 1;
+}
+
+.carte-stat__label {
+  font-size: 0.875rem;
+  color: var(--couleur-gris);
+  margin-bottom: 0.5rem;
+}
+
+.carte-stat__valeur {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--couleur-noir);
+  margin-bottom: 0.25rem;
+}
+
+.carte-stat__detail {
+  font-size: 0.75rem;
+  color: var(--couleur-gris);
+}
+
+/* Grille de détails */
+.page-cooperative__grille-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.liste-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stat-ligne {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--couleur-fond);
+  border-radius: 8px;
+}
+
+.stat-ligne__label {
+  font-size: 0.875rem;
+  color: var(--couleur-gris);
+}
+
+.stat-ligne__valeur {
+  font-weight: 600;
+  color: var(--couleur-noir);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-ligne__valeur--succes {
+  color: #10B981;
+}
+
+.stat-ligne__valeur--avertissement {
+  color: #F59E0B;
+}
+
+.stat-ligne__valeur--danger {
+  color: #EF4444;
+}
+
+.stat-ligne__valeur--info {
+  color: #3B82F6;
+}
+
+.stat-ligne__icone {
+  width: 16px;
+  height: 16px;
+}
+
+.stat-ligne__icone--succes {
+  color: #10B981;
+}
+
+.stat-ligne__icone--danger {
+  color: #EF4444;
+}
+
+/* États */
+.page-cooperative__chargement,
+.page-cooperative__erreur {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.page-cooperative__chargement p,
+.page-cooperative__erreur p {
+  margin-top: 1rem;
+  color: var(--couleur-gris);
+}

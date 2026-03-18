@@ -1,11 +1,12 @@
 /**
  * Composant — Formulaire de création/modification d'un locataire
+ * Migré vers les composants centralisés
  */
 
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { User, Phone, Mail, CreditCard, Briefcase, Camera } from 'lucide-react';
 import { validerLocataire } from '../../../domaine/validations/validationLocataire';
-import './FormulaireLocataire.css';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire, UploadImage } from '../communs';
 
 export default function FormulaireLocataire({
   locataire = null,
@@ -19,8 +20,10 @@ export default function FormulaireLocataire({
     email: '',
     cin: '',
     profession: '',
+    photo: null,
   });
 
+  const [apercuPhoto, setApercuPhoto] = useState(null);
   const [erreurs, setErreurs] = useState({});
 
   useEffect(() => {
@@ -31,7 +34,9 @@ export default function FormulaireLocataire({
         email: locataire.email || '',
         cin: locataire.cin || '',
         profession: locataire.profession || '',
+        photo: locataire.photo || null,
       });
+      setApercuPhoto(locataire.photo || null);
     }
   }, [locataire]);
 
@@ -42,9 +47,12 @@ export default function FormulaireLocataire({
     }
   };
 
-  const gererSoumission = async (e) => {
-    e.preventDefault();
+  const gererChangementPhoto = (fichier, apercu) => {
+    setFormulaire(prev => ({ ...prev, photo: fichier }));
+    setApercuPhoto(apercu);
+  };
 
+  const gererSoumission = async () => {
     const erreursValidation = validerLocataire(formulaire);
     if (Object.keys(erreursValidation).length > 0) {
       setErreurs(erreursValidation);
@@ -59,117 +67,98 @@ export default function FormulaireLocataire({
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <div className="modal__entete">
-          <h2>{locataire ? 'Modifier le locataire' : 'Nouveau locataire'}</h2>
-          <button className="modal__fermer" onClick={surAnnuler} disabled={enCours}>
-            <X size={20} />
-          </button>
+    <Modale
+      titre={locataire ? 'Modifier le locataire' : 'Nouveau locataire'}
+      surFermer={surAnnuler}
+      taille="moyen"
+      enCours={enCours}
+    >
+      <Formulaire surSoumettre={gererSoumission} colonnes={2}>
+        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+          <UploadImage
+            imageActuelle={apercuPhoto}
+            surChangement={gererChangementPhoto}
+            forme="cercle"
+            largeur={120}
+            hauteur={120}
+            texteAide="Photo du locataire"
+            disabled={enCours}
+          />
         </div>
 
-        <form onSubmit={gererSoumission} className="formulaire-locataire">
-          <div className="formulaire-locataire__grille">
-            {/* Nom */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="nom" className="champ-formulaire__label">
-                Nom complet <span className="requis">*</span>
-              </label>
-              <input
-                id="nom"
-                type="text"
-                value={formulaire.nom}
-                onChange={(e) => gererChangement('nom', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.nom ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="Ex: Fatou Diop"
-                disabled={enCours}
-              />
-              {erreurs.nom && <span className="champ-formulaire__erreur">{erreurs.nom}</span>}
-            </div>
+        <ChampFormulaire
+          id="nom"
+          label="Nom complet"
+          type="text"
+          valeur={formulaire.nom}
+          onChange={(val) => gererChangement('nom', val)}
+          erreur={erreurs.nom}
+          obligatoire
+          placeholder="Ex: Fatou Diop"
+          icone={<User size={18} />}
+          largeurComplete
+          disabled={enCours}
+        />
 
-            {/* Téléphone */}
-            <div className="champ-formulaire">
-              <label htmlFor="telephone" className="champ-formulaire__label">
-                Téléphone <span className="requis">*</span>
-              </label>
-              <input
-                id="telephone"
-                type="tel"
-                value={formulaire.telephone}
-                onChange={(e) => gererChangement('telephone', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.telephone ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="+221771234567"
-                disabled={enCours}
-              />
-              {erreurs.telephone && <span className="champ-formulaire__erreur">{erreurs.telephone}</span>}
-            </div>
+        <ChampFormulaire
+          id="telephone"
+          label="Téléphone"
+          type="tel"
+          valeur={formulaire.telephone}
+          onChange={(val) => gererChangement('telephone', val)}
+          erreur={erreurs.telephone}
+          obligatoire
+          placeholder="+221 77 123 45 67"
+          icone={<Phone size={18} />}
+          disabled={enCours}
+        />
 
-            {/* Email */}
-            <div className="champ-formulaire">
-              <label htmlFor="email" className="champ-formulaire__label">
-                Email <span className="requis">*</span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={formulaire.email}
-                onChange={(e) => gererChangement('email', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.email ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="exemple@email.com"
-                disabled={enCours}
-              />
-              {erreurs.email && <span className="champ-formulaire__erreur">{erreurs.email}</span>}
-            </div>
+        <ChampFormulaire
+          id="email"
+          label="Email"
+          type="email"
+          valeur={formulaire.email}
+          onChange={(val) => gererChangement('email', val)}
+          erreur={erreurs.email}
+          obligatoire
+          placeholder="exemple@email.com"
+          icone={<Mail size={18} />}
+          disabled={enCours}
+        />
 
-            {/* CIN */}
-            <div className="champ-formulaire">
-              <label htmlFor="cin" className="champ-formulaire__label">
-                CIN / Pièce d'identité
-              </label>
-              <input
-                id="cin"
-                type="text"
-                value={formulaire.cin}
-                onChange={(e) => gererChangement('cin', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.cin ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="1234567890123"
-                disabled={enCours}
-              />
-              {erreurs.cin && <span className="champ-formulaire__erreur">{erreurs.cin}</span>}
-            </div>
+        <ChampFormulaire
+          id="cin"
+          label="CIN / Pièce d'identité"
+          type="text"
+          valeur={formulaire.cin}
+          onChange={(val) => gererChangement('cin', val)}
+          erreur={erreurs.cin}
+          placeholder="1234567890123"
+          icone={<CreditCard size={18} />}
+          disabled={enCours}
+        />
 
-            {/* Profession */}
-            <div className="champ-formulaire">
-              <label htmlFor="profession" className="champ-formulaire__label">
-                Profession
-              </label>
-              <input
-                id="profession"
-                type="text"
-                value={formulaire.profession}
-                onChange={(e) => gererChangement('profession', e.target.value)}
-                className="champ-formulaire__input"
-                placeholder="Ex: Ingénieur"
-                disabled={enCours}
-              />
-            </div>
-          </div>
+        <ChampFormulaire
+          id="profession"
+          label="Profession"
+          type="text"
+          valeur={formulaire.profession}
+          onChange={(val) => gererChangement('profession', val)}
+          erreur={erreurs.profession}
+          placeholder="Ex: Ingénieur"
+          icone={<Briefcase size={18} />}
+          disabled={enCours}
+        />
 
-          <div className="formulaire-locataire__actions">
-            <button
-              type="button"
-              className="bouton bouton--secondaire"
-              onClick={surAnnuler}
-              disabled={enCours}
-            >
-              Annuler
-            </button>
-            <button type="submit" className="bouton bouton--primaire" disabled={enCours}>
-              {enCours ? 'Enregistrement...' : locataire ? 'Modifier' : 'Créer'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <ActionsFormulaire
+            surAnnuler={surAnnuler}
+            texteBoutonPrincipal={locataire ? 'Modifier' : 'Créer'}
+            enCours={enCours}
+            iconePrincipal={<User size={18} />}
+          />
+        </div>
+      </Formulaire>
+    </Modale>
   );
 }

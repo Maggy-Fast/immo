@@ -2,11 +2,20 @@
  * Composant — Carte d'affichage d'un lotissement
  */
 
-import { MapPin, Maximize, Grid, TrendingUp } from 'lucide-react';
+import { MapPin, Maximize, Grid, TrendingUp, Users, PieChart } from 'lucide-react';
 import './CarteLotissement.css';
 
-export default function CarteLotissement({ lotissement, surClic, surModifier, surSupprimer, surVoirParcelles }) {
+export default function CarteLotissement({ 
+  lotissement, 
+  partenariats = [], 
+  benefices = { beneficePromoteur: 0, beneficeProprietaire: 0, totalParcelles: 0 },
+  surClic, 
+  surModifier, 
+  surSupprimer, 
+  surVoirParcelles 
+}) {
   const formaterSuperficie = (superficie) => {
+    if (superficie === undefined || superficie === null || isNaN(superficie)) return '0 m²';
     return new Intl.NumberFormat('fr-FR').format(superficie) + ' m²';
   };
 
@@ -47,7 +56,48 @@ export default function CarteLotissement({ lotissement, surClic, surModifier, su
               </span>
             </div>
           </div>
+
+          {partenariats.length > 0 && (
+            <div className="carte-lotissement__detail">
+              <Users size={16} />
+              <div>
+                <span className="carte-lotissement__label">Partenariats</span>
+                <span className="carte-lotissement__valeur">
+                  {partenariats.length} actif(s)
+                </span>
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Bénéfices parcellaires */}
+        {(benefices.beneficePromoteur > 0 || benefices.beneficeProprietaire > 0) && (
+          <div className="carte-lotissement__benefices">
+            <div className="carte-lotissement__benefice-titre">
+              <PieChart size={14} />
+              <span>Bénéfices parcellaires</span>
+            </div>
+            <div className="carte-lotissement__benefice-details">
+              <div className="carte-lotissement__benefice">
+                <span className="carte-lotissement__benefice-label">Promoteur:</span>
+                <span className="carte-lotissement__benefice-valeur promoteur">
+                  {benefices.beneficePromoteur} parcelles
+                </span>
+              </div>
+              <div className="carte-lotissement__benefice">
+                <span className="carte-lotissement__benefice-label">Propriétaire:</span>
+                <span className="carte-lotissement__benefice-valeur proprietaire">
+                  {benefices.beneficeProprietaire} parcelles
+                </span>
+              </div>
+            </div>
+            {benefices.totalParcelles > 0 && (
+              <div className="carte-lotissement__benefice-total">
+                Total: {benefices.beneficePromoteur + benefices.beneficeProprietaire} / {benefices.totalParcelles} parcelles
+              </div>
+            )}
+          </div>
+        )}
 
         {lotissement.parcelles && lotissement.parcelles.length > 0 && (
           <div className="carte-lotissement__stats">

@@ -41,12 +41,14 @@
     display: flex;
     align-items: center;
     gap: var(--espace-4);
-    margin-bottom: var(--espace-12);
+    margin-bottom: 0;
+    margin-top: -20px; /* Compense l'espace vide interne de l'image si besoin */
 }
 
 .page-connexion__logo-image {
-    max-width: 200px;
+    max-width: 320px;
     height: auto;
+    object-fit: contain;
     filter: brightness(0) invert(1);
 }
 
@@ -86,7 +88,8 @@
 .page-connexion__description h1 {
     font-size: var(--taille-3xl);
     font-weight: var(--poids-bold);
-    line-height: 1.2;
+    line-height: 1.1;
+    margin-top: 0;
     margin-bottom: var(--espace-4);
     color: var(--couleur-blanc);
 }

@@ -1,0 +1,107 @@
+.module-permissions {
+    background: var(--couleur-fond);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-lg);
+    overflow: hidden;
+}
+
+.module-permissions__entete {
+    padding: var(--espace-4);
+    background: var(--couleur-blanc);
+    border-bottom: 1px solid var(--couleur-bordure);
+    display: flex;
+    align-items: center;
+    gap: var(--espace-3);
+    cursor: pointer;
+    transition: background var(--transition-rapide);
+}
+
+.module-permissions__entete:hover {
+    background: var(--couleur-fond);
+}
+
+.module-permissions__checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--couleur-primaire);
+}
+
+.module-permissions__titre {
+    flex: 1;
+    font-size: var(--taille-base);
+    font-weight: var(--poids-semibold);
+    color: var(--couleur-noir);
+    text-transform: capitalize;
+    margin: 0;
+}
+
+.module-permissions__compteur {
+    font-size: var(--taille-xs);
+    color: var(--couleur-gris);
+    padding: var(--espace-1) var(--espace-2);
+    background: var(--couleur-gris-tres-clair);
+    border-radius: var(--rayon-sm);
+}
+
+.module-permissions__corps {
+    padding: var(--espace-4);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--espace-3);
+}
+
+.permission-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--espace-3);
+    padding: var(--espace-3);
+    background: var(--couleur-blanc);
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-md);
+    cursor: pointer;
+    transition: all var(--transition-rapide);
+}
+
+.permission-item:hover {
+    border-color: var(--couleur-primaire);
+    box-shadow: var(--ombre-sm);
+}
+
+.permission-item__checkbox {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    cursor: pointer;
+    accent-color: var(--couleur-primaire);
+    flex-shrink: 0;
+}
+
+.permission-item__contenu {
+    flex: 1;
+    min-width: 0;
+}
+
+.permission-item__libelle {
+    font-size: var(--taille-sm);
+    font-weight: var(--poids-medium);
+    color: var(--couleur-noir);
+    margin: 0 0 var(--espace-1) 0;
+}
+
+.permission-item__nom {
+    font-size: var(--taille-xs);
+    color: var(--couleur-gris);
+    font-family: 'Courier New', monospace;
+    margin: 0;
+}
+
+.permission-item:has(.permission-item__checkbox:checked) {
+    background: var(--couleur-primaire-tres-claire);
+    border-color: var(--couleur-primaire);
+}
+
+.permission-item:has(.permission-item__checkbox:disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

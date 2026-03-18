@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { utiliserAuth } from '../../application/contexte/ContexteAuth';
-import { Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, Mail, Lock } from 'lucide-react';
 import './PageConnexion.css';
 
 /**
@@ -33,18 +33,18 @@ export default function PageConnexion() {
             <div className="page-connexion__panneau-gauche">
                 <div className="page-connexion__branding">
                     <div className="page-connexion__logo">
-                        <img 
-                            src="/immo1.png" 
-                            alt="MaggyFast Immo" 
+                        <img
+                            src="/immo4.png"
+                            alt="MaggyFast Immo"
                             className="page-connexion__logo-image"
                         />
                     </div>
-                    
+
                     <div className="page-connexion__description">
                         <h1>Gérez votre patrimoine immobilier en toute simplicité</h1>
                         <p>Solution professionnelle pour la gestion de biens, locataires, contrats et paiements.</p>
                     </div>
-                    
+
                     <div className="page-connexion__features">
                         <div className="feature">
                             <div className="feature__icone">✓</div>
@@ -83,16 +83,19 @@ export default function PageConnexion() {
                             <label className="champ__label" htmlFor="email">
                                 Adresse email
                             </label>
-                            <input
-                                id="email"
-                                type="email"
-                                className="champ__input"
-                                placeholder="votre@email.com"
-                                value={email}
-                                onChange={(e) => definirEmail(e.target.value)}
-                                required
-                                autoFocus
-                            />
+                            <div className="champ-avec-icone">
+                                <Mail size={18} className="champ-icone" />
+                                <input
+                                    id="email"
+                                    type="email"
+                                    className="champ__input champ__input--avec-icone"
+                                    placeholder="votre@email.com"
+                                    value={email}
+                                    onChange={(e) => definirEmail(e.target.value)}
+                                    required
+                                    autoFocus
+                                />
+                            </div>
                         </div>
 
                         <div className="champ">
@@ -100,15 +103,18 @@ export default function PageConnexion() {
                                 Mot de passe
                             </label>
                             <div className="champ-mot-de-passe">
-                                <input
-                                    id="motDePasse"
-                                    type={afficherMotDePasse ? 'text' : 'password'}
-                                    className="champ__input"
-                                    placeholder="••••••••"
-                                    value={motDePasse}
-                                    onChange={(e) => definirMotDePasse(e.target.value)}
-                                    required
-                                />
+                                <div className="champ-avec-icone">
+                                    <Lock size={18} className="champ-icone" />
+                                    <input
+                                        id="motDePasse"
+                                        type={afficherMotDePasse ? 'text' : 'password'}
+                                        className="champ__input champ__input--avec-icone"
+                                        placeholder="••••••••"
+                                        value={motDePasse}
+                                        onChange={(e) => definirMotDePasse(e.target.value)}
+                                        required
+                                    />
+                                </div>
                                 <button
                                     type="button"
                                     className="champ-mot-de-passe__toggle"
@@ -126,40 +132,11 @@ export default function PageConnexion() {
                             style={{ width: '100%' }}
                             disabled={chargement}
                         >
-                            {chargement ? 'Connexion...' : (
-                                <>
-                                    Se connecter
-                                    <ArrowRight size={18} />
-                                </>
-                            )}
+                            {chargement ? 'Connexion en cours...' : 'Se connecter'}
+                            {!chargement && <ArrowRight size={18} style={{ marginLeft: '8px', display: 'inline-block', verticalAlign: 'middle' }} />}
                         </button>
                     </form>
 
-                    {/* Bouton démo */}
-                    <div className="page-connexion__demo">
-                        <div className="separateur">
-                            <span>ou</span>
-                        </div>
-                        <button
-                            type="button"
-                            className="bouton bouton--contour"
-                            style={{ width: '100%' }}
-                            onClick={() => {
-                                localStorage.setItem('token', 'demo-token');
-                                localStorage.setItem('utilisateur', JSON.stringify({
-                                    id: 1,
-                                    nom: 'Amadou Diallo',
-                                    email: 'admin@maggyfast.com',
-                                    role: 'admin',
-                                    telephone: '+221771234567',
-                                    idTenant: 1,
-                                }));
-                                window.location.href = '/';
-                            }}
-                        >
-                            Accès Démo
-                        </button>
-                    </div>
 
                     <p className="page-connexion__pied">
                         Pas encore de compte ?{' '}

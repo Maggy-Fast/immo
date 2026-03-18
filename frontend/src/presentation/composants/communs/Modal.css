@@ -1,0 +1,125 @@
+/* ============================================
+   Modal - Design Moderne
+   ============================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--espace-4);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background-color: var(--couleur-blanc);
+  border-radius: var(--rayon-lg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal--petit {
+  width: 100%;
+  max-width: 400px;
+}
+
+.modal--moyen {
+  width: 100%;
+  max-width: 600px;
+}
+
+.modal--grand {
+  width: 100%;
+  max-width: 900px;
+}
+
+.modal__entete {
+  padding: var(--espace-6);
+  border-bottom: var(--bordure-fine);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espace-4);
+}
+
+.modal__titre {
+  font-size: var(--taille-xl);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+  margin: 0;
+}
+
+.modal__bouton-fermer {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--rayon-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--couleur-gris);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-rapide);
+  flex-shrink: 0;
+}
+
+.modal__bouton-fermer:hover {
+  background-color: var(--couleur-fond);
+  color: var(--couleur-noir);
+}
+
+.modal__corps {
+  padding: var(--espace-6);
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .modal-overlay {
+    padding: 0;
+  }
+
+  .modal {
+    max-height: 100vh;
+    border-radius: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .modal__entete {
+    padding: var(--espace-4);
+  }
+
+  .modal__corps {
+    padding: var(--espace-4);
+  }
+}

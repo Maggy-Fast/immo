@@ -5,7 +5,7 @@ import clientHttp from './clientHttp';
  */
 export const serviceTableauDeBord = {
     async obtenirStatistiques() {
-        const reponse = await clientHttp.get('/tableau-de-bord');
+        const reponse = await clientHttp.get('/tableau-bord');
         return reponse.data;
     },
 };

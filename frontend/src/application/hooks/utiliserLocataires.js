@@ -5,11 +5,14 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { serviceLocataire } from '../../infrastructure/api/serviceLocataire';
+import { useToast } from '../../presentation/composants/communs';
 
 const CLE_REQUETE = 'locataires';
 
 export function utiliserLocataires(filtres = {}) {
   const clientRequete = useQueryClient();
+
+  const { notifier } = useToast();
 
   // Lister les locataires
   const {
@@ -27,6 +30,15 @@ export function utiliserLocataires(filtres = {}) {
     mutationFn: serviceLocataire.creer,
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Locataire créé avec succès');
+    },
+    onError: (error) => {
+      let message = error.response?.data?.message || 'Erreur lors de la création du locataire';
+      if (error.response?.data?.erreurs) {
+        const details = Object.values(error.response.data.erreurs).flat().join(' - ');
+        message = `${message} : ${details}`;
+      }
+      notifier(message, 'error');
     },
   });
 
@@ -35,6 +47,15 @@ export function utiliserLocataires(filtres = {}) {
     mutationFn: ({ id, donnees }) => serviceLocataire.modifier(id, donnees),
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Locataire modifié avec succès');
+    },
+    onError: (error) => {
+      let message = error.response?.data?.message || 'Erreur lors de la modification du locataire';
+      if (error.response?.data?.erreurs) {
+        const details = Object.values(error.response.data.erreurs).flat().join(' - ');
+        message = `${message} : ${details}`;
+      }
+      notifier(message, 'error');
     },
   });
 
@@ -43,6 +64,10 @@ export function utiliserLocataires(filtres = {}) {
     mutationFn: serviceLocataire.supprimer,
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Locataire supprimé avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la suppression du locataire', 'error');
     },
   });
 

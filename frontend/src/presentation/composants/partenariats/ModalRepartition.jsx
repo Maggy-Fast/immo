@@ -2,17 +2,11 @@
  * Composant — Modal d'affichage de la répartition des bénéfices
  */
 
-import { X, TrendingUp, TrendingDown, DollarSign, PieChart } from 'lucide-react';
+import { X, TrendingUp, TrendingDown, DollarSign, PieChart, Loader2 } from 'lucide-react';
+import { formaterMontant } from '../../../application/utils/formatters';
 import './ModalRepartition.css';
 
 export default function ModalRepartition({ partenariat, repartition, chargement, surFermer }) {
-  const formaterPrix = (prix) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      minimumFractionDigits: 0,
-    }).format(prix);
-  };
 
   return (
     <div className="modal-overlay">
@@ -27,7 +21,7 @@ export default function ModalRepartition({ partenariat, repartition, chargement,
         <div className="modal-repartition">
           {chargement && (
             <div className="modal-repartition__chargement">
-              <div className="chargement__spinner" />
+              <Loader2 size={24} className="chargement__spinner" />
               <p>Calcul en cours...</p>
             </div>
           )}
@@ -43,7 +37,7 @@ export default function ModalRepartition({ partenariat, repartition, chargement,
                   <div>
                     <span className="modal-repartition__label">Total ventes</span>
                     <span className="modal-repartition__valeur">
-                      {formaterPrix(repartition.totalVentes || repartition.total_ventes || 0)}
+                      {formaterMontant(repartition.totalVentes || repartition.total_ventes || 0)}
                     </span>
                   </div>
                 </div>
@@ -55,7 +49,7 @@ export default function ModalRepartition({ partenariat, repartition, chargement,
                   <div>
                     <span className="modal-repartition__label">Total dépenses</span>
                     <span className="modal-repartition__valeur">
-                      {formaterPrix(repartition.totalDepenses || repartition.total_depenses || 0)}
+                      {formaterMontant(repartition.totalDepenses || repartition.total_depenses || 0)}
                     </span>
                   </div>
                 </div>
@@ -67,7 +61,7 @@ export default function ModalRepartition({ partenariat, repartition, chargement,
                   <div>
                     <span className="modal-repartition__label">Bénéfice net</span>
                     <span className="modal-repartition__valeur modal-repartition__valeur--primaire">
-                      {formaterPrix(repartition.beneficeNet || repartition.benefice_net || 0)}
+                      {formaterMontant(repartition.beneficeNet || repartition.benefice_net || 0)}
                     </span>
                   </div>
                 </div>
@@ -90,7 +84,7 @@ export default function ModalRepartition({ partenariat, repartition, chargement,
                       </span>
                     </div>
                     <div className="modal-repartition__part-montant">
-                      {formaterPrix(repartition.partPromoteur?.montant || repartition.part_promoteur?.montant || 0)}
+                      {formaterMontant(repartition.partPromoteur?.montant || repartition.part_promoteur?.montant || 0)}
                     </div>
                     {partenariat.promoteur && (
                       <div className="modal-repartition__part-nom">{partenariat.promoteur.nom}</div>
@@ -106,7 +100,7 @@ export default function ModalRepartition({ partenariat, repartition, chargement,
                       </span>
                     </div>
                     <div className="modal-repartition__part-montant">
-                      {formaterPrix(repartition.partProprietaire?.montant || repartition.part_proprietaire?.montant || 0)}
+                      {formaterMontant(repartition.partProprietaire?.montant || repartition.part_proprietaire?.montant || 0)}
                     </div>
                     {partenariat.proprietaire && (
                       <div className="modal-repartition__part-nom">{partenariat.proprietaire.nom}</div>

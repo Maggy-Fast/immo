@@ -1,0 +1,44 @@
+.modale-confirmation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem 0;
+    gap: 1rem;
+}
+
+.modale-confirmation__icone {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.modale-confirmation__icone--danger {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.modale-confirmation__icone--info {
+    background-color: #e0f2fe;
+    color: #0ea5e9;
+}
+
+.modale-confirmation__icone--warning {
+    background-color: #fef3c7;
+    color: #f59e0b;
+}
+
+.modale-confirmation__icone--success {
+    background-color: #dcfce7;
+    color: #22c55e;
+}
+
+.modale-confirmation__message {
+    color: var(--couleur-texte, #374151);
+    font-size: 1rem;
+    line-height: 1.5;
+}

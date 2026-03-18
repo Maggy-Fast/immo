@@ -41,21 +41,21 @@ export function validerPartenariat(partenariat) {
   }
 
   // Pourcentage propriétaire valide
-  if (partenariat.pourcentagePropriétaire === undefined || partenariat.pourcentagePropriétaire === null || partenariat.pourcentagePropriétaire === '') {
-    erreurs.pourcentagePropriétaire = 'Le pourcentage propriétaire est obligatoire';
+  if (partenariat.pourcentageProprietaire === undefined || partenariat.pourcentageProprietaire === null || partenariat.pourcentageProprietaire === '') {
+    erreurs.pourcentageProprietaire = 'Le pourcentage propriétaire est obligatoire';
   } else {
-    const pct = parseFloat(partenariat.pourcentagePropriétaire);
+    const pct = parseFloat(partenariat.pourcentageProprietaire);
     if (isNaN(pct) || pct < 0 || pct > 100) {
-      erreurs.pourcentagePropriétaire = 'Le pourcentage doit être entre 0 et 100';
+      erreurs.pourcentageProprietaire = 'Le pourcentage doit être entre 0 et 100';
     }
   }
 
   // Vérifier que la somme des pourcentages = 100
-  if (partenariat.pourcentagePromoteur && partenariat.pourcentagePropriétaire) {
-    const somme = parseFloat(partenariat.pourcentagePromoteur) + parseFloat(partenariat.pourcentagePropriétaire);
+  if (partenariat.pourcentagePromoteur && partenariat.pourcentageProprietaire) {
+    const somme = parseFloat(partenariat.pourcentagePromoteur) + parseFloat(partenariat.pourcentageProprietaire);
     if (Math.abs(somme - 100) > 0.01) {
       erreurs.pourcentagePromoteur = 'La somme des pourcentages doit être égale à 100%';
-      erreurs.pourcentagePropriétaire = 'La somme des pourcentages doit être égale à 100%';
+      erreurs.pourcentageProprietaire = 'La somme des pourcentages doit être égale à 100%';
     }
   }
 

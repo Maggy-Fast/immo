@@ -1,118 +1,271 @@
 .carte-lotissement {
   background: var(--couleur-blanc);
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.25rem;
+  border: 1px solid var(--couleur-gris-tres-clair);
+  border-radius: var(--rayon-sm);
+  padding: var(--espace-4);
   cursor: pointer;
   transition: all 0.2s ease;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .carte-lotissement:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .carte-lotissement__entete {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: var(--espace-3);
+  padding-bottom: var(--espace-3);
+  border-bottom: 1px solid var(--couleur-gris-tres-clair);
 }
 
 .carte-lotissement__nom {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: var(--taille-lg);
+  font-weight: var(--poids-medium);
   color: var(--couleur-noir);
+  line-height: 1.2;
+  flex: 1;
+  margin-right: var(--espace-2);
 }
 
 .carte-lotissement__geo {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: rgba(228, 64, 61, 0.1);
+  background: var(--couleur-primaire-claire);
   color: var(--couleur-primaire);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.carte-lotissement:hover .carte-lotissement__geo {
+  background: var(--couleur-primaire);
 }
 
 .carte-lotissement__corps {
-  margin-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--espace-3);
 }
 
 .carte-lotissement__localisation {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--espace-2);
   color: var(--couleur-gris-sombre);
-  font-size: 0.9375rem;
-  margin-bottom: 1rem;
+  font-size: var(--taille-sm);
+  margin-bottom: var(--espace-3);
+  line-height: 1.4;
 }
 
 .carte-lotissement__localisation svg {
   color: var(--couleur-gris);
+  flex-shrink: 0;
 }
 
 .carte-lotissement__details {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--espace-3);
+  margin-bottom: var(--espace-3);
 }
 
 .carte-lotissement__detail {
   display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
+  align-items: center;
+  gap: var(--espace-2);
+  padding: var(--espace-2);
+  border-radius: var(--rayon-sm);
+  background: var(--couleur-fond);
+  transition: all 0.2s ease;
+}
+
+.carte-lotissement__detail:hover {
+  background: var(--couleur-gris-tres-clair);
 }
 
 .carte-lotissement__detail svg {
   color: var(--couleur-gris);
-  margin-top: 0.125rem;
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
 .carte-lotissement__detail > div {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 1px;
 }
 
 .carte-lotissement__label {
-  font-size: 0.75rem;
+  font-size: var(--taille-xs);
   color: var(--couleur-gris);
-  font-weight: 500;
+  font-weight: var(--poids-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .carte-lotissement__valeur {
-  font-size: 0.9375rem;
+  font-size: var(--taille-sm);
   color: var(--couleur-noir);
-  font-weight: 600;
+  font-weight: var(--poids-semibold);
+}
+
+/* Bénéfices parcellaires - Compact */
+.carte-lotissement__benefices {
+  background: var(--couleur-fond);
+  border: 1px solid var(--couleur-gris-tres-clair);
+  border-radius: var(--rayon-sm);
+  padding: var(--espace-3);
+  margin-bottom: var(--espace-3);
+}
+
+.carte-lotissement__benefice-titre {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-2);
+  margin-bottom: var(--espace-2);
+  font-size: var(--taille-sm);
+  font-weight: var(--poids-medium);
+  color: var(--couleur-gris-sombre);
+}
+
+.carte-lotissement__benefice-titre svg {
+  color: var(--couleur-gris);
+}
+
+.carte-lotissement__benefice-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-2);
+  margin-bottom: var(--espace-2);
+}
+
+.carte-lotissement__benefice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--espace-1) 0;
+  border-bottom: 1px solid var(--couleur-gris-tres-clair);
+  font-size: var(--taille-xs);
+}
+
+.carte-lotissement__benefice:last-child {
+  border-bottom: none;
+}
+
+.carte-lotissement__benefice-label {
+  color: var(--couleur-gris-sombre);
+  font-weight: var(--poids-medium);
+}
+
+.carte-lotissement__benefice-valeur {
+  font-weight: var(--poids-semibold);
+  padding: 2px var(--espace-2);
+  border-radius: var(--rayon-sm);
+  font-size: var(--taille-xs);
+  transition: all 0.2s ease;
+}
+
+.carte-lotissement__benefice-valeur.promoteur {
+  background: rgba(228, 64, 61, 0.1);
+  color: var(--couleur-primaire);
+}
+
+.carte-lotissement__benefice-valeur.proprietaire {
+  background: rgba(34, 197, 94, 0.1);
+  color: var(--couleur-succes);
+}
+
+.carte-lotissement__benefice-total {
+  font-size: var(--taille-xs);
+  color: var(--couleur-gris);
+  text-align: center;
+  padding-top: var(--espace-2);
+  border-top: 1px solid var(--couleur-gris-tres-clair);
+  font-style: italic;
 }
 
 .carte-lotissement__stats {
-  padding-top: 0.75rem;
-  border-top: 1px solid #f3f4f6;
+  padding-top: var(--espace-3);
+  border-top: 1px solid var(--couleur-gris-tres-clair);
 }
 
 .carte-lotissement__stat {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: var(--espace-2);
   color: var(--couleur-gris-sombre);
-  font-size: 0.875rem;
+  font-size: var(--taille-xs);
+  padding: var(--espace-2);
+  background: var(--couleur-fond);
+  border-radius: var(--rayon-sm);
+  transition: all 0.2s ease;
+}
+
+.carte-lotissement__stat:hover {
+  background: var(--couleur-gris-tres-clair);
 }
 
 .carte-lotissement__stat svg {
   color: var(--couleur-primaire);
+  font-size: 0.8rem;
 }
 
 .carte-lotissement__actions {
   display: flex;
-  gap: 0.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #f3f4f6;
+  gap: var(--espace-2);
+  padding-top: var(--espace-3);
+  border-top: 1px solid var(--couleur-gris-tres-clair);
   flex-wrap: wrap;
+}
+
+.carte-lotissement__actions .bouton {
+  flex: 1;
+  min-width: 80px;
+  justify-content: center;
+  font-size: var(--taille-xs);
+  padding: var(--espace-2) var(--espace-3);
+  border-radius: var(--rayon-sm);
+  transition: all 0.2s ease;
+  font-weight: var(--poids-medium);
+  border: 1px solid var(--couleur-gris);
+  cursor: pointer;
+  background: var(--couleur-blanc);
+  color: var(--couleur-gris-sombre);
+}
+
+.carte-lotissement__actions .bouton:hover {
+  background: var(--couleur-gris-tres-clair);
+  border-color: var(--couleur-gris);
+}
+
+.carte-lotissement__actions .bouton--primaire {
+  background: var(--couleur-primaire);
+  color: var(--couleur-blanc);
+  border-color: var(--couleur-primaire);
+}
+
+.carte-lotissement__actions .bouton--primaire:hover {
+  background: var(--couleur-primaire-sombre);
+}
+
+.carte-lotissement__actions .bouton--danger {
+  color: var(--couleur-erreur);
+  border-color: var(--couleur-erreur);
+}
+
+.carte-lotissement__actions .bouton--danger:hover {
+  background: var(--couleur-erreur);
+  color: var(--couleur-blanc);
 }

@@ -1,0 +1,50 @@
+/* ============================================
+   Formulaire Parcelle Coopérative
+   ============================================ */
+
+.formulaire-parcelle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-6);
+}
+
+.formulaire-parcelle__grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espace-4);
+}
+
+.formulaire-parcelle__champ--demi {
+  grid-column: span 1;
+}
+
+.formulaire-parcelle__champ--plein {
+  grid-column: 1 / -1;
+}
+
+.formulaire-parcelle__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espace-3);
+  padding-top: var(--espace-4);
+  border-top: var(--bordure-fine);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .formulaire-parcelle__grille {
+    grid-template-columns: 1fr;
+  }
+
+  .formulaire-parcelle__champ--demi {
+    grid-column: 1 / -1;
+  }
+
+  .formulaire-parcelle__actions {
+    flex-direction: column-reverse;
+  }
+
+  .formulaire-parcelle__actions .bouton {
+    width: 100%;
+  }
+}

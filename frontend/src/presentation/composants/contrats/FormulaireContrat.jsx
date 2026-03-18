@@ -1,12 +1,13 @@
 /**
  * Composant — Formulaire de création/modification d'un contrat
+ * Migré vers les composants centralisés
  */
 
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { FileText, Home, User, Calendar, DollarSign } from 'lucide-react';
 import { validerContrat } from '../../../domaine/validations/validationContrat';
 import { OPTIONS_STATUTS_CONTRAT } from '../../../domaine/valeursObjets/statutContrat';
-import './FormulaireContrat.css';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire } from '../communs';
 
 export default function FormulaireContrat({
   contrat = null,
@@ -33,8 +34,10 @@ export default function FormulaireContrat({
       setFormulaire({
         idBien: contrat.idBien || contrat.id_bien || '',
         idLocataire: contrat.idLocataire || contrat.id_locataire || '',
-        dateDebut: contrat.dateDebut || contrat.date_debut || '',
-        dateFin: contrat.dateFin || contrat.date_fin || '',
+        dateDebut: contrat.dateDebut || contrat.date_debut ? 
+          new Date(contrat.dateDebut || contrat.date_debut).toISOString().split('T')[0] : '',
+        dateFin: contrat.dateFin || contrat.date_fin ? 
+          new Date(contrat.dateFin || contrat.date_fin).toISOString().split('T')[0] : '',
         loyerMensuel: contrat.loyerMensuel || contrat.loyer_mensuel || '',
         caution: contrat.caution || '',
         statut: contrat.statut || 'actif',
@@ -49,9 +52,7 @@ export default function FormulaireContrat({
     }
   };
 
-  const gererSoumission = async (e) => {
-    e.preventDefault();
-
+  const gererSoumission = async () => {
     const erreursValidation = validerContrat(formulaire);
     if (Object.keys(erreursValidation).length > 0) {
       setErreurs(erreursValidation);
@@ -65,175 +66,130 @@ export default function FormulaireContrat({
     }
   };
 
-  // Filtrer les biens disponibles (non loués)
-  const biensDisponibles = biens.filter(b => 
-    b.statut === 'disponible' || b.id === formulaire.idBien
+  // Filtrer les biens disponibles
+  const biensDisponibles = biens.filter(
+    (b) => b.statut === 'disponible' || b.id === formulaire.idBien
   );
 
+  const optionsBiens = [
+    { valeur: '', label: 'Sélectionner un bien' },
+    ...biensDisponibles.map((b) => ({ valeur: b.id, label: b.adresse })),
+  ];
+
+  const optionsLocataires = [
+    { valeur: '', label: 'Sélectionner un locataire' },
+    ...locataires.map((l) => ({ valeur: l.id, label: l.nom })),
+  ];
+
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <div className="modal__entete">
-          <h2>{contrat ? 'Modifier le contrat' : 'Nouveau contrat'}</h2>
-          <button className="modal__fermer" onClick={surAnnuler} disabled={enCours}>
-            <X size={20} />
-          </button>
+    <Modale
+      titre={contrat ? 'Modifier le contrat' : 'Nouveau contrat'}
+      surFermer={surAnnuler}
+      taille="grand"
+      enCours={enCours}
+    >
+      <Formulaire surSoumettre={gererSoumission} colonnes={2}>
+        <ChampFormulaire
+          id="idBien"
+          label="Bien immobilier"
+          type="select"
+          valeur={formulaire.idBien}
+          onChange={(val) => gererChangement('idBien', val)}
+          erreur={erreurs.idBien}
+          required
+          options={optionsBiens}
+          icone={Home}
+          disabled={enCours}
+          className="largeur-complete"
+        />
+
+        <ChampFormulaire
+          id="idLocataire"
+          label="Locataire"
+          type="select"
+          valeur={formulaire.idLocataire}
+          onChange={(val) => gererChangement('idLocataire', val)}
+          erreur={erreurs.idLocataire}
+          required
+          options={optionsLocataires}
+          icone={User}
+          disabled={enCours}
+          className="largeur-complete"
+        />
+
+        <ChampFormulaire
+          id="dateDebut"
+          label="Date de début"
+          type="date"
+          valeur={formulaire.dateDebut}
+          onChange={(val) => gererChangement('dateDebut', val)}
+          erreur={erreurs.dateDebut}
+          required
+          icone={Calendar}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="dateFin"
+          label="Date de fin"
+          type="date"
+          valeur={formulaire.dateFin}
+          onChange={(val) => gererChangement('dateFin', val)}
+          erreur={erreurs.dateFin}
+          required
+          icone={Calendar}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="loyerMensuel"
+          label="Loyer mensuel (FCFA)"
+          type="number"
+          step="1"
+          valeur={formulaire.loyerMensuel}
+          onChange={(val) => gererChangement('loyerMensuel', val)}
+          erreur={erreurs.loyerMensuel}
+          required
+          placeholder="150000"
+          icone={DollarSign}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="caution"
+          label="Caution (FCFA)"
+          type="number"
+          step="1"
+          valeur={formulaire.caution}
+          onChange={(val) => gererChangement('caution', val)}
+          erreur={erreurs.caution}
+          required
+          placeholder="300000"
+          icone={DollarSign}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="statut"
+          label="Statut"
+          type="select"
+          valeur={formulaire.statut}
+          onChange={(val) => gererChangement('statut', val)}
+          erreur={erreurs.statut}
+          options={OPTIONS_STATUTS_CONTRAT}
+          disabled={enCours}
+          className="largeur-complete"
+        />
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <ActionsFormulaire
+            surAnnuler={surAnnuler}
+            texteBoutonPrincipal={contrat ? 'Modifier' : 'Créer'}
+            enCours={enCours}
+            iconePrincipal={FileText}
+          />
         </div>
-
-        <form onSubmit={gererSoumission} className="formulaire-contrat">
-          <div className="formulaire-contrat__grille">
-            {/* Bien */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="idBien" className="champ-formulaire__label">
-                Bien immobilier <span className="requis">*</span>
-              </label>
-              <select
-                id="idBien"
-                value={formulaire.idBien}
-                onChange={(e) => gererChangement('idBien', e.target.value)}
-                className={`champ-formulaire__select ${erreurs.idBien ? 'champ-formulaire__select--erreur' : ''}`}
-                disabled={enCours}
-              >
-                <option value="">Sélectionner un bien</option>
-                {biensDisponibles.map((bien) => (
-                  <option key={bien.id} value={bien.id}>
-                    {bien.adresse}
-                  </option>
-                ))}
-              </select>
-              {erreurs.idBien && <span className="champ-formulaire__erreur">{erreurs.idBien}</span>}
-            </div>
-
-            {/* Locataire */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="idLocataire" className="champ-formulaire__label">
-                Locataire <span className="requis">*</span>
-              </label>
-              <select
-                id="idLocataire"
-                value={formulaire.idLocataire}
-                onChange={(e) => gererChangement('idLocataire', e.target.value)}
-                className={`champ-formulaire__select ${erreurs.idLocataire ? 'champ-formulaire__select--erreur' : ''}`}
-                disabled={enCours}
-              >
-                <option value="">Sélectionner un locataire</option>
-                {locataires.map((locataire) => (
-                  <option key={locataire.id} value={locataire.id}>
-                    {locataire.nom}
-                  </option>
-                ))}
-              </select>
-              {erreurs.idLocataire && (
-                <span className="champ-formulaire__erreur">{erreurs.idLocataire}</span>
-              )}
-            </div>
-
-            {/* Date début */}
-            <div className="champ-formulaire">
-              <label htmlFor="dateDebut" className="champ-formulaire__label">
-                Date de début <span className="requis">*</span>
-              </label>
-              <input
-                id="dateDebut"
-                type="date"
-                value={formulaire.dateDebut}
-                onChange={(e) => gererChangement('dateDebut', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.dateDebut ? 'champ-formulaire__input--erreur' : ''}`}
-                disabled={enCours}
-              />
-              {erreurs.dateDebut && <span className="champ-formulaire__erreur">{erreurs.dateDebut}</span>}
-            </div>
-
-            {/* Date fin */}
-            <div className="champ-formulaire">
-              <label htmlFor="dateFin" className="champ-formulaire__label">
-                Date de fin <span className="requis">*</span>
-              </label>
-              <input
-                id="dateFin"
-                type="date"
-                value={formulaire.dateFin}
-                onChange={(e) => gererChangement('dateFin', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.dateFin ? 'champ-formulaire__input--erreur' : ''}`}
-                disabled={enCours}
-              />
-              {erreurs.dateFin && <span className="champ-formulaire__erreur">{erreurs.dateFin}</span>}
-            </div>
-
-            {/* Loyer mensuel */}
-            <div className="champ-formulaire">
-              <label htmlFor="loyerMensuel" className="champ-formulaire__label">
-                Loyer mensuel (FCFA) <span className="requis">*</span>
-              </label>
-              <input
-                id="loyerMensuel"
-                type="number"
-                step="1"
-                value={formulaire.loyerMensuel}
-                onChange={(e) => gererChangement('loyerMensuel', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.loyerMensuel ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="150000"
-                disabled={enCours}
-              />
-              {erreurs.loyerMensuel && (
-                <span className="champ-formulaire__erreur">{erreurs.loyerMensuel}</span>
-              )}
-            </div>
-
-            {/* Caution */}
-            <div className="champ-formulaire">
-              <label htmlFor="caution" className="champ-formulaire__label">
-                Caution (FCFA) <span className="requis">*</span>
-              </label>
-              <input
-                id="caution"
-                type="number"
-                step="1"
-                value={formulaire.caution}
-                onChange={(e) => gererChangement('caution', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.caution ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="300000"
-                disabled={enCours}
-              />
-              {erreurs.caution && <span className="champ-formulaire__erreur">{erreurs.caution}</span>}
-            </div>
-
-            {/* Statut */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="statut" className="champ-formulaire__label">
-                Statut
-              </label>
-              <select
-                id="statut"
-                value={formulaire.statut}
-                onChange={(e) => gererChangement('statut', e.target.value)}
-                className="champ-formulaire__select"
-                disabled={enCours}
-              >
-                {OPTIONS_STATUTS_CONTRAT.map((option) => (
-                  <option key={option.valeur} value={option.valeur}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="formulaire-contrat__actions">
-            <button
-              type="button"
-              className="bouton bouton--secondaire"
-              onClick={surAnnuler}
-              disabled={enCours}
-            >
-              Annuler
-            </button>
-            <button type="submit" className="bouton bouton--primaire" disabled={enCours}>
-              {enCours ? 'Enregistrement...' : contrat ? 'Modifier' : 'Créer'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+      </Formulaire>
+    </Modale>
   );
 }

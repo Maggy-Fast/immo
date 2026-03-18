@@ -3,10 +3,13 @@
  */
 
 import { useState } from 'react';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Loader2 } from 'lucide-react';
 import { utiliserProprietaires } from '../../application/hooks/utiliserProprietaires';
+import { ModaleConfirmation } from '../composants/communs';
 import CarteProprietaire from '../composants/proprietaires/CarteProprietaire';
 import FormulaireProprietaire from '../composants/proprietaires/FormulaireProprietaire';
+import ModaleDetailsProprietaire from '../composants/proprietaires/ModaleDetailsProprietaire';
+import ModaleDetailsBien from '../composants/biens/ModaleDetailsBien';
 import './PageProprietaires.css';
 
 export default function PageProprietaires() {
@@ -15,7 +18,13 @@ export default function PageProprietaires() {
   });
 
   const [modalOuverte, setModalOuverte] = useState(false);
+  const [modalDetailsOuverte, setModalDetailsOuverte] = useState(false);
+  const [modalDetailsBienOuverte, setModalDetailsBienOuverte] = useState(false);
+  const [proprietaireEnSelection, setProprietaireEnSelection] = useState(null);
+  const [bienEnSelection, setBienEnSelection] = useState(null);
   const [proprietaireEnEdition, setProprietaireEnEdition] = useState(null);
+  const [confirmationSuppression, setConfirmationSuppression] = useState({ ouverte: false, proprietaire: null });
+
 
   const {
     proprietaires,
@@ -26,6 +35,7 @@ export default function PageProprietaires() {
     supprimer,
     enCoursCreation,
     enCoursModification,
+    enCoursSuppression,
   } = utiliserProprietaires(filtres);
 
   const gererChangementRecherche = (valeur) => {
@@ -47,6 +57,16 @@ export default function PageProprietaires() {
     setProprietaireEnEdition(null);
   };
 
+  const ouvrirModalDetails = (proprietaire) => {
+    setProprietaireEnSelection(proprietaire);
+    setModalDetailsOuverte(true);
+  };
+
+  const ouvrirModalDetailsBien = (bien) => {
+    setBienEnSelection(bien);
+    setModalDetailsBienOuverte(true);
+  };
+
   const gererSoumission = async (donnees) => {
     try {
       if (proprietaireEnEdition) {
@@ -60,13 +80,19 @@ export default function PageProprietaires() {
     }
   };
 
-  const gererSuppression = async (proprietaire) => {
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer "${proprietaire.nom}" ?`)) {
-      try {
-        await supprimer(proprietaire.id);
-      } catch (error) {
-        console.error('Erreur suppression:', error);
-      }
+  const gererSuppression = (proprietaire) => {
+    setConfirmationSuppression({ ouverte: true, proprietaire });
+  };
+
+  const confirmerSuppression = async () => {
+    const { proprietaire } = confirmationSuppression;
+    if (!proprietaire) return;
+
+    try {
+      await supprimer(proprietaire.id);
+      setConfirmationSuppression({ ouverte: false, proprietaire: null });
+    } catch (error) {
+      console.error('Erreur suppression:', error);
     }
   };
 
@@ -104,7 +130,7 @@ export default function PageProprietaires() {
       <div className="page-proprietaires__contenu">
         {chargement && (
           <div className="page-proprietaires__chargement">
-            <div className="chargement__spinner" />
+            <Loader2 size={24} className="chargement__spinner" />
             <p>Chargement des propriétaires...</p>
           </div>
         )}
@@ -140,6 +166,7 @@ export default function PageProprietaires() {
               <CarteProprietaire
                 key={proprietaire.id}
                 proprietaire={proprietaire}
+                surClic={ouvrirModalDetails}
                 surModifier={ouvrirModalModification}
                 surSupprimer={gererSuppression}
               />
@@ -147,6 +174,28 @@ export default function PageProprietaires() {
           </div>
         )}
       </div>
+
+      {/* Modal détails propriétaire */}
+      {modalDetailsOuverte && (
+        <ModaleDetailsProprietaire
+          proprietaire={proprietaireEnSelection}
+          surFermer={() => setModalDetailsOuverte(false)}
+          surModifierProprietaire={ouvrirModalModification}
+          surVoirDetailsBien={ouvrirModalDetailsBien}
+        />
+      )}
+
+      {/* Modal détails bien (si on clique sur un bien du propriétaire) */}
+      {modalDetailsBienOuverte && (
+        <ModaleDetailsBien 
+          bien={bienEnSelection}
+          surFermer={() => setModalDetailsBienOuverte(false)}
+          surModifier={() => {
+            // Optionnel: rediriger vers la page des biens ou ouvrir modale modif bien
+            setModalDetailsBienOuverte(false);
+          }}
+        />
+      )}
 
       {/* Modal formulaire */}
       {modalOuverte && (
@@ -157,6 +206,17 @@ export default function PageProprietaires() {
           enCours={enCoursCreation || enCoursModification}
         />
       )}
+      {/* Modale de confirmation de suppression */}
+      <ModaleConfirmation
+        ouverte={confirmationSuppression.ouverte}
+        titre="Supprimer le propriétaire"
+        message={`Êtes-vous sûr de vouloir supprimer le propriétaire "${confirmationSuppression.proprietaire?.nom}" ? cette action est irréversible et supprimera également les données associées.`}
+        surConfirmer={confirmerSuppression}
+        surAnnuler={() => setConfirmationSuppression({ ouverte: false, proprietaire: null })}
+        enCours={enCoursSuppression}
+        type="danger"
+        texteConfirmer="Supprimer"
+      />
     </div>
   );
 }

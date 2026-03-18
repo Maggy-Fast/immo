@@ -55,20 +55,18 @@ export default function PageInscription() {
             <div className="page-inscription__panneau-gauche">
                 <div className="page-inscription__branding">
                     <div className="page-inscription__logo">
-                        <div className="page-inscription__logo-icone">
-                            <Building2 size={32} />
-                        </div>
-                        <div className="page-inscription__logo-texte">
-                            <span className="page-inscription__logo-nom">MaggyFast</span>
-                            <span className="page-inscription__logo-sous-titre">Gestion Immobilière</span>
-                        </div>
+                        <img
+                            src="/immo4.png"
+                            alt="MaggyFast Immo"
+                            className="page-inscription__logo-image"
+                        />
                     </div>
-                    
+
                     <div className="page-inscription__description">
                         <h1>Commencez à gérer votre patrimoine dès aujourd'hui</h1>
                         <p>Rejoignez des centaines de professionnels qui font confiance à MaggyFast pour gérer leurs biens immobiliers.</p>
                     </div>
-                    
+
                     <div className="page-inscription__features">
                         <div className="feature">
                             <div className="feature__icone">✓</div>
@@ -232,12 +230,8 @@ export default function PageInscription() {
                             style={{ width: '100%' }}
                             disabled={chargement}
                         >
-                            {chargement ? 'Création du compte...' : (
-                                <>
-                                    Créer mon compte
-                                    <ArrowRight size={18} />
-                                </>
-                            )}
+                            {chargement ? 'Création du compte en cours...' : 'Créer mon compte'}
+                            {!chargement && <ArrowRight size={18} style={{ marginLeft: '8px', display: 'inline-block', verticalAlign: 'middle' }} />}
                         </button>
                     </form>
 

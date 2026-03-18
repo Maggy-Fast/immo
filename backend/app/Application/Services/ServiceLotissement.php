@@ -24,6 +24,12 @@ class ServiceLotissement
     public function creer(array $donnees)
     {
         $donnees['id_tenant'] = Auth::user()->id_tenant;
+
+        if (isset($donnees['plan']) && $donnees['plan'] instanceof \Illuminate\Http\UploadedFile) {
+            $nomFichier = \Illuminate\Support\Str::uuid() . '.' . $donnees['plan']->getClientOriginalExtension();
+            $donnees['plan']->storeAs('public/uploads/lotissement', $nomFichier);
+            $donnees['plan'] = '/storage/uploads/lotissement/' . $nomFichier;
+        }
         
         return Lotissement::create($donnees);
     }
@@ -42,6 +48,13 @@ class ServiceLotissement
     public function mettreAJour(int $id, array $donnees)
     {
         $lotissement = Lotissement::findOrFail($id);
+
+        if (isset($donnees['plan']) && $donnees['plan'] instanceof \Illuminate\Http\UploadedFile) {
+            $nomFichier = \Illuminate\Support\Str::uuid() . '.' . $donnees['plan']->getClientOriginalExtension();
+            $donnees['plan']->storeAs('public/uploads/lotissement', $nomFichier);
+            $donnees['plan'] = '/storage/uploads/lotissement/' . $nomFichier;
+        }
+
         $lotissement->update($donnees);
         
         return $lotissement->fresh(['tenant', 'parcelles']);

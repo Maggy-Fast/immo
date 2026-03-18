@@ -1,11 +1,12 @@
 /**
  * Composant — Formulaire de création/modification d'un propriétaire
+ * Migré vers les composants centralisés
  */
 
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { Phone, Mail, MapPin, User, CreditCard, Camera } from 'lucide-react';
 import { validerProprietaire } from '../../../domaine/validations/validationProprietaire';
-import './FormulaireProprietaire.css';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire, UploadImage } from '../communs';
 
 export default function FormulaireProprietaire({
   proprietaire = null,
@@ -19,8 +20,10 @@ export default function FormulaireProprietaire({
     email: '',
     adresse: '',
     cin: '',
+    photo: null,
   });
 
+  const [apercuPhoto, setApercuPhoto] = useState(null);
   const [erreurs, setErreurs] = useState({});
 
   useEffect(() => {
@@ -31,7 +34,9 @@ export default function FormulaireProprietaire({
         email: proprietaire.email || '',
         adresse: proprietaire.adresse || '',
         cin: proprietaire.cin || '',
+        photo: proprietaire.photo || null,
       });
+      setApercuPhoto(proprietaire.photo || null);
     }
   }, [proprietaire]);
 
@@ -42,9 +47,12 @@ export default function FormulaireProprietaire({
     }
   };
 
-  const gererSoumission = async (e) => {
-    e.preventDefault();
+  const gererChangementPhoto = (fichier, apercu) => {
+    setFormulaire(prev => ({ ...prev, photo: fichier }));
+    setApercuPhoto(apercu);
+  };
 
+  const gererSoumission = async () => {
     const erreursValidation = validerProprietaire(formulaire);
     if (Object.keys(erreursValidation).length > 0) {
       setErreurs(erreursValidation);
@@ -59,117 +67,99 @@ export default function FormulaireProprietaire({
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <div className="modal__entete">
-          <h2>{proprietaire ? 'Modifier le propriétaire' : 'Nouveau propriétaire'}</h2>
-          <button className="modal__fermer" onClick={surAnnuler} disabled={enCours}>
-            <X size={20} />
-          </button>
+    <Modale
+      titre={proprietaire ? 'Modifier le propriétaire' : 'Nouveau propriétaire'}
+      surFermer={surAnnuler}
+      taille="moyen"
+      enCours={enCours}
+    >
+      <Formulaire surSoumettre={gererSoumission} colonnes={2}>
+        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+          <UploadImage
+            imageActuelle={apercuPhoto}
+            surChangement={gererChangementPhoto}
+            forme="cercle"
+            largeur={120}
+            hauteur={120}
+            texteAide="Photo du propriétaire"
+            disabled={enCours}
+          />
         </div>
 
-        <form onSubmit={gererSoumission} className="formulaire-proprietaire">
-          <div className="formulaire-proprietaire__grille">
-            {/* Nom */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="nom" className="champ-formulaire__label">
-                Nom complet <span className="requis">*</span>
-              </label>
-              <input
-                id="nom"
-                type="text"
-                value={formulaire.nom}
-                onChange={(e) => gererChangement('nom', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.nom ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="Ex: Ibrahima Sow"
-                disabled={enCours}
-              />
-              {erreurs.nom && <span className="champ-formulaire__erreur">{erreurs.nom}</span>}
-            </div>
+        <ChampFormulaire
+          id="nom"
+          label="Nom complet"
+          type="text"
+          valeur={formulaire.nom}
+          onChange={(val) => gererChangement('nom', val)}
+          erreur={erreurs.nom}
+          obligatoire
+          placeholder="Ex: Ibrahima Sow"
+          icone={<User size={18} />}
+          largeurComplete
+          disabled={enCours}
+        />
 
-            {/* Téléphone */}
-            <div className="champ-formulaire">
-              <label htmlFor="telephone" className="champ-formulaire__label">
-                Téléphone <span className="requis">*</span>
-              </label>
-              <input
-                id="telephone"
-                type="tel"
-                value={formulaire.telephone}
-                onChange={(e) => gererChangement('telephone', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.telephone ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="+221771234567"
-                disabled={enCours}
-              />
-              {erreurs.telephone && <span className="champ-formulaire__erreur">{erreurs.telephone}</span>}
-            </div>
+        <ChampFormulaire
+          id="telephone"
+          label="Téléphone"
+          type="tel"
+          valeur={formulaire.telephone}
+          onChange={(val) => gererChangement('telephone', val)}
+          erreur={erreurs.telephone}
+          obligatoire
+          placeholder="+221 77 123 45 67"
+          icone={<Phone size={18} />}
+          disabled={enCours}
+        />
 
-            {/* Email */}
-            <div className="champ-formulaire">
-              <label htmlFor="email" className="champ-formulaire__label">
-                Email <span className="requis">*</span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={formulaire.email}
-                onChange={(e) => gererChangement('email', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.email ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="exemple@email.com"
-                disabled={enCours}
-              />
-              {erreurs.email && <span className="champ-formulaire__erreur">{erreurs.email}</span>}
-            </div>
+        <ChampFormulaire
+          id="email"
+          label="Email"
+          type="email"
+          valeur={formulaire.email}
+          onChange={(val) => gererChangement('email', val)}
+          erreur={erreurs.email}
+          obligatoire
+          placeholder="exemple@email.com"
+          icone={<Mail size={18} />}
+          disabled={enCours}
+        />
 
-            {/* CIN */}
-            <div className="champ-formulaire">
-              <label htmlFor="cin" className="champ-formulaire__label">
-                CIN / Pièce d'identité
-              </label>
-              <input
-                id="cin"
-                type="text"
-                value={formulaire.cin}
-                onChange={(e) => gererChangement('cin', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.cin ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="1234567890123"
-                disabled={enCours}
-              />
-              {erreurs.cin && <span className="champ-formulaire__erreur">{erreurs.cin}</span>}
-            </div>
+        <ChampFormulaire
+          id="cin"
+          label="CIN / Pièce d'identité"
+          type="text"
+          valeur={formulaire.cin}
+          onChange={(val) => gererChangement('cin', val)}
+          erreur={erreurs.cin}
+          placeholder="1234567890123"
+          icone={<CreditCard size={18} />}
+          disabled={enCours}
+        />
 
-            {/* Adresse */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="adresse" className="champ-formulaire__label">
-                Adresse
-              </label>
-              <textarea
-                id="adresse"
-                value={formulaire.adresse}
-                onChange={(e) => gererChangement('adresse', e.target.value)}
-                className="champ-formulaire__textarea"
-                placeholder="Adresse complète du propriétaire"
-                rows="3"
-                disabled={enCours}
-              />
-            </div>
-          </div>
+        <ChampFormulaire
+          id="adresse"
+          label="Adresse"
+          type="text"
+          valeur={formulaire.adresse}
+          onChange={(val) => gererChangement('adresse', val)}
+          erreur={erreurs.adresse}
+          placeholder="Ex: Médina, Dakar"
+          icone={<MapPin size={18} />}
+          largeurComplete
+          disabled={enCours}
+        />
 
-          <div className="formulaire-proprietaire__actions">
-            <button
-              type="button"
-              className="bouton bouton--secondaire"
-              onClick={surAnnuler}
-              disabled={enCours}
-            >
-              Annuler
-            </button>
-            <button type="submit" className="bouton bouton--primaire" disabled={enCours}>
-              {enCours ? 'Enregistrement...' : proprietaire ? 'Modifier' : 'Créer'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div style={{ gridColumn: '1 / -1' }}>
+          <ActionsFormulaire
+            surAnnuler={surAnnuler}
+            texteBoutonPrincipal={proprietaire ? 'Modifier' : 'Créer'}
+            enCours={enCours}
+            iconePrincipal={<User size={18} />}
+          />
+        </div>
+      </Formulaire>
+    </Modale>
   );
 }

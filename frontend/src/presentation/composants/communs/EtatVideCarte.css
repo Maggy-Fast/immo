@@ -1,0 +1,53 @@
+/* État vide pour la carte interactive */
+.etat-vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--espace-12);
+  text-align: center;
+  background: var(--couleur-blanc);
+  border: var(--bordure-fine);
+  border-radius: var(--rayon-lg);
+  box-shadow: var(--ombre-xs);
+  min-height: 400px;
+}
+
+.etat-vide__icone {
+  font-size: 4rem;
+  margin-bottom: var(--espace-6);
+  opacity: 0.5;
+}
+
+.etat-vide__titre {
+  font-size: var(--taille-xl);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+  margin-bottom: var(--espace-3);
+}
+
+.etat-vide__description {
+  font-size: var(--taille-base);
+  color: var(--couleur-gris);
+  margin-bottom: var(--espace-6);
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.etat-vide__action {
+  padding: var(--espace-3) var(--espace-6);
+  background: var(--couleur-primaire);
+  color: var(--couleur-blanc);
+  border: none;
+  border-radius: var(--rayon-md);
+  font-size: var(--taille-sm);
+  font-weight: var(--poids-medium);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.etat-vide__action:hover {
+  background: var(--couleur-primaire-sombre);
+  transform: translateY(-1px);
+  box-shadow: var(--ombre-sm);
+}

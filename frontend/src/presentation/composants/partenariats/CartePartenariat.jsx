@@ -3,6 +3,7 @@
  */
 
 import { Users, MapPin, DollarSign, PieChart, Calculator } from 'lucide-react';
+import { formaterMontant } from '../../../application/utils/formatters';
 import './CartePartenariat.css';
 
 export default function CartePartenariat({ 
@@ -12,13 +13,6 @@ export default function CartePartenariat({
   surSupprimer,
   surCalculer 
 }) {
-  const formaterPrix = (prix) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      minimumFractionDigits: 0,
-    }).format(prix);
-  };
 
   return (
     <div className="carte-partenariat" onClick={() => surClic?.(partenariat)}>
@@ -69,7 +63,7 @@ export default function CartePartenariat({
           <div>
             <span className="carte-partenariat__label">Ticket d'entrée</span>
             <span className="carte-partenariat__valeur-montant">
-              {formaterPrix(partenariat.ticketEntree || partenariat.ticket_entree)}
+              {formaterMontant(partenariat.ticketEntree || partenariat.ticket_entree)}
             </span>
           </div>
         </div>

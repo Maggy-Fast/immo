@@ -2,16 +2,20 @@
  * Composant — Carte d'affichage d'un propriétaire
  */
 
-import { User, Phone, Mail, MapPin, Home, CreditCard } from 'lucide-react';
+import { Phone, Mail, MapPin, Home, CreditCard } from 'lucide-react';
+import Avatar from '../communs/Avatar';
 import './CarteProprietaire.css';
 
 export default function CarteProprietaire({ proprietaire, surClic, surModifier, surSupprimer }) {
   return (
     <div className="carte-proprietaire" onClick={() => surClic?.(proprietaire)}>
       <div className="carte-proprietaire__entete">
-        <div className="carte-proprietaire__avatar">
-          <User size={24} />
-        </div>
+        <Avatar
+          src={proprietaire.photo}
+          nom={proprietaire.nom}
+          taille="grand"
+          forme="cercle"
+        />
         <div className="carte-proprietaire__info-principale">
           <h3 className="carte-proprietaire__nom">{proprietaire.nom}</h3>
           {proprietaire.nombreBiens !== undefined && (

@@ -21,6 +21,11 @@ class Cors
             'http://127.0.0.1:5173',
         ];
 
+        // Ajouter les URLs ngrok si présentes
+        if (preg_match('/\.ngrok-free\.app$/', $request->header('Origin'))) {
+            $allowedOrigins[] = $request->header('Origin');
+        }
+
         $origin = $request->header('Origin');
 
         // Gérer les requêtes OPTIONS (preflight)
@@ -36,7 +41,16 @@ class Cors
         // Traiter la requête normale
         $response = $next($request);
 
-        // Ajouter les headers CORS à la réponse
+        // Pour les BinaryFileResponse (téléchargements), utiliser withHeaders() au lieu de header()
+        if ($response instanceof \Symfony\Component\HttpFoundation\BinaryFileResponse) {
+            $response->headers->set('Access-Control-Allow-Origin', in_array($origin, $allowedOrigins) ? $origin : $allowedOrigins[0]);
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+            $response->headers->set('Access-Control-Allow-Credentials', 'true');
+            return $response;
+        }
+
+        // Ajouter les headers CORS à la réponse normale
         return $response
             ->header('Access-Control-Allow-Origin', in_array($origin, $allowedOrigins) ? $origin : $allowedOrigins[0])
             ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')

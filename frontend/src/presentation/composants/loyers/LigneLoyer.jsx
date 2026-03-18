@@ -5,6 +5,7 @@
 import { Download, DollarSign, Calendar } from 'lucide-react';
 import { LABELS_STATUTS_LOYER, COULEURS_STATUTS_LOYER } from '../../../domaine/valeursObjets/statutLoyer';
 import { LABELS_MODES_PAIEMENT } from '../../../domaine/valeursObjets/modePaiement';
+import { formaterMontant } from '../../../application/utils/formatters';
 import './LigneLoyer.css';
 
 export default function LigneLoyer({ 
@@ -13,13 +14,6 @@ export default function LigneLoyer({
   surTelechargerQuittance,
   enCoursTelechargement 
 }) {
-  const formaterPrix = (prix) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      minimumFractionDigits: 0,
-    }).format(prix);
-  };
 
   const formaterMois = (mois) => {
     const [annee, moisNum] = mois.split('-');
@@ -56,7 +50,7 @@ export default function LigneLoyer({
       </td>
       
       <td className="ligne-loyer__montant">
-        {formaterPrix(loyer.montant)}
+        {formaterMontant(loyer.montant)}
       </td>
       
       <td className="ligne-loyer__statut">

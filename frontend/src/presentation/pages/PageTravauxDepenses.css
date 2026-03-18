@@ -1,0 +1,381 @@
+.page-travaux-depenses {
+  padding: 2rem;
+}
+
+.page-travaux-depenses__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-travaux-depenses__titre {
+  margin: 0;
+}
+
+.page-travaux-depenses__description {
+  margin: 0.35rem 0 0;
+  color: var(--couleur-gris);
+}
+
+.page-travaux-depenses__statistiques {
+  display: flex;
+  gap: 1rem;
+}
+
+.statistique-carte {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--couleur-blanc);
+  border: 1px solid var(--couleur-gris-200);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  min-width: 160px;
+}
+
+.statistique-carte__icone {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--couleur-primaire-50);
+  color: var(--couleur-primaire);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statistique-carte__contenu {
+  flex: 1;
+}
+
+.statistique-carte__valeur {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--couleur-noir);
+  line-height: 1.2;
+}
+
+.statistique-carte__label {
+  font-size: 0.875rem;
+  color: var(--couleur-gris);
+  margin-top: 0.125rem;
+}
+
+.page-travaux-depenses__onglets {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--couleur-gris-200);
+}
+
+.onglet {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--couleur-gris);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: -1px;
+}
+
+.onglet:hover {
+  color: var(--couleur-noir);
+  background: var(--couleur-gris-50);
+}
+
+.onglet--actif {
+  color: var(--couleur-primaire);
+  border-bottom-color: var(--couleur-primaire);
+  background: transparent;
+}
+
+.page-travaux-depenses__section {
+  margin-top: 1rem;
+}
+
+.page-travaux-depenses__barre {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.page-travaux-depenses__filtres {
+  background: var(--couleur-blanc);
+  border: 1px solid var(--couleur-gris-200);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.page-travaux-depenses__filtres-grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.page-travaux-depenses__contenu {
+  margin-top: 1rem;
+}
+
+.page-travaux-depenses__chargement,
+.page-travaux-depenses__erreur,
+.page-travaux-depenses__vide {
+  background: var(--couleur-blanc);
+  border: 1px solid var(--couleur-gris-200);
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.page-travaux-depenses__vide-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  background: var(--couleur-gris-50);
+  margin-bottom: 1rem;
+  color: var(--couleur-gris);
+}
+
+.page-travaux-depenses__liste {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.travail-item,
+.depense-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--couleur-blanc);
+  border: 1px solid var(--couleur-gris-200);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.travail-item:hover,
+.depense-item:hover {
+  border-color: var(--couleur-gris-300);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.travail-item__icone,
+.depense-item__icone {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--couleur-gris-50);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--couleur-gris);
+  flex-shrink: 0;
+}
+
+.travail-item__infos,
+.depense-item__infos {
+  flex: 1;
+  min-width: 0;
+}
+
+.travail-item__titre,
+.depense-item__titre {
+  font-weight: 600;
+  color: var(--couleur-noir);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.travail-item__meta,
+.depense-item__meta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.travail-item__statut,
+.depense-item__statut {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
+}
+
+.travail-item__statut--planifie {
+  background: var(--couleur-bleu-50);
+  color: var(--couleur-bleu);
+  border-color: var(--couleur-bleu-200);
+}
+
+.travail-item__statut--en_cours {
+  background: var(--couleur-ambre-50);
+  color: var(--couleur-ambre);
+  border-color: var(--couleur-ambre-200);
+}
+
+.travail-item__statut--termine {
+  background: var(--couleur-vert-50);
+  color: var(--couleur-vert);
+  border-color: var(--couleur-vert-200);
+}
+
+.travail-item__statut--annule {
+  background: var(--couleur-rouge-50);
+  color: var(--couleur-rouge);
+  border-color: var(--couleur-rouge-200);
+}
+
+.depense-item__statut--paye {
+  background: var(--couleur-vert-50);
+  color: var(--couleur-vert);
+  border-color: var(--couleur-vert-200);
+}
+
+.depense-item__statut--en_attente {
+  background: var(--couleur-ambre-50);
+  color: var(--couleur-ambre);
+  border-color: var(--couleur-ambre-200);
+}
+
+.depense-item__statut--impaye {
+  background: var(--couleur-rouge-50);
+  color: var(--couleur-rouge);
+  border-color: var(--couleur-rouge-200);
+}
+
+.travail-item__montant,
+.depense-item__montant {
+  font-weight: 600;
+  color: var(--couleur-noir);
+  font-size: 0.9rem;
+}
+
+.travail-item__type,
+.depense-item__type {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--couleur-gris-200);
+  background: var(--couleur-gris-50);
+  color: var(--couleur-noir);
+  font-size: 0.8rem;
+}
+
+.travail-item__bien,
+.depense-item__bien {
+  color: var(--couleur-gris);
+  font-size: 0.85rem;
+}
+
+.depense-item__date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--couleur-gris);
+  font-size: 0.85rem;
+}
+
+.travail-item__description,
+.depense-item__description {
+  color: var(--couleur-gris);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-top: 0.5rem;
+}
+
+.travail-item__actions,
+.depense-item__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-travaux-depenses {
+    padding: 1rem;
+  }
+
+  .page-travaux-depenses__entete {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-travaux-depenses__statistiques {
+    justify-content: space-between;
+  }
+
+  .statistique-carte {
+    flex: 1;
+    min-width: auto;
+    padding: 0.75rem 1rem;
+  }
+
+  .statistique-carte__valeur {
+    font-size: 1.1rem;
+  }
+
+  .page-travaux-depenses__barre {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .champ-recherche {
+    width: 100%;
+  }
+
+  .page-travaux-depenses__filtres-grille {
+    grid-template-columns: 1fr;
+  }
+
+  .travail-item,
+  .depense-item {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .travail-item__actions,
+  .depense-item__actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .travail-item__meta,
+  .depense-item__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-travaux-depenses__statistiques {
+    flex-direction: column;
+  }
+
+  .statistique-carte {
+    min-width: auto;
+  }
+}

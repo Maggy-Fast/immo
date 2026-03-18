@@ -22,9 +22,10 @@ class ProprietaireController extends Controller
     /**
      * GET /api/proprietaires
      */
-    public function index()
+    public function index(Request $request)
     {
-        $proprietaires = $this->serviceProprietaire->lister();
+        $filtres = $request->only(['recherche', 'page']);
+        $proprietaires = $this->serviceProprietaire->lister($filtres);
 
         return response()->json([
             'donnees' => $proprietaires->items(),

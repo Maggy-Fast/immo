@@ -34,6 +34,12 @@ class ServiceParcelle
      */
     public function creer(array $donnees)
     {
+        if (isset($donnees['plan']) && $donnees['plan'] instanceof \Illuminate\Http\UploadedFile) {
+            $nomFichier = \Illuminate\Support\Str::uuid() . '.' . $donnees['plan']->getClientOriginalExtension();
+            $donnees['plan']->storeAs('public/uploads/parcelle', $nomFichier);
+            $donnees['plan'] = '/storage/uploads/parcelle/' . $nomFichier;
+        }
+
         return Parcelle::create($donnees);
     }
 
@@ -51,6 +57,13 @@ class ServiceParcelle
     public function mettreAJour(int $id, array $donnees)
     {
         $parcelle = Parcelle::findOrFail($id);
+
+        if (isset($donnees['plan']) && $donnees['plan'] instanceof \Illuminate\Http\UploadedFile) {
+            $nomFichier = \Illuminate\Support\Str::uuid() . '.' . $donnees['plan']->getClientOriginalExtension();
+            $donnees['plan']->storeAs('public/uploads/parcelle', $nomFichier);
+            $donnees['plan'] = '/storage/uploads/parcelle/' . $nomFichier;
+        }
+
         $parcelle->update($donnees);
         
         return $parcelle->fresh('lotissement');

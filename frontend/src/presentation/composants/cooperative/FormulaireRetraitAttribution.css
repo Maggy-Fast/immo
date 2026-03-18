@@ -1,0 +1,110 @@
+/**
+ * Styles pour le formulaire de retrait d'attribution
+ */
+
+.formulaire-retrait {
+    padding: var(--espace-2);
+}
+
+.formulaire-retrait__info {
+    background: var(--couleur-primaire-tres-claire);
+    border: 1px solid var(--couleur-primaire-claire);
+    border-radius: var(--rayon-lg);
+    padding: var(--espace-4);
+    margin-bottom: var(--espace-6);
+    display: flex;
+    gap: var(--espace-4);
+    color: var(--couleur-primaire-sombre);
+}
+
+.formulaire-retrait__info-icone {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.formulaire-retrait__info-texte {
+    font-size: var(--taille-sm);
+    line-height: 1.5;
+}
+
+.formulaire-retrait__parcelle {
+    background: var(--couleur-gris-tres-clair);
+    border-radius: var(--rayon-lg);
+    padding: var(--espace-5);
+    margin-bottom: var(--espace-6);
+    border-left: 4px solid var(--couleur-gris-sombre);
+}
+
+.formulaire-retrait__parcelle-titre {
+    font-weight: var(--poids-semibold);
+    color: var(--couleur-secondaire);
+    margin-bottom: var(--espace-2);
+    display: flex;
+    align-items: center;
+    gap: var(--espace-2);
+}
+
+.formulaire-retrait__parcelle-details {
+    display: flex;
+    gap: var(--espace-4);
+    font-size: var(--taille-sm);
+    color: var(--couleur-gris-fonce);
+}
+
+.formulaire-retrait__adherents {
+    margin-bottom: var(--espace-6);
+}
+
+.formulaire-retrait__adherents-titre {
+    font-size: var(--taille-sm);
+    font-weight: var(--poids-semibold);
+    color: var(--couleur-gris-sombre);
+    margin-bottom: var(--espace-3);
+    display: flex;
+    align-items: center;
+    gap: var(--espace-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.formulaire-retrait__liste {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-2);
+}
+
+.formulaire-retrait__adherent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--espace-3) var(--espace-4);
+    background: white;
+    border: 1px solid var(--couleur-gris-tres-clair);
+    border-radius: var(--rayon-md);
+}
+
+.formulaire-retrait__adherent-nom {
+    font-weight: var(--poids-medium);
+    display: flex;
+    align-items: center;
+    gap: var(--espace-2);
+}
+
+.formulaire-retrait__adherent-part {
+    color: var(--couleur-primaire);
+    font-weight: var(--poids-bold);
+    font-size: var(--taille-sm);
+}
+
+.formulaire-retrait__motif {
+    margin-bottom: var(--espace-6);
+}
+
+.formulaire-retrait__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--espace-4);
+    margin-top: var(--espace-8);
+    padding-top: var(--espace-6);
+    border-top: 1px solid var(--couleur-gris-tres-clair);
+}

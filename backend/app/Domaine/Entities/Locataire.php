@@ -20,6 +20,7 @@ class Locataire extends Model
         'email',
         'cin',
         'profession',
+        'photo',
         'id_utilisateur',
     ];
 

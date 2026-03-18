@@ -22,9 +22,10 @@ class LocataireController extends Controller
     /**
      * GET /api/locataires
      */
-    public function index()
+    public function index(Request $request)
     {
-        $locataires = $this->serviceLocataire->lister();
+        $filtres = $request->only(['recherche', 'statut']);
+        $locataires = $this->serviceLocataire->lister($filtres);
 
         return response()->json([
             'donnees' => $locataires->items(),
@@ -47,6 +48,7 @@ class LocataireController extends Controller
             'email' => 'nullable|email|max:255',
             'cin' => 'nullable|string|max:50',
             'profession' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -81,6 +83,7 @@ class LocataireController extends Controller
             'email' => 'nullable|email|max:255',
             'cin' => 'nullable|string|max:50',
             'profession' => 'nullable|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {

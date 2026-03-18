@@ -24,7 +24,7 @@ class ContratController extends Controller
      */
     public function index(Request $request)
     {
-        $filtres = $request->only(['statut']);
+        $filtres = $request->only(['statut', 'id_locataire', 'id_bien']);
         $contrats = $this->serviceContrat->lister($filtres);
 
         return response()->json([

@@ -1,0 +1,113 @@
+/* Page Notifications WhatsApp */
+.notifications__onglets {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--couleur-gris-clair);
+    padding-bottom: 1rem;
+}
+
+.notifications__onglet {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: none;
+    color: var(--couleur-gris);
+    cursor: pointer;
+    border-radius: 0.5rem 0.5rem 0 0;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.notifications__onglet:hover {
+    background: var(--couleur-gris-clair);
+    color: var(--couleur-noir);
+}
+
+.notifications__onglet.active {
+    background: var(--couleur-primaire);
+    color: white;
+}
+
+/* Statistiques */
+.statistiques__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.statistique__carte {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--couleur-gris-clair);
+    border-radius: 0.75rem;
+    background: white;
+}
+
+.statistique__icone {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.statistique__icone.en-attente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.statistique__icone.envoyees {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.statistique__icone.echecs {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.statistique__icone.recentes {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.statistique__info h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: var(--couleur-noir);
+}
+
+.statistique__info p {
+    margin: 0;
+    color: var(--couleur-gris);
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .notifications__onglets {
+        flex-wrap: wrap;
+    }
+    
+    .notifications__onglet {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+    }
+    
+    .statistiques__grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .statistique__carte {
+        padding: 1rem;
+    }
+}

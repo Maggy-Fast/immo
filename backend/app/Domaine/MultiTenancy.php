@@ -19,7 +19,8 @@ trait MultiTenancy
 
         static::addGlobalScope('tenant', function (Builder $builder) {
             if (auth()->check()) {
-                $builder->where('id_tenant', auth()->user()->id_tenant);
+                $table = $builder->getModel()->getTable();
+                $builder->where($table . '.id_tenant', auth()->user()->id_tenant);
             }
         });
     }

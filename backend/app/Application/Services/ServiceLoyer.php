@@ -4,6 +4,7 @@ namespace App\Application\Services;
 
 use App\Domaine\Entities\Loyer;
 use App\Domaine\Entities\Quittance;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -86,6 +87,33 @@ class ServiceLoyer
         $loyer->update($donnees);
         
         return $loyer->fresh(['contrat.bien', 'contrat.locataire', 'tenant']);
+    }
+
+    /**
+     * Générer le PDF de la quittance
+     */
+    public function genererQuittancePdf(int $idLoyer)
+    {
+        $loyer = Loyer::with(['contrat.bien.proprietaire', 'contrat.locataire', 'quittance', 'tenant'])->findOrFail($idLoyer);
+        
+        // S'assurer qu'une quittance existe
+        if (!$loyer->quittance) {
+            $numeroQuittance = 'Q-' . date('Y') . '-' . str_pad($loyer->id, 6, '0', STR_PAD_LEFT);
+            $loyer->quittance()->create([
+                'id_tenant' => $loyer->id_tenant,
+                'numero_quittance' => $numeroQuittance,
+                'chemin_pdf' => 'quittances/quittance_' . $loyer->id . '.pdf',
+                'generee_le' => now(),
+            ]);
+            $loyer->load('quittance');
+        }
+
+        $pdf = Pdf::loadView('pdfs.quittance', [
+            'loyer' => $loyer,
+            'quittance' => $loyer->quittance
+        ]);
+
+        return $pdf;
     }
 
     /**

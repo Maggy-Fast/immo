@@ -3,13 +3,15 @@
  */
 
 import { useState } from 'react';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Loader2 } from 'lucide-react';
 import { utiliserPartenariats, utiliserCalculRepartition } from '../../application/hooks/utiliserPartenariats';
 import { utiliserProprietaires } from '../../application/hooks/utiliserProprietaires';
 import { utiliserLotissements } from '../../application/hooks/utiliserLotissements';
 import CartePartenariat from '../composants/partenariats/CartePartenariat';
 import FormulairePartenariat from '../composants/partenariats/FormulairePartenariat';
 import ModalRepartition from '../composants/partenariats/ModalRepartition';
+import ModaleConfirmation from '../composants/communs/ModaleConfirmation';
+import { useToast } from '../composants/communs/ToastContext';
 import './PagePartenariats.css';
 
 export default function PagePartenariats() {
@@ -22,6 +24,9 @@ export default function PagePartenariats() {
 
   const [modalRepartitionOuverte, setModalRepartitionOuverte] = useState(false);
   const [partenariatSelectionne, setPartenariatSelectionne] = useState(null);
+
+  const [modalSuppressionOuverte, setModalSuppressionOuverte] = useState(false);
+  const { notifier } = useToast();
 
   const {
     partenariats,
@@ -37,9 +42,7 @@ export default function PagePartenariats() {
   const { proprietaires } = utiliserProprietaires();
   const { lotissements } = utiliserLotissements();
 
-  const { repartition, chargement: chargementRepartition, calculer } = utiliserCalculRepartition(
-    partenariatSelectionne?.id
-  );
+  const { repartition, chargement: chargementRepartition, calculer } = utiliserCalculRepartition();
 
   const gererChangementRecherche = (valeur) => {
     setFiltres((prev) => ({ ...prev, recherche: valeur }));
@@ -64,29 +67,32 @@ export default function PagePartenariats() {
     try {
       if (partenariatEnEdition) {
         await modifier({ id: partenariatEnEdition.id, donnees });
+        notifier('Partenariat modifié avec succès');
       } else {
         await creer(donnees);
+        notifier('Partenariat créé avec succès');
       }
       fermerModal();
     } catch (error) {
-      console.error('Erreur:', error);
+      notifier(error.response?.data?.message || 'Erreur lors de l\'enregistrement', 'error');
     }
   };
 
-  const gererSuppression = async (partenariat) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce partenariat ?')) {
-      try {
-        await supprimer(partenariat.id);
-      } catch (error) {
-        console.error('Erreur suppression:', error);
-      }
+  const confirmerSuppression = async () => {
+    try {
+      await supprimer(partenariatSelectionne.id);
+      notifier('Partenariat supprimé avec succès');
+      setModalSuppressionOuverte(false);
+      setPartenariatSelectionne(null);
+    } catch (error) {
+      notifier(error.response?.data?.message || 'Erreur lors de la suppression', 'error');
     }
   };
 
   const ouvrirModalRepartition = async (partenariat) => {
     setPartenariatSelectionne(partenariat);
     setModalRepartitionOuverte(true);
-    await calculer();
+    await calculer(partenariat.id);
   };
 
   const fermerModalRepartition = () => {
@@ -128,7 +134,7 @@ export default function PagePartenariats() {
       <div className="page-partenariats__contenu">
         {chargement && (
           <div className="page-partenariats__chargement">
-            <div className="chargement__spinner" />
+            <Loader2 size={24} className="chargement__spinner" />
             <p>Chargement des partenariats...</p>
           </div>
         )}
@@ -159,7 +165,10 @@ export default function PagePartenariats() {
                 key={partenariat.id}
                 partenariat={partenariat}
                 surModifier={ouvrirModalModification}
-                surSupprimer={gererSuppression}
+                surSupprimer={(p) => {
+                  setPartenariatSelectionne(p);
+                  setModalSuppressionOuverte(true);
+                }}
                 surCalculer={ouvrirModalRepartition}
               />
             ))}
@@ -188,6 +197,18 @@ export default function PagePartenariats() {
           surFermer={fermerModalRepartition}
         />
       )}
+
+      {/* Modale Confirmation Suppression */}
+      <ModaleConfirmation
+        ouverte={modalSuppressionOuverte}
+        titre="Supprimer le partenariat"
+        message={`Voulez-vous vraiment supprimer le partenariat pour le lotissement ${partenariatSelectionne?.lotissement?.nom} ?`}
+        surConfirmer={confirmerSuppression}
+        surAnnuler={() => {
+          setModalSuppressionOuverte(false);
+          setPartenariatSelectionne(null);
+        }}
+      />
     </div>
   );
 }

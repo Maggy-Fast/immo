@@ -125,4 +125,13 @@ class LoyerController extends Controller
         $this->serviceLoyer->supprimer($id);
         return response()->json(null, 204);
     }
+
+    /**
+     * GET /api/quittances/{id}/pdf
+     */
+    public function telechargerQuittance($id)
+    {
+        $pdf = $this->serviceLoyer->genererQuittancePdf($id);
+        return $pdf->download('quittance-' . $id . '.pdf');
+    }
 }

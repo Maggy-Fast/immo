@@ -1,10 +1,31 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" id="favicon" type="image/png" href="/immo1.png" sizes="128x128" />
+    <link rel="apple-touch-icon" id="apple-icon" href="/immo1.png" sizes="256x256" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <title>MaggyFast Immo - Gestion Immobilière</title>
+    <script>
+      // Changer le favicon selon le thème
+      function updateFavicon() {
+        const isDark = document.documentElement.classList.contains('theme-sombre');
+        const faviconPath = isDark ? '/immo2.png' : '/immo1.png';
+        
+        document.getElementById('favicon').href = faviconPath;
+        document.getElementById('apple-icon').href = faviconPath;
+      }
+
+      // Observer les changements de thème
+      const observer = new MutationObserver(updateFavicon);
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+
+      // Initialiser au chargement
+      updateFavicon();
+    </script>
   </head>
   <body>
     <div id="root"></div>

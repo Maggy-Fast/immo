@@ -1,30 +1,38 @@
+/* ============================================
+   PAGE LOTISSEMENTS — Design Moderne
+   ============================================ */
+
 .page-lotissements {
-  padding: 2rem;
-  max-width: 1400px;
+  padding: var(--espace-6);
+  max-width: var(--largeur-max-contenu);
   margin: 0 auto;
+  background: var(--couleur-fond);
+  min-height: 100vh;
 }
 
 .page-lotissements__entete {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 2rem;
+  align-items: center;
+  margin-bottom: var(--espace-6);
+  gap: var(--espace-4);
 }
 
 .page-lotissements__titre {
-  font-size: 1.875rem;
-  font-weight: 700;
+  font-size: var(--taille-2xl);
+  font-weight: var(--poids-bold);
   color: var(--couleur-noir);
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--espace-1);
 }
 
 .page-lotissements__description {
   color: var(--couleur-gris);
-  font-size: 1rem;
+  font-size: var(--taille-sm);
+  margin: 0;
 }
 
 .page-lotissements__barre-recherche {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--espace-5);
 }
 
 .page-lotissements__contenu {
@@ -34,7 +42,7 @@
 .page-lotissements__grille {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  gap: var(--espace-4);
 }
 
 .page-lotissements__chargement,
@@ -44,35 +52,274 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 2rem;
+  padding: var(--espace-12);
   text-align: center;
   background: var(--couleur-blanc);
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 2px dashed var(--couleur-bordure);
+  border-radius: var(--rayon-lg);
 }
 
 .page-lotissements__chargement p,
 .page-lotissements__erreur p,
 .page-lotissements__vide p {
   color: var(--couleur-gris);
-  margin-bottom: 1rem;
+  margin-bottom: var(--espace-4);
+  font-size: var(--taille-sm);
 }
 
+/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
   .page-lotissements {
-    padding: 1rem;
+    padding: var(--espace-4);
   }
 
   .page-lotissements__entete {
     flex-direction: column;
-    gap: 1rem;
+    align-items: flex-start;
+    gap: var(--espace-3);
   }
 
   .page-lotissements__entete button {
     width: 100%;
   }
 
+  .page-lotissements__titre {
+    font-size: var(--taille-xl);
+  }
+
   .page-lotissements__grille {
     grid-template-columns: 1fr;
   }
+
+  .page-lotissements__partenariats {
+    padding: var(--espace-4);
+  }
+
+  .carte-benefices__repartition {
+    grid-template-columns: 1fr;
+    gap: var(--espace-3);
+  }
+
+  .carte-partenariat__details {
+    gap: var(--espace-1);
+  }
+}
+
+/* Section Partenariats et Bénéfices */
+.page-lotissements__contenu {
+  margin-top: var(--espace-6);
+}
+
+.page-lotissements__partenariats {
+  background: var(--couleur-fond);
+  border: var(--bordure-fine);
+  border-radius: var(--rayon-lg);
+  padding: var(--espace-6);
+  margin-bottom: var(--espace-6);
+}
+
+.page-lotissements__sous-titre {
+  font-size: var(--taille-xl);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+  margin: 0 0 var(--espace-5) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--espace-2);
+}
+
+.partenariats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--espace-4);
+}
+
+.carte-benefices {
+  background: linear-gradient(135deg, var(--couleur-primaire-claire), var(--couleur-info-claire));
+  border: var(--bordure-fine);
+  border-radius: var(--rayon-lg);
+  padding: var(--espace-5);
+  box-shadow: var(--ombre-sm);
+}
+
+.carte-benefices__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--espace-4);
+}
+
+.carte-benefices__entete h3 {
+  font-size: var(--taille-lg);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-primaire);
+  margin: 0;
+}
+
+.carte-benefices__total {
+  background: var(--couleur-blanc);
+  padding: var(--espace-2) var(--espace-3);
+  border-radius: var(--rayon-md);
+  font-size: var(--taille-sm);
+  font-weight: var(--poids-medium);
+  color: var(--couleur-primaire);
+}
+
+.carte-benefices__repartition {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espace-4);
+}
+
+.repartition-item {
+  background: var(--couleur-blanc);
+  border: var(--bordure-fine);
+  border-radius: var(--rayon-md);
+  padding: var(--espace-4);
+  display: flex;
+  align-items: center;
+  gap: var(--espace-3);
+  transition: all var(--transition-base);
+}
+
+.repartition-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ombre-md);
+}
+
+.repartition-item.promoteur {
+  border-left: 4px solid var(--couleur-avertissement);
+}
+
+.repartition-item.proprietaire {
+  border-left: 4px solid var(--couleur-succes);
+}
+
+.repartition-icone {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--couleur-fond);
+  border-radius: var(--rayon-md);
+}
+
+.repartition-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-1);
+}
+
+.repartition-titre {
+  font-size: var(--taille-sm);
+  color: var(--couleur-gris-sombre);
+  font-weight: var(--poids-medium);
+}
+
+.repartition-valeur {
+  font-size: var(--taille-lg);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+}
+
+.carte-partenariat {
+  background: var(--couleur-blanc);
+  border: var(--bordure-fine);
+  border-radius: var(--rayon-md);
+  padding: var(--espace-4);
+  box-shadow: var(--ombre-xs);
+  transition: all var(--transition-base);
+}
+
+.carte-partenariat:hover {
+  border-color: var(--couleur-primaire);
+  box-shadow: var(--ombre-sm);
+}
+
+.carte-partenariat__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--espace-3);
+}
+
+.carte-partenariat__entete h4 {
+  font-size: var(--taille-base);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+  margin: 0;
+}
+
+.carte-partenariat__statut {
+  padding: var(--espace-1) var(--espace-2);
+  border-radius: var(--rayon-sm);
+  font-size: var(--taille-xs);
+  font-weight: var(--poids-medium);
+  text-transform: uppercase;
+}
+
+.carte-partenariat__statut.actif {
+  background: var(--couleur-succes-claire);
+  color: var(--couleur-succes);
+}
+
+.carte-partenariat__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-2);
+}
+
+.partenariat-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--espace-2) 0;
+  border-bottom: 1px solid var(--couleur-gris-tres-clair);
+}
+
+.partenariat-detail:last-child {
+  border-bottom: none;
+}
+
+.partenariat-label {
+  font-size: var(--taille-sm);
+  color: var(--couleur-gris-sombre);
+  font-weight: var(--poids-medium);
+}
+
+.partenariat-valeur {
+  font-size: var(--taille-sm);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+}
+
+.aucun-partenariat {
+  text-align: center;
+  padding: var(--espace-8);
+  background: var(--couleur-blanc);
+  border: var(--bordure-fine);
+  border-radius: var(--rayon-lg);
+  box-shadow: var(--ombre-xs);
+}
+
+.aucun-partenariat__icone {
+  font-size: 4rem;
+  margin-bottom: var(--espace-4);
+  opacity: 0.5;
+}
+
+.aucun-partenariat h3 {
+  font-size: var(--taille-xl);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+  margin: 0 0 var(--espace-2) 0;
+}
+
+.aucun-partenariat p {
+  font-size: var(--taille-base);
+  color: var(--couleur-gris-sombre);
+  margin: 0 0 var(--espace-5) 0;
+  line-height: 1.6;
 }

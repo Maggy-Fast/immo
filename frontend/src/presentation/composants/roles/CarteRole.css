@@ -1,0 +1,85 @@
+.carte-role {
+    padding: var(--espace-4);
+    background: var(--couleur-blanc);
+    border: 2px solid var(--couleur-bordure);
+    border-radius: var(--rayon-lg);
+    cursor: pointer;
+    transition: all var(--transition-rapide);
+}
+
+.carte-role:hover {
+    border-color: var(--couleur-primaire);
+    box-shadow: var(--ombre-sm);
+    transform: translateY(-2px);
+}
+
+.carte-role--active {
+    border-color: var(--couleur-primaire);
+    background: var(--couleur-primaire-tres-claire);
+}
+
+.carte-role__entete {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--espace-3);
+    margin-bottom: var(--espace-3);
+}
+
+.carte-role__icone {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--couleur-primaire-tres-claire);
+    color: var(--couleur-primaire);
+    border-radius: var(--rayon-md);
+    flex-shrink: 0;
+}
+
+.carte-role--active .carte-role__icone {
+    background: var(--couleur-primaire);
+    color: var(--couleur-blanc);
+}
+
+.carte-role__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.carte-role__titre {
+    font-size: var(--taille-base);
+    font-weight: var(--poids-semibold);
+    color: var(--couleur-noir);
+    margin: 0 0 var(--espace-1) 0;
+}
+
+.carte-role__nom {
+    font-size: var(--taille-xs);
+    color: var(--couleur-gris);
+    font-family: 'Courier New', monospace;
+    margin: 0;
+}
+
+.carte-role__stats {
+    display: flex;
+    gap: var(--espace-4);
+    padding-top: var(--espace-3);
+    border-top: 1px solid var(--couleur-bordure);
+}
+
+.carte-role__stat {
+    display: flex;
+    align-items: center;
+    gap: var(--espace-2);
+    font-size: var(--taille-xs);
+    color: var(--couleur-gris);
+}
+
+.carte-role__stat svg {
+    color: var(--couleur-gris-moyen);
+}
+
+.carte-role__badge {
+    margin-top: var(--espace-3);
+}

@@ -1,0 +1,102 @@
+/* ============================================
+   AVATAR — Composant d'avatar
+   ============================================ */
+
+.avatar-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espace-2);
+}
+
+.avatar {
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Tailles */
+.avatar--petit {
+  width: 32px;
+  height: 32px;
+}
+
+.avatar--moyen {
+  width: 48px;
+  height: 48px;
+}
+
+.avatar--grand {
+  width: 64px;
+  height: 64px;
+}
+
+.avatar--tres-grand {
+  width: 96px;
+  height: 96px;
+}
+
+/* Formes */
+.avatar--cercle {
+  border-radius: 50%;
+}
+
+.avatar--carre {
+  border-radius: var(--rayon-2);
+}
+
+/* Image */
+.avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background-color: var(--couleur-gris-clair);
+  position: relative;
+  z-index: 2;
+}
+
+/* Initiales */
+.avatar__initiales {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font-weight: 600;
+  user-select: none;
+  background-color: var(--couleur-gris);
+  z-index: 1;
+}
+
+/* Fallback pour les images qui ne chargent pas */
+.avatar__image[src=""],
+.avatar__image:not([src]),
+.avatar__image[error] {
+  display: none;
+}
+
+.avatar--petit .avatar__initiales {
+  font-size: var(--taille-texte-xs);
+}
+
+.avatar--moyen .avatar__initiales {
+  font-size: var(--taille-texte-base);
+}
+
+.avatar--grand .avatar__initiales {
+  font-size: var(--taille-texte-xl);
+}
+
+.avatar--tres-grand .avatar__initiales {
+  font-size: var(--taille-texte-2xl);
+}
+
+/* Nom */
+.avatar__nom {
+  font-size: var(--taille-texte-sm);
+  font-weight: 500;
+  color: var(--couleur-texte);
+}

@@ -5,11 +5,14 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { serviceProprietaire } from '../../infrastructure/api/serviceProprietaire';
+import { useToast } from '../../presentation/composants/communs';
 
 const CLE_REQUETE = 'proprietaires';
 
 export function utiliserProprietaires(filtres = {}) {
   const clientRequete = useQueryClient();
+
+  const { notifier } = useToast();
 
   // Lister les propriétaires
   const {
@@ -27,6 +30,10 @@ export function utiliserProprietaires(filtres = {}) {
     mutationFn: serviceProprietaire.creer,
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Propriétaire créé avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la création du propriétaire', 'error');
     },
   });
 
@@ -35,6 +42,10 @@ export function utiliserProprietaires(filtres = {}) {
     mutationFn: ({ id, donnees }) => serviceProprietaire.modifier(id, donnees),
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Propriétaire modifié avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la modification du propriétaire', 'error');
     },
   });
 
@@ -43,6 +54,10 @@ export function utiliserProprietaires(filtres = {}) {
     mutationFn: serviceProprietaire.supprimer,
     onSuccess: () => {
       clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+      notifier('Propriétaire supprimé avec succès');
+    },
+    onError: (error) => {
+      notifier(error.response?.data?.message || 'Erreur lors de la suppression du propriétaire', 'error');
     },
   });
 

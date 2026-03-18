@@ -20,6 +20,7 @@ class Proprietaire extends Model
         'email',
         'adresse',
         'cin',
+        'photo',
         'id_utilisateur',
     ];
 

@@ -1,0 +1,102 @@
+/* Styles pour les formulaires du module coopérative */
+
+.info-echeance,
+.info-parcelle {
+  background: var(--couleur-fond);
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.info-echeance__titre,
+.info-parcelle__titre {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--couleur-gris);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.info-echeance__details,
+.info-parcelle__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.info-echeance__details p,
+.info-parcelle__details p {
+  font-size: 0.95rem;
+  color: var(--couleur-gris-fonce);
+}
+
+.info-echeance__details strong,
+.info-parcelle__details strong {
+  color: var(--couleur-noir);
+  margin-right: 0.5rem;
+}
+
+/* Alertes dans les formulaires */
+.alerte {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.alerte svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.alerte--info {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
+.alerte--succes {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #81c784;
+}
+
+.alerte--danger {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.alerte--avertissement {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffb74d;
+}
+
+.alerte strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.alerte p {
+  margin: 0;
+}
+
+.alerte ul {
+  margin: 0;
+}
+
+/* Modal large */
+.modal--large {
+  max-width: 700px;
+}
+
+/* Aide pour les champs */
+.champ-formulaire__aide {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--couleur-gris);
+}

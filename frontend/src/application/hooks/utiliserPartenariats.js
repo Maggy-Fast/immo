@@ -58,6 +58,23 @@ export function utiliserPartenariats(filtres = {}) {
     enCoursCreation: mutationCreer.isPending,
     enCoursModification: mutationModifier.isPending,
     enCoursSuppression: mutationSupprimer.isPending,
+    calculerBeneficesParcellaires: (lotissement, partenariatsLotissement) => {
+      // Calculer les bénéfices parcellaires pour un lotissement donné
+      const benefices = {};
+      
+      partenariatsLotissement.forEach(partenariat => {
+        const beneficePromoteur = (partenariat.ticket_entree * partenariat.pourcentage_promoteur) / 100;
+        const beneficeProprietaire = (partenariat.ticket_entree * partenariat.pourcentage_proprietaire) / 100;
+        
+        benefices[partenariat.id] = {
+          promoteur: beneficePromoteur,
+          proprietaire: beneficeProprietaire,
+          total: beneficePromoteur + beneficeProprietaire
+        };
+      });
+      
+      return benefices;
+    },
   };
 }
 
@@ -75,17 +92,17 @@ export function utiliserPartenariat(id) {
   return { partenariat, chargement, erreur };
 }
 
-export function utiliserCalculRepartition(id) {
-  const {
-    data: repartition,
-    isLoading: chargement,
-    error: erreur,
-    refetch: calculer,
-  } = useQuery({
-    queryKey: [CLE_REQUETE, id, 'repartition'],
-    queryFn: () => servicePartenariat.calculerRepartition(id),
-    enabled: false, // Ne pas charger automatiquement
+export function utiliserCalculRepartition() {
+  const clientRequete = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id) => servicePartenariat.calculerRepartition(id),
   });
 
-  return { repartition, chargement, erreur, calculer };
+  return {
+    repartition: mutation.data,
+    chargement: mutation.isPending,
+    erreur: mutation.error,
+    calculer: mutation.mutateAsync,
+  };
 }

@@ -1,0 +1,39 @@
+/* ============================================
+   ACTIONS FORMULAIRE — Composant centralisé
+   ============================================ */
+
+.actions-formulaire {
+  display: flex;
+  align-items: center;
+  gap: var(--espace-3);
+  margin-top: var(--espace-6);
+}
+
+/* Alignements */
+.actions-formulaire--gauche {
+  justify-content: flex-start;
+}
+
+.actions-formulaire--centre {
+  justify-content: center;
+}
+
+.actions-formulaire--droite {
+  justify-content: flex-end;
+}
+
+.actions-formulaire--espace {
+  justify-content: space-between;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .actions-formulaire {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+
+  .actions-formulaire .bouton {
+    width: 100%;
+  }
+}

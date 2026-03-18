@@ -1,0 +1,156 @@
+/* Page Adhérents */
+
+.page-adherents {
+  padding: 2rem;
+}
+
+.page-adherents__entete {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.page-adherents__titre {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--couleur-noir);
+  margin-bottom: 0.5rem;
+}
+
+.page-adherents__description {
+  color: var(--couleur-gris);
+  font-size: 0.875rem;
+}
+
+.page-adherents__barre-recherche {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-adherents__filtres {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.page-adherents__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Carte Adhérent */
+.carte-adherent {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.carte-adherent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.carte-adherent__entete {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--couleur-bordure);
+}
+
+.carte-adherent__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--couleur-primaire-clair);
+  color: var(--couleur-primaire);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.carte-adherent__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.carte-adherent__nom {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--couleur-noir);
+  margin-bottom: 0.25rem;
+}
+
+.carte-adherent__numero {
+  font-size: 0.875rem;
+  color: var(--couleur-gris);
+  font-family: monospace;
+}
+
+.carte-adherent__corps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.carte-adherent__detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--couleur-gris);
+}
+
+.carte-adherent__detail svg {
+  flex-shrink: 0;
+  color: var(--couleur-gris-clair);
+}
+
+.carte-adherent__detail--alerte {
+  color: #EF4444;
+  font-weight: 500;
+}
+
+.carte-adherent__detail--alerte svg {
+  color: #EF4444;
+}
+
+.carte-adherent__actions {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--couleur-bordure);
+}
+
+.carte-adherent__actions .bouton {
+  flex: 1;
+}
+
+/* États */
+.page-adherents__chargement,
+.page-adherents__erreur,
+.page-adherents__vide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.page-adherents__chargement p,
+.page-adherents__erreur p,
+.page-adherents__vide p {
+  margin-bottom: 1rem;
+  color: var(--couleur-gris);
+}

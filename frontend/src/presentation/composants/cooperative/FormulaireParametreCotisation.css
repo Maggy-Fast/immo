@@ -1,0 +1,92 @@
+/* ============================================
+   Formulaire Paramètre Cotisation
+   ============================================ */
+
+.formulaire-parametre {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-6);
+}
+
+/* Alerte */
+.formulaire-parametre__alerte {
+  display: flex;
+  gap: var(--espace-3);
+  padding: var(--espace-4);
+  background-color: #eff6ff;
+  border: 1px solid #93c5fd;
+  border-radius: var(--rayon-md);
+  color: #1e40af;
+}
+
+.formulaire-parametre__alerte strong {
+  display: block;
+  font-weight: var(--poids-semibold);
+  margin-bottom: var(--espace-1);
+}
+
+.formulaire-parametre__alerte p {
+  margin: 0;
+  font-size: var(--taille-sm);
+  line-height: 1.5;
+}
+
+/* Sections */
+.formulaire-parametre__section {
+  padding: var(--espace-4);
+  background-color: var(--couleur-fond);
+  border-radius: var(--rayon-md);
+  border: var(--bordure-fine);
+}
+
+.formulaire-parametre__sous-titre {
+  font-size: var(--taille-base);
+  font-weight: var(--poids-semibold);
+  color: var(--couleur-noir);
+  display: flex;
+  align-items: center;
+  gap: var(--espace-2);
+  margin-bottom: var(--espace-4);
+}
+
+.formulaire-parametre__grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espace-4);
+}
+
+.formulaire-parametre__champ--demi {
+  grid-column: span 1;
+}
+
+.formulaire-parametre__champ--plein {
+  grid-column: 1 / -1;
+}
+
+/* Actions */
+.formulaire-parametre__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espace-3);
+  padding-top: var(--espace-4);
+  border-top: var(--bordure-fine);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .formulaire-parametre__grille {
+    grid-template-columns: 1fr;
+  }
+
+  .formulaire-parametre__champ--demi {
+    grid-column: 1 / -1;
+  }
+
+  .formulaire-parametre__actions {
+    flex-direction: column-reverse;
+  }
+
+  .formulaire-parametre__actions .bouton {
+    width: 100%;
+  }
+}

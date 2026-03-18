@@ -19,6 +19,7 @@ class Parcelle extends Model
         'superficie',
         'prix',
         'statut',
+        'plan',
     ];
 
     public function tenant(): BelongsTo

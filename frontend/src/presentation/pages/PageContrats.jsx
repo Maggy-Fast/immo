@@ -3,10 +3,11 @@
  */
 
 import { useState } from 'react';
-import { Plus, Search, Filter } from 'lucide-react';
+import { Plus, Search, Filter, Loader2 } from 'lucide-react';
 import { utiliserContrats } from '../../application/hooks/utiliserContrats';
 import { utiliserBiens } from '../../application/hooks/utiliserBiens';
 import { utiliserLocataires } from '../../application/hooks/utiliserLocataires';
+import { ModaleConfirmation } from '../composants/communs';
 import CarteContrat from '../composants/contrats/CarteContrat';
 import FormulaireContrat from '../composants/contrats/FormulaireContrat';
 import { OPTIONS_STATUTS_CONTRAT } from '../../domaine/valeursObjets/statutContrat';
@@ -21,6 +22,8 @@ export default function PageContrats() {
   const [modalOuverte, setModalOuverte] = useState(false);
   const [contratEnEdition, setContratEnEdition] = useState(null);
   const [afficherFiltres, setAfficherFiltres] = useState(false);
+  const [confirmationSuppression, setConfirmationSuppression] = useState({ ouverte: false, contrat: null });
+
 
   const {
     contrats,
@@ -31,6 +34,7 @@ export default function PageContrats() {
     supprimer,
     enCoursCreation,
     enCoursModification,
+    enCoursSuppression,
   } = utiliserContrats(filtres);
 
   // Charger biens et locataires pour le formulaire
@@ -73,14 +77,19 @@ export default function PageContrats() {
     }
   };
 
-  const gererSuppression = async (contrat) => {
-    const message = `Êtes-vous sûr de vouloir supprimer ce contrat ?`;
-    if (window.confirm(message)) {
-      try {
-        await supprimer(contrat.id);
-      } catch (error) {
-        console.error('Erreur suppression:', error);
-      }
+  const gererSuppression = (contrat) => {
+    setConfirmationSuppression({ ouverte: true, contrat });
+  };
+
+  const confirmerSuppression = async () => {
+    const { contrat } = confirmationSuppression;
+    if (!contrat) return;
+
+    try {
+      await supprimer(contrat.id);
+      setConfirmationSuppression({ ouverte: false, contrat: null });
+    } catch (error) {
+      console.error('Erreur suppression:', error);
     }
   };
 
@@ -162,7 +171,7 @@ export default function PageContrats() {
       <div className="page-contrats__contenu">
         {chargement && (
           <div className="page-contrats__chargement">
-            <div className="chargement__spinner" />
+            <Loader2 size={24} className="chargement__spinner" />
             <p>Chargement des contrats...</p>
           </div>
         )}
@@ -217,6 +226,17 @@ export default function PageContrats() {
           enCours={enCoursCreation || enCoursModification}
         />
       )}
+      {/* Modale de confirmation de suppression */}
+      <ModaleConfirmation
+        ouverte={confirmationSuppression.ouverte}
+        titre="Supprimer le contrat"
+        message="Êtes-vous sûr de vouloir supprimer ce contrat ? cette action est irréversible et libérera le bien associé."
+        surConfirmer={confirmerSuppression}
+        surAnnuler={() => setConfirmationSuppression({ ouverte: false, contrat: null })}
+        enCours={enCoursSuppression}
+        type="danger"
+        texteConfirmer="Supprimer"
+      />
     </div>
   );
 }

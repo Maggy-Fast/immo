@@ -1,0 +1,132 @@
+/* ============================================
+   GALERIE IMAGES — Galerie d'images multiple
+   ============================================ */
+
+.galerie-images {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-3);
+}
+
+.galerie-images__grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--espace-3);
+}
+
+/* Item de la galerie */
+.galerie-images__item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: var(--rayon-2);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.galerie-images__item:hover {
+  transform: scale(1.05);
+  box-shadow: var(--ombre-2);
+}
+
+.galerie-images__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Badge principale */
+.galerie-images__badge {
+  position: absolute;
+  top: var(--espace-2);
+  left: var(--espace-2);
+  padding: var(--espace-1) var(--espace-2);
+  background: var(--couleur-primaire);
+  color: white;
+  font-size: var(--taille-texte-xs);
+  font-weight: 600;
+  border-radius: var(--rayon-1);
+}
+
+/* Bouton supprimer */
+.galerie-images__supprimer {
+  position: absolute;
+  top: var(--espace-2);
+  right: var(--espace-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.galerie-images__item:hover .galerie-images__supprimer {
+  opacity: 1;
+}
+
+.galerie-images__supprimer:hover {
+  background: var(--couleur-danger);
+  transform: scale(1.1);
+}
+
+/* Bouton ajouter */
+.galerie-images__ajouter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: 2px dashed var(--couleur-bordure);
+  border-radius: var(--rayon-2);
+  background: var(--couleur-fond-secondaire);
+  color: var(--couleur-gris);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.galerie-images__ajouter:hover {
+  border-color: var(--couleur-primaire);
+  color: var(--couleur-primaire);
+  background: var(--couleur-fond);
+}
+
+.galerie-images__ajouter span {
+  font-size: var(--taille-texte-sm);
+  margin-top: var(--espace-1);
+}
+
+.galerie-images__input {
+  display: none;
+}
+
+/* Messages */
+.galerie-images__erreur {
+  font-size: var(--taille-texte-sm);
+  color: var(--couleur-danger);
+}
+
+.galerie-images__info {
+  font-size: var(--taille-texte-sm);
+  color: var(--couleur-gris);
+  text-align: center;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .galerie-images__grille {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: var(--espace-2);
+  }
+
+  .galerie-images__supprimer {
+    opacity: 1;
+  }
+}

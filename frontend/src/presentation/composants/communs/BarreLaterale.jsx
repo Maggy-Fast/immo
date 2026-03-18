@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { utiliserAuth } from '../../../application/contexte/ContexteAuth';
+import { usePermissions } from '../../../application/hooks/usePermissions';
 import {
     LayoutDashboard,
     Building2,
@@ -18,6 +19,13 @@ import {
     LogOut,
     ChevronLeft,
     ChevronRight,
+    Shield,
+    Home,
+    MessageSquare,
+    Globe,
+    UserCog,
+    Activity,
+    ScrollText
 } from 'lucide-react';
 import './BarreLaterale.css';
 
@@ -34,6 +42,18 @@ const LIENS_NAVIGATION = [
     { chemin: '/travaux', icone: Hammer, libelle: 'Travaux' },
     { chemin: '/carte', icone: Map, libelle: 'Carte' },
     { chemin: '/ia', icone: Brain, libelle: 'IA Documents' },
+    { chemin: '/whatsapp', icone: MessageSquare, libelle: 'Notifications WhatsApp' },
+    { chemin: '/admin/tenants', icone: Building2, libelle: 'Tenants' },
+    { chemin: '/admin/utilisateurs', icone: UserCog, libelle: 'Utilisateurs' },
+    { chemin: '/admin/audit', icone: ScrollText, libelle: 'Audit' },
+];
+
+const LIENS_COOPERATIVE = [
+    { chemin: '/cooperative', icone: Home, libelle: 'Tableau de bord' },
+    { chemin: '/cooperative/groupes', icone: Grid3X3, libelle: 'Groupes' },
+    { chemin: '/cooperative/adherents', icone: Users, libelle: 'Adhérents' },
+    { chemin: '/cooperative/cotisations', icone: DollarSign, libelle: 'Cotisations' },
+    { chemin: '/cooperative/parcelles', icone: Grid3X3, libelle: 'Parcelles' },
 ];
 
 /**
@@ -42,19 +62,25 @@ const LIENS_NAVIGATION = [
 export default function BarreLaterale() {
     const [reduite, definirReduite] = useState(false);
     const { utilisateur, deconnecter } = utiliserAuth();
+    const { isSuperAdmin, roleLibelle } = usePermissions();
     const localisation = useLocation();
 
     return (
         <aside className={`sidebar ${reduite ? 'sidebar--reduite' : ''}`}>
             {/* Logo */}
             <div className="sidebar__logo">
-                <div className="sidebar__logo-icone">
-                    <Building2 size={22} />
-                </div>
-                {!reduite && (
-                    <span className="sidebar__logo-texte">
-                        Maggy<span>Fast</span>
-                    </span>
+                {!reduite ? (
+                    <img 
+                        src="/immo1.png" 
+                        alt="MaggyFast Immo" 
+                        className="sidebar__logo-image"
+                    />
+                ) : (
+                    <img 
+                        src="/immo1.png" 
+                        alt="MaggyFast Immo" 
+                        className="sidebar__logo-image-reduite"
+                    />
                 )}
             </div>
 
@@ -77,7 +103,24 @@ export default function BarreLaterale() {
                             `sidebar__lien ${isActive ? 'sidebar__lien--actif' : ''}`
                         }
                         title={reduite ? libelle : undefined}
-                        end={chemin === '/'}
+                        end={chemin === '/' || chemin === '/whatsapp'}
+                    >
+                        <Icone size={20} />
+                        {!reduite && <span>{libelle}</span>}
+                    </NavLink>
+                ))}
+
+                {/* Section Coopérative */}
+                {!reduite && <div className="sidebar__separateur">Coopérative</div>}
+                {LIENS_COOPERATIVE.map(({ chemin, icone: Icone, libelle }) => (
+                    <NavLink
+                        key={chemin}
+                        to={chemin}
+                        className={({ isActive }) =>
+                            `sidebar__lien ${isActive ? 'sidebar__lien--actif' : ''}`
+                        }
+                        title={reduite ? libelle : undefined}
+                        end={chemin === '/cooperative'}
                     >
                         <Icone size={20} />
                         {!reduite && <span>{libelle}</span>}
@@ -94,9 +137,16 @@ export default function BarreLaterale() {
                         </div>
                         <div className="sidebar__utilisateur-info">
                             <span className="sidebar__utilisateur-nom">{utilisateur.nom}</span>
-                            <span className="sidebar__utilisateur-role">{utilisateur.role}</span>
+                            <span className="sidebar__utilisateur-role">{roleLibelle || utilisateur.role}</span>
                         </div>
                     </div>
+                )}
+
+                {isSuperAdmin() && (
+                    <NavLink to="/roles" className="sidebar__lien" title="Gestion des Rôles">
+                        <Shield size={20} />
+                        {!reduite && <span>Rôles</span>}
+                    </NavLink>
                 )}
 
                 <NavLink to="/parametres" className="sidebar__lien" title="Paramètres">

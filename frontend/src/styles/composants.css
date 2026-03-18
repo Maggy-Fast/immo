@@ -221,6 +221,50 @@
     color: var(--couleur-gris);
 }
 
+/* Champs avec icônes */
+.champ-avec-icone {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.champ-icone {
+    position: absolute;
+    left: var(--espace-3);
+    color: var(--couleur-gris);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.champ__input--avec-icone {
+    padding-left: var(--espace-10);
+}
+
+.champ-mot-de-passe {
+    position: relative;
+}
+
+.champ-mot-de-passe__toggle {
+    position: absolute;
+    right: var(--espace-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--couleur-gris);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--espace-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-rapide);
+    z-index: 2;
+}
+
+.champ-mot-de-passe__toggle:hover {
+    color: var(--couleur-noir);
+}
+
 /* ========== TABLEAUX ========== */
 .tableau-conteneur {
     overflow-x: auto;

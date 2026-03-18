@@ -40,37 +40,16 @@
 .page-inscription__logo {
     display: flex;
     align-items: center;
-    gap: var(--espace-4);
-    margin-bottom: var(--espace-12);
-}
-
-.page-inscription__logo-icone {
-    width: 56px;
-    height: 56px;
-    background-color: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: var(--rayon-lg);
-    display: flex;
-    align-items: center;
     justify-content: center;
-    color: var(--couleur-blanc);
+    margin-bottom: 0;
+    margin-top: -20px;
 }
 
-.page-inscription__logo-texte {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espace-1);
-}
-
-.page-inscription__logo-nom {
-    font-size: var(--taille-2xl);
-    font-weight: var(--poids-bold);
-    letter-spacing: -0.02em;
-}
-
-.page-inscription__logo-sous-titre {
-    font-size: var(--taille-sm);
-    opacity: 0.9;
+.page-inscription__logo-image {
+    max-width: 320px;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
 .page-inscription__description {
@@ -80,7 +59,8 @@
 .page-inscription__description h1 {
     font-size: var(--taille-3xl);
     font-weight: var(--poids-bold);
-    line-height: 1.2;
+    line-height: 1.1;
+    margin-top: 0;
     margin-bottom: var(--espace-4);
     color: var(--couleur-blanc);
 }

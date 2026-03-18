@@ -4,16 +4,10 @@
 
 import { Maximize, DollarSign, Hash } from 'lucide-react';
 import { LABELS_STATUTS_PARCELLE, COULEURS_STATUTS_PARCELLE } from '../../../domaine/valeursObjets/statutParcelle';
+import { formaterMontant } from '../../../application/utils/formatters';
 import './CarteParcelle.css';
 
 export default function CarteParcelle({ parcelle, surClic, surModifier, surSupprimer }) {
-  const formaterPrix = (prix) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      minimumFractionDigits: 0,
-    }).format(prix);
-  };
 
   const prixParM2 = parcelle.superficie > 0 ? Math.round(parcelle.prix / parcelle.superficie) : 0;
 
@@ -49,14 +43,14 @@ export default function CarteParcelle({ parcelle, surClic, surModifier, surSuppr
             <DollarSign size={16} />
             <div>
               <span className="carte-parcelle__label">Prix total</span>
-              <span className="carte-parcelle__valeur">{formaterPrix(parcelle.prix)}</span>
+              <span className="carte-parcelle__valeur">{formaterMontant(parcelle.prix)}</span>
             </div>
           </div>
         </div>
 
         <div className="carte-parcelle__prix-m2">
           <span className="carte-parcelle__label">Prix au m²:</span>
-          <span className="carte-parcelle__valeur-m2">{formaterPrix(prixParM2)}</span>
+          <span className="carte-parcelle__valeur-m2">{formaterMontant(prixParM2)}</span>
         </div>
       </div>
 

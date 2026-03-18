@@ -20,7 +20,9 @@ class Utilisateur extends Authenticatable
         'email',
         'password',
         'role',
+        'id_role',
         'telephone',
+        'photo',
     ];
 
     protected $hidden = [
@@ -36,5 +38,45 @@ class Utilisateur extends Authenticatable
     public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class, 'id_tenant');
+    }
+
+    public function roleEntity(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'id_role');
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+        return $this->roleEntity && $this->roleEntity->hasPermission($permission);
+    }
+
+    public function hasAnyPermission(array $permissions): bool
+    {
+        foreach ($permissions as $permission) {
+            if ($this->hasPermission($permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function hasAllPermissions(array $permissions): bool
+    {
+        foreach ($permissions as $permission) {
+            if (!$this->hasPermission($permission)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->roleEntity && $this->roleEntity->nom === 'super_admin';
+    }
+
+    public function preferences()
+    {
+        return $this->hasOne(PreferencesUtilisateur::class, 'id_utilisateur');
     }
 }

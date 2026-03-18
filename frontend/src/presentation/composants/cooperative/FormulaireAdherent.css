@@ -1,0 +1,50 @@
+/* ============================================
+   Formulaire Adhérent
+   ============================================ */
+
+.formulaire-adherent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espace-6);
+}
+
+.formulaire-adherent__grille {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espace-4);
+}
+
+.formulaire-adherent__champ--demi {
+  grid-column: span 1;
+}
+
+.formulaire-adherent__champ--plein {
+  grid-column: 1 / -1;
+}
+
+.formulaire-adherent__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--espace-3);
+  padding-top: var(--espace-4);
+  border-top: var(--bordure-fine);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .formulaire-adherent__grille {
+    grid-template-columns: 1fr;
+  }
+
+  .formulaire-adherent__champ--demi {
+    grid-column: 1 / -1;
+  }
+
+  .formulaire-adherent__actions {
+    flex-direction: column-reverse;
+  }
+
+  .formulaire-adherent__actions .bouton {
+    width: 100%;
+  }
+}

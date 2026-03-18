@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Connexion API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        input, button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Connexion API</h1>
+    
+    <div>
+        <label>Email:</label>
+        <input type="email" id="email" value="superadmin@maggyfast.com">
+        
+        <label>Mot de passe:</label>
+        <input type="password" id="password" value="password">
+        
+        <button onclick="testerConnexion()">Tester Connexion</button>
+    </div>
+    
+    <div id="result"></div>
+
+    <script>
+        const API_URL = 'https://cd3c-2001-4278-13-9048-7d9e-b593-1be9-c850.ngrok-free.app/api';
+        
+        async function testerConnexion() {
+            const resultDiv = document.getElementById('result');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            resultDiv.innerHTML = '<div class="result">Test en cours...</div>';
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/connexion`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `<div class="result success">✓ Connexion réussie!\n\n${JSON.stringify(data, null, 2)}</div>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="result error">✗ Erreur ${response.status}\n\n${JSON.stringify(data, null, 2)}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">✗ Erreur de connexion:\n\n${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>

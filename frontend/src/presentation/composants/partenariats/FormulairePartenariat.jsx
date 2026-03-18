@@ -1,11 +1,12 @@
 /**
  * Composant — Formulaire de création/modification d'un partenariat
+ * Migré vers les composants centralisés
  */
 
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { Handshake, Map, User, DollarSign, Percent } from 'lucide-react';
 import { validerPartenariat } from '../../../domaine/validations/validationPartenariat';
-import './FormulairePartenariat.css';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire } from '../communs';
 
 export default function FormulairePartenariat({
   partenariat = null,
@@ -20,8 +21,8 @@ export default function FormulairePartenariat({
     idProprietaire: '',
     idLotissement: '',
     ticketEntree: '',
-    pourcentagePromoteur: '60',
-    pourcentagePropriétaire: '40',
+    pourcentagePromoteur: '40',
+    pourcentageProprietaire: '60',
   });
 
   const [erreurs, setErreurs] = useState({});
@@ -33,44 +34,44 @@ export default function FormulairePartenariat({
         idProprietaire: partenariat.idProprietaire || partenariat.id_proprietaire || '',
         idLotissement: partenariat.idLotissement || partenariat.id_lotissement || '',
         ticketEntree: partenariat.ticketEntree || partenariat.ticket_entree || '',
-        pourcentagePromoteur: partenariat.pourcentagePromoteur || partenariat.pourcentage_promoteur || '60',
-        pourcentagePropriétaire: partenariat.pourcentagePropriétaire || partenariat.pourcentage_proprietaire || '40',
+        pourcentagePromoteur:
+          partenariat.pourcentagePromoteur || partenariat.pourcentage_promoteur || '40',
+        pourcentageProprietaire:
+          partenariat.pourcentageProprietaire || partenariat.pourcentage_proprietaire || '60',
       });
     }
   }, [partenariat]);
 
   const gererChangement = (champ, valeur) => {
-    setFormulaire((prev) => ({ ...prev, [champ]: valeur }));
-    
     // Auto-ajuster l'autre pourcentage
     if (champ === 'pourcentagePromoteur' && valeur !== '') {
       const pct = parseFloat(valeur);
       if (!isNaN(pct) && pct >= 0 && pct <= 100) {
-        setFormulaire((prev) => ({ 
-          ...prev, 
+        setFormulaire((prev) => ({
+          ...prev,
           [champ]: valeur,
-          pourcentagePropriétaire: (100 - pct).toString() 
+          pourcentageProprietaire: (100 - pct).toString(),
         }));
       }
-    } else if (champ === 'pourcentagePropriétaire' && valeur !== '') {
+    } else if (champ === 'pourcentageProprietaire' && valeur !== '') {
       const pct = parseFloat(valeur);
       if (!isNaN(pct) && pct >= 0 && pct <= 100) {
-        setFormulaire((prev) => ({ 
-          ...prev, 
+        setFormulaire((prev) => ({
+          ...prev,
           [champ]: valeur,
-          pourcentagePromoteur: (100 - pct).toString() 
+          pourcentagePromoteur: (100 - pct).toString(),
         }));
       }
+    } else {
+      setFormulaire((prev) => ({ ...prev, [champ]: valeur }));
     }
-    
+
     if (erreurs[champ]) {
       setErreurs((prev) => ({ ...prev, [champ]: undefined }));
     }
   };
 
-  const gererSoumission = async (e) => {
-    e.preventDefault();
-
+  const gererSoumission = async () => {
     const erreursValidation = validerPartenariat(formulaire);
     if (Object.keys(erreursValidation).length > 0) {
       setErreurs(erreursValidation);
@@ -84,168 +85,120 @@ export default function FormulairePartenariat({
     }
   };
 
+  const optionsLotissements = [
+    { valeur: '', label: 'Sélectionner un lotissement' },
+    ...lotissements.map((l) => ({ valeur: l.id, label: l.nom })),
+  ];
+
+  const optionsProprietaires = [
+    { valeur: '', label: 'Sélectionner' },
+    ...proprietaires.map((p) => ({ valeur: p.id, label: p.nom })),
+  ];
+
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <div className="modal__entete">
-          <h2>{partenariat ? 'Modifier le partenariat' : 'Nouveau partenariat'}</h2>
-          <button className="modal__fermer" onClick={surAnnuler} disabled={enCours}>
-            <X size={20} />
-          </button>
+    <Modale
+      titre={partenariat ? 'Modifier le partenariat' : 'Nouveau partenariat'}
+      surFermer={surAnnuler}
+      taille="grand"
+      enCours={enCours}
+    >
+      <Formulaire surSoumettre={gererSoumission} colonnes={2}>
+        <ChampFormulaire
+          id="idLotissement"
+          label="Lotissement"
+          type="select"
+          valeur={formulaire.idLotissement}
+          onChange={(val) => gererChangement('idLotissement', val)}
+          erreur={erreurs.idLotissement}
+          required
+          options={optionsLotissements}
+          icone={Map}
+          disabled={enCours}
+          className="largeur-complete"
+        />
+
+        <ChampFormulaire
+          id="idPromoteur"
+          label="Promoteur"
+          type="select"
+          valeur={formulaire.idPromoteur}
+          onChange={(val) => gererChangement('idPromoteur', val)}
+          erreur={erreurs.idPromoteur}
+          required
+          options={optionsProprietaires}
+          icone={User}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="idProprietaire"
+          label="Propriétaire"
+          type="select"
+          valeur={formulaire.idProprietaire}
+          onChange={(val) => gererChangement('idProprietaire', val)}
+          erreur={erreurs.idProprietaire}
+          required
+          options={optionsProprietaires}
+          icone={User}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="ticketEntree"
+          label="Ticket d'entrée (FCFA)"
+          type="number"
+          step="1"
+          valeur={formulaire.ticketEntree}
+          onChange={(val) => gererChangement('ticketEntree', val)}
+          erreur={erreurs.ticketEntree}
+          required
+          placeholder="10000000"
+          icone={DollarSign}
+          disabled={enCours}
+          className="largeur-complete"
+        />
+
+        <ChampFormulaire
+          id="pourcentagePromoteur"
+          label="Pourcentage promoteur (%)"
+          type="number"
+          step="0.01"
+          min="0"
+          max="100"
+          valeur={formulaire.pourcentagePromoteur}
+          onChange={(val) => gererChangement('pourcentagePromoteur', val)}
+          erreur={erreurs.pourcentagePromoteur}
+          required
+          icone={Percent}
+          aide="Ajusté automatiquement avec le propriétaire"
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="pourcentageProprietaire"
+          label="Pourcentage propriétaire (%)"
+          type="number"
+          step="0.01"
+          min="0"
+          max="100"
+          valeur={formulaire.pourcentageProprietaire}
+          onChange={(val) => gererChangement('pourcentageProprietaire', val)}
+          erreur={erreurs.pourcentageProprietaire}
+          required
+          icone={Percent}
+          aide="Ajusté automatiquement avec le promoteur"
+          disabled={enCours}
+        />
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <ActionsFormulaire
+            surAnnuler={surAnnuler}
+            texteBoutonPrincipal={partenariat ? 'Modifier' : 'Créer'}
+            enCours={enCours}
+            iconePrincipal={Handshake}
+          />
         </div>
-
-        <form onSubmit={gererSoumission} className="formulaire-partenariat">
-          <div className="formulaire-partenariat__grille">
-            {/* Lotissement */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="idLotissement" className="champ-formulaire__label">
-                Lotissement <span className="requis">*</span>
-              </label>
-              <select
-                id="idLotissement"
-                value={formulaire.idLotissement}
-                onChange={(e) => gererChangement('idLotissement', e.target.value)}
-                className={`champ-formulaire__select ${erreurs.idLotissement ? 'champ-formulaire__select--erreur' : ''}`}
-                disabled={enCours}
-              >
-                <option value="">Sélectionner un lotissement</option>
-                {lotissements.map((lot) => (
-                  <option key={lot.id} value={lot.id}>
-                    {lot.nom}
-                  </option>
-                ))}
-              </select>
-              {erreurs.idLotissement && (
-                <span className="champ-formulaire__erreur">{erreurs.idLotissement}</span>
-              )}
-            </div>
-
-            {/* Promoteur */}
-            <div className="champ-formulaire">
-              <label htmlFor="idPromoteur" className="champ-formulaire__label">
-                Promoteur <span className="requis">*</span>
-              </label>
-              <select
-                id="idPromoteur"
-                value={formulaire.idPromoteur}
-                onChange={(e) => gererChangement('idPromoteur', e.target.value)}
-                className={`champ-formulaire__select ${erreurs.idPromoteur ? 'champ-formulaire__select--erreur' : ''}`}
-                disabled={enCours}
-              >
-                <option value="">Sélectionner un promoteur</option>
-                {proprietaires.map((proprio) => (
-                  <option key={proprio.id} value={proprio.id}>
-                    {proprio.nom}
-                  </option>
-                ))}
-              </select>
-              {erreurs.idPromoteur && (
-                <span className="champ-formulaire__erreur">{erreurs.idPromoteur}</span>
-              )}
-            </div>
-
-            {/* Propriétaire */}
-            <div className="champ-formulaire">
-              <label htmlFor="idProprietaire" className="champ-formulaire__label">
-                Propriétaire <span className="requis">*</span>
-              </label>
-              <select
-                id="idProprietaire"
-                value={formulaire.idProprietaire}
-                onChange={(e) => gererChangement('idProprietaire', e.target.value)}
-                className={`champ-formulaire__select ${erreurs.idProprietaire ? 'champ-formulaire__select--erreur' : ''}`}
-                disabled={enCours}
-              >
-                <option value="">Sélectionner un propriétaire</option>
-                {proprietaires.map((proprio) => (
-                  <option key={proprio.id} value={proprio.id}>
-                    {proprio.nom}
-                  </option>
-                ))}
-              </select>
-              {erreurs.idProprietaire && (
-                <span className="champ-formulaire__erreur">{erreurs.idProprietaire}</span>
-              )}
-            </div>
-
-            {/* Ticket d'entrée */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="ticketEntree" className="champ-formulaire__label">
-                Ticket d'entrée (FCFA) <span className="requis">*</span>
-              </label>
-              <input
-                id="ticketEntree"
-                type="number"
-                step="1"
-                value={formulaire.ticketEntree}
-                onChange={(e) => gererChangement('ticketEntree', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.ticketEntree ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="10000000"
-                disabled={enCours}
-              />
-              {erreurs.ticketEntree && (
-                <span className="champ-formulaire__erreur">{erreurs.ticketEntree}</span>
-              )}
-            </div>
-
-            {/* Pourcentage promoteur */}
-            <div className="champ-formulaire">
-              <label htmlFor="pourcentagePromoteur" className="champ-formulaire__label">
-                Pourcentage promoteur (%) <span className="requis">*</span>
-              </label>
-              <input
-                id="pourcentagePromoteur"
-                type="number"
-                step="0.01"
-                min="0"
-                max="100"
-                value={formulaire.pourcentagePromoteur}
-                onChange={(e) => gererChangement('pourcentagePromoteur', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.pourcentagePromoteur ? 'champ-formulaire__input--erreur' : ''}`}
-                disabled={enCours}
-              />
-              {erreurs.pourcentagePromoteur && (
-                <span className="champ-formulaire__erreur">{erreurs.pourcentagePromoteur}</span>
-              )}
-            </div>
-
-            {/* Pourcentage propriétaire */}
-            <div className="champ-formulaire">
-              <label htmlFor="pourcentagePropriétaire" className="champ-formulaire__label">
-                Pourcentage propriétaire (%) <span className="requis">*</span>
-              </label>
-              <input
-                id="pourcentagePropriétaire"
-                type="number"
-                step="0.01"
-                min="0"
-                max="100"
-                value={formulaire.pourcentagePropriétaire}
-                onChange={(e) => gererChangement('pourcentagePropriétaire', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.pourcentagePropriétaire ? 'champ-formulaire__input--erreur' : ''}`}
-                disabled={enCours}
-              />
-              {erreurs.pourcentagePropriétaire && (
-                <span className="champ-formulaire__erreur">{erreurs.pourcentagePropriétaire}</span>
-              )}
-            </div>
-          </div>
-
-          <div className="formulaire-partenariat__actions">
-            <button
-              type="button"
-              className="bouton bouton--secondaire"
-              onClick={surAnnuler}
-              disabled={enCours}
-            >
-              Annuler
-            </button>
-            <button type="submit" className="bouton bouton--primaire" disabled={enCours}>
-              {enCours ? 'Enregistrement...' : partenariat ? 'Modifier' : 'Créer'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+      </Formulaire>
+    </Modale>
   );
 }

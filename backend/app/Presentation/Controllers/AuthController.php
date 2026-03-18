@@ -17,7 +17,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $utilisateur = Utilisateur::where('email', $request->email)->first();
+        $utilisateur = Utilisateur::with(['roleEntity.permissions'])->where('email', $request->email)->first();
 
         if (! $utilisateur || ! Hash::check($request->password, $utilisateur->password)) {
             throw ValidationException::withMessages([
@@ -25,9 +25,17 @@ class AuthController extends Controller
             ]);
         }
 
+        $utilisateurData = $utilisateur->toArray();
+        $utilisateurData['role_info'] = $utilisateur->roleEntity ? [
+            'id' => $utilisateur->roleEntity->id,
+            'nom' => $utilisateur->roleEntity->nom,
+            'libelle' => $utilisateur->roleEntity->libelle,
+            'permissions' => $utilisateur->roleEntity->permissions->pluck('nom')->toArray(),
+        ] : null;
+
         return [
             'token' => $utilisateur->createToken('auth_token')->plainTextToken,
-            'utilisateur' => $utilisateur,
+            'utilisateur' => $utilisateurData,
         ];
     }
 
@@ -40,6 +48,16 @@ class AuthController extends Controller
 
     public function profil(Request $request)
     {
-        return $request->user();
+        $utilisateur = $request->user()->load(['roleEntity.permissions']);
+        
+        $utilisateurData = $utilisateur->toArray();
+        $utilisateurData['role_info'] = $utilisateur->roleEntity ? [
+            'id' => $utilisateur->roleEntity->id,
+            'nom' => $utilisateur->roleEntity->nom,
+            'libelle' => $utilisateur->roleEntity->libelle,
+            'permissions' => $utilisateur->roleEntity->permissions->pluck('nom')->toArray(),
+        ] : null;
+
+        return $utilisateurData;
     }
 }

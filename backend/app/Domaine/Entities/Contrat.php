@@ -27,6 +27,8 @@ class Contrat extends Model
     protected $casts = [
         'date_debut' => 'date',
         'date_fin' => 'date',
+        'loyer_mensuel' => 'decimal:2',
+        'caution' => 'decimal:2',
     ];
 
     public function tenant(): BelongsTo
@@ -47,5 +49,40 @@ class Contrat extends Model
     public function loyers(): HasMany
     {
         return $this->hasMany(Loyer::class, 'id_contrat');
+    }
+
+    // Accesseurs pour transformer en camelCase (frontend)
+    public function getDateDebutAttribute()
+    {
+        return $this->attributes['date_debut'] ?? null;
+    }
+
+    public function getDateFinAttribute()
+    {
+        return $this->attributes['date_fin'] ?? null;
+    }
+
+    public function getLoyerMensuelAttribute()
+    {
+        return $this->attributes['loyer_mensuel'] ?? 0;
+    }
+
+    public function getCautionAttribute()
+    {
+        return $this->attributes['caution'] ?? 0;
+    }
+
+    // Surcharger toArray pour inclure les attributs camelCase
+    public function toArray()
+    {
+        $array = parent::toArray();
+        
+        // Ajouter les versions camelCase
+        $array['dateDebut'] = $this->getDateDebutAttribute();
+        $array['dateFin'] = $this->getDateFinAttribute();
+        $array['loyerMensuel'] = $this->getLoyerMensuelAttribute();
+        $array['caution'] = $this->getCautionAttribute();
+        
+        return $array;
     }
 }

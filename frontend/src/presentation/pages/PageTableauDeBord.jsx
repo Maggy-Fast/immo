@@ -1,121 +1,81 @@
 import { Building2, Users, UserCheck, FileText, TrendingUp, TrendingDown, AlertCircle, CheckCircle2, Clock } from 'lucide-react';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import EnTete from '../composants/communs/EnTete';
+import { utiliserTableauDeBord } from '../../application/hooks/utiliserTableauDeBord';
+import { formaterMontant, formaterMontantCourt } from '../../application/utils/formatters';
 import './PageTableauDeBord.css';
 
 /**
- * Page Tableau de Bord — Vue d'ensemble professionnelle
+ * Page Tableau de Bord — Vue d'ensemble professionnelle dynamique
  */
 export default function PageTableauDeBord() {
+    const { stats, chargement, erreur } = utiliserTableauDeBord();
+
+    if (chargement) {
+        return (
+            <>
+                <EnTete titre="Tableau de bord" />
+                <div className="tableau-de-bord">
+                    <div className="chargement-global">Chargement des statistiques...</div>
+                </div>
+            </>
+        );
+    }
+
+    if (erreur || !stats) {
+        return (
+            <>
+                <EnTete titre="Tableau de bord" />
+                <div className="tableau-de-bord">
+                    <div className="erreur-globale">
+                        <AlertCircle size={48} />
+                        <p>Une erreur est survenue lors du chargement des statistiques.</p>
+                    </div>
+                </div>
+            </>
+        );
+    }
+
+    const { principales, financier, graphiques, activitesRecentes, biensRecents } = stats;
+
     const statistiques = [
         {
             id: 'biens',
             titre: 'Total Biens',
-            valeur: '48',
-            evolution: '+3',
-            pourcentage: '+6.7%',
-            tendance: 'hausse',
+            valeur: principales.total_biens,
+            evolution: '+0', // À dynamiser plus tard avec historique
+            pourcentage: '',
+            tendance: 'stable',
             icone: Building2,
         },
         {
             id: 'proprietaires',
             titre: 'Propriétaires',
-            valeur: '15',
-            evolution: '+1',
-            pourcentage: '+7.1%',
-            tendance: 'hausse',
+            valeur: principales.total_proprietaires,
+            evolution: '+0',
+            pourcentage: '',
+            tendance: 'stable',
             icone: Users,
         },
         {
             id: 'locataires',
             titre: 'Locataires Actifs',
-            valeur: '32',
-            evolution: '+2',
-            pourcentage: '+6.7%',
-            tendance: 'hausse',
+            valeur: principales.total_locataires_actifs,
+            evolution: '+0',
+            pourcentage: '',
+            tendance: 'stable',
             icone: UserCheck,
         },
         {
             id: 'contrats',
             titre: 'Contrats en Cours',
-            valeur: '28',
-            evolution: '87.5%',
-            pourcentage: 'Taux occupation',
+            valeur: principales.contrats_actifs,
+            evolution: 'Activés',
+            pourcentage: 'Actif',
             tendance: 'stable',
             icone: FileText,
         },
     ];
-
-    const loyersDuMois = {
-        attendu: 4800000,
-        recu: 3600000,
-        enAttente: 1200000,
-        tauxRecouvrement: 75,
-    };
-
-    // Données pour le graphique des revenus mensuels
-    const donneesRevenus = [
-        { mois: 'Août', revenus: 3200000, depenses: 800000 },
-        { mois: 'Sept', revenus: 3500000, depenses: 900000 },
-        { mois: 'Oct', revenus: 3800000, depenses: 850000 },
-        { mois: 'Nov', revenus: 4200000, depenses: 950000 },
-        { mois: 'Déc', revenus: 4500000, depenses: 1100000 },
-        { mois: 'Jan', revenus: 4300000, depenses: 1000000 },
-        { mois: 'Fév', revenus: 3600000, depenses: 900000 },
-    ];
-
-    // Données pour le graphique des paiements
-    const donneesPaiements = [
-        { mois: 'Août', payes: 28, impayes: 4 },
-        { mois: 'Sept', payes: 30, impayes: 2 },
-        { mois: 'Oct', payes: 29, impayes: 3 },
-        { mois: 'Nov', payes: 31, impayes: 1 },
-        { mois: 'Déc', payes: 30, impayes: 2 },
-        { mois: 'Jan', payes: 28, impayes: 4 },
-        { mois: 'Fév', payes: 24, impayes: 8 },
-    ];
-
-    // Données pour le graphique circulaire des types de biens
-    const donneesTypesBiens = [
-        { nom: 'Appartements', valeur: 22, couleur: '#C41E3A' },
-        { nom: 'Maisons', valeur: 12, couleur: '#1A1A1A' },
-        { nom: 'Commerces', valeur: 8, couleur: '#059669' },
-        { nom: 'Terrains', valeur: 6, couleur: '#D97706' },
-    ];
-
-    // Données pour le taux d'occupation par quartier
-    const donneesQuartiers = [
-        { quartier: 'Almadies', taux: 95 },
-        { quartier: 'Mermoz', taux: 88 },
-        { quartier: 'Plateau', taux: 92 },
-        { quartier: 'Médina', taux: 78 },
-        { quartier: 'HLM', taux: 85 },
-    ];
-
-    const activitesRecentes = [
-        { type: 'paiement', locataire: 'Fatou Diop', montant: 150000, date: 'Il y a 2h', statut: 'succes' },
-        { type: 'contrat', locataire: 'Moussa Ba', action: 'Nouveau contrat signé', date: 'Il y a 5h', statut: 'info' },
-        { type: 'retard', locataire: 'Awa Ndiaye', montant: 200000, date: 'Il y a 1j', statut: 'avertissement' },
-        { type: 'paiement', locataire: 'Ibrahima Sarr', montant: 250000, date: 'Il y a 1j', statut: 'succes' },
-    ];
-
-    const biensRecents = [
-        { nom: 'Appartement Almadies', type: 'Appartement', statut: 'Loué', loyer: 350000 },
-        { nom: 'Villa Mermoz', type: 'Maison', statut: 'Disponible', prix: 500000 },
-        { nom: 'Commerce Plateau', type: 'Commerce', statut: 'Loué', loyer: 450000 },
-        { nom: 'Studio Médina', type: 'Studio', statut: 'Loué', loyer: 120000 },
-    ];
-
-    const formaterMontant = (montant) => {
-        return new Intl.NumberFormat('fr-FR').format(montant) + ' FCFA';
-    };
-
-    const formaterMontantCourt = (montant) => {
-        if (montant >= 1000000) {
-            return (montant / 1000000).toFixed(1) + 'M';
-        }
-        return (montant / 1000).toFixed(0) + 'K';
-    };
 
     const obtenirIconeStatut = (statut) => {
         switch (statut) {
@@ -162,37 +122,37 @@ export default function PageTableauDeBord() {
                     <div className="carte">
                         <div className="carte__entete">
                             <h3 className="carte__titre">Revenus du Mois</h3>
-                            <span className="badge badge--info">Février 2026</span>
+                            <span className="badge badge--info">{financier.mois}</span>
                         </div>
                         <div className="carte__corps">
                             <div className="revenus">
                                 <div className="revenus__montant-principal">
                                     <span className="revenus__label">Reçu</span>
-                                    <span className="revenus__valeur">{formaterMontant(loyersDuMois.recu)}</span>
+                                    <span className="revenus__valeur">{formaterMontant(financier.recu)}</span>
                                 </div>
-                                
+
                                 <div className="revenus__barre">
-                                    <div 
-                                        className="revenus__barre-remplie" 
-                                        style={{ width: `${loyersDuMois.tauxRecouvrement}%` }}
+                                    <div
+                                        className="revenus__barre-remplie"
+                                        style={{ width: `${financier.tauxRecouvrement}%` }}
                                     />
                                 </div>
-                                
+
                                 <div className="revenus__details">
                                     <div className="revenus__item">
                                         <span className="revenus__item-label">Attendu</span>
-                                        <span className="revenus__item-valeur">{formaterMontant(loyersDuMois.attendu)}</span>
+                                        <span className="revenus__item-valeur">{formaterMontant(financier.attendu)}</span>
                                     </div>
                                     <div className="revenus__item">
                                         <span className="revenus__item-label">En attente</span>
                                         <span className="revenus__item-valeur revenus__item-valeur--attente">
-                                            {formaterMontant(loyersDuMois.enAttente)}
+                                            {formaterMontant(financier.enAttente)}
                                         </span>
                                     </div>
                                     <div className="revenus__item">
                                         <span className="revenus__item-label">Taux</span>
                                         <span className="revenus__item-valeur revenus__item-valeur--taux">
-                                            {loyersDuMois.tauxRecouvrement}%
+                                            {financier.tauxRecouvrement}%
                                         </span>
                                     </div>
                                 </div>
@@ -208,7 +168,7 @@ export default function PageTableauDeBord() {
                         </div>
                         <div className="carte__corps" style={{ padding: 0 }}>
                             <div className="activites">
-                                {activitesRecentes.map((activite, index) => (
+                                {activitesRecentes.length > 0 ? activitesRecentes.map((activite, index) => (
                                     <div key={index} className="activite">
                                         <div className={`activite__icone activite__icone--${activite.statut}`}>
                                             {obtenirIconeStatut(activite.statut)}
@@ -221,7 +181,11 @@ export default function PageTableauDeBord() {
                                         </div>
                                         <div className="activite__date">{activite.date}</div>
                                     </div>
-                                ))}
+                                )) : (
+                                    <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                                        Aucune activité récente.
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -246,19 +210,19 @@ export default function PageTableauDeBord() {
                         </div>
                         <div className="carte__corps">
                             <ResponsiveContainer width="100%" height={280}>
-                                <LineChart data={donneesRevenus}>
+                                <LineChart data={graphiques.revenusMois}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#EFEFEF" />
-                                    <XAxis 
-                                        dataKey="mois" 
+                                    <XAxis
+                                        dataKey="mois"
                                         stroke="#6B6B6B"
                                         style={{ fontSize: '12px' }}
                                     />
-                                    <YAxis 
+                                    <YAxis
                                         stroke="#6B6B6B"
                                         style={{ fontSize: '12px' }}
                                         tickFormatter={formaterMontantCourt}
                                     />
-                                    <Tooltip 
+                                    <Tooltip
                                         formatter={(value) => formaterMontant(value)}
                                         contentStyle={{
                                             backgroundColor: '#FFFFFF',
@@ -267,18 +231,18 @@ export default function PageTableauDeBord() {
                                             fontSize: '13px'
                                         }}
                                     />
-                                    <Line 
-                                        type="monotone" 
-                                        dataKey="revenus" 
-                                        stroke="#C41E3A" 
+                                    <Line
+                                        type="monotone"
+                                        dataKey="revenus"
+                                        stroke="#C41E3A"
                                         strokeWidth={3}
                                         dot={{ fill: '#C41E3A', r: 4 }}
                                         activeDot={{ r: 6 }}
                                     />
-                                    <Line 
-                                        type="monotone" 
-                                        dataKey="depenses" 
-                                        stroke="#1A1A1A" 
+                                    <Line
+                                        type="monotone"
+                                        dataKey="depenses"
+                                        stroke="#1A1A1A"
                                         strokeWidth={3}
                                         dot={{ fill: '#1A1A1A', r: 4 }}
                                         activeDot={{ r: 6 }}
@@ -295,18 +259,18 @@ export default function PageTableauDeBord() {
                         </div>
                         <div className="carte__corps">
                             <ResponsiveContainer width="100%" height={280}>
-                                <BarChart data={donneesPaiements}>
+                                <BarChart data={graphiques.statutPaiements}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#EFEFEF" />
-                                    <XAxis 
-                                        dataKey="mois" 
+                                    <XAxis
+                                        dataKey="mois"
                                         stroke="#6B6B6B"
                                         style={{ fontSize: '12px' }}
                                     />
-                                    <YAxis 
+                                    <YAxis
                                         stroke="#6B6B6B"
                                         style={{ fontSize: '12px' }}
                                     />
-                                    <Tooltip 
+                                    <Tooltip
                                         contentStyle={{
                                             backgroundColor: '#FFFFFF',
                                             border: '1px solid #EFEFEF',
@@ -330,7 +294,7 @@ export default function PageTableauDeBord() {
                             <ResponsiveContainer width="100%" height={280}>
                                 <PieChart>
                                     <Pie
-                                        data={donneesTypesBiens}
+                                        data={graphiques.repartitionBiens}
                                         cx="50%"
                                         cy="50%"
                                         innerRadius={60}
@@ -338,11 +302,11 @@ export default function PageTableauDeBord() {
                                         paddingAngle={2}
                                         dataKey="valeur"
                                     >
-                                        {donneesTypesBiens.map((entry, index) => (
+                                        {graphiques.repartitionBiens.map((entry, index) => (
                                             <Cell key={`cell-${index}`} fill={entry.couleur} />
                                         ))}
                                     </Pie>
-                                    <Tooltip 
+                                    <Tooltip
                                         formatter={(value) => `${value} biens`}
                                         contentStyle={{
                                             backgroundColor: '#FFFFFF',
@@ -354,7 +318,7 @@ export default function PageTableauDeBord() {
                                 </PieChart>
                             </ResponsiveContainer>
                             <div className="legende-pie">
-                                {donneesTypesBiens.map((item, index) => (
+                                {graphiques.repartitionBiens.map((item, index) => (
                                     <div key={index} className="legende-pie-item">
                                         <span className="legende-pie-point" style={{ backgroundColor: item.couleur }}></span>
                                         <span className="legende-pie-nom">{item.nom}</span>
@@ -369,28 +333,31 @@ export default function PageTableauDeBord() {
                     <div className="carte carte--graphique-petit">
                         <div className="carte__entete">
                             <h3 className="carte__titre">Taux d'Occupation</h3>
-                            <span className="badge badge--succes">87.5%</span>
                         </div>
                         <div className="carte__corps">
                             <div className="taux-occupation">
-                                {donneesQuartiers.map((quartier, index) => (
+                                {graphiques.tauxOccupation.length > 0 ? graphiques.tauxOccupation.map((quartier, index) => (
                                     <div key={index} className="taux-occupation-item">
                                         <div className="taux-occupation-info">
                                             <span className="taux-occupation-nom">{quartier.quartier}</span>
                                             <span className="taux-occupation-valeur">{quartier.taux}%</span>
                                         </div>
                                         <div className="taux-occupation-barre">
-                                            <div 
+                                            <div
                                                 className="taux-occupation-barre-remplie"
-                                                style={{ 
+                                                style={{
                                                     width: `${quartier.taux}%`,
-                                                    backgroundColor: quartier.taux >= 90 ? '#059669' : 
-                                                                    quartier.taux >= 80 ? '#D97706' : '#DC2626'
+                                                    backgroundColor: quartier.taux >= 90 ? '#059669' :
+                                                        quartier.taux >= 80 ? '#D97706' : '#DC2626'
                                                 }}
                                             />
                                         </div>
                                     </div>
-                                ))}
+                                )) : (
+                                    <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+                                        Aucune donnée géographique.
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -400,7 +367,6 @@ export default function PageTableauDeBord() {
                 <div className="carte">
                     <div className="carte__entete">
                         <h3 className="carte__titre">Biens Récents</h3>
-                        <button className="bouton bouton--petit bouton--contour">Ajouter un bien</button>
                     </div>
                     <div className="carte__corps" style={{ padding: 0 }}>
                         <div className="tableau-conteneur">
@@ -414,7 +380,7 @@ export default function PageTableauDeBord() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {biensRecents.map((bien, index) => (
+                                    {biensRecents.length > 0 ? biensRecents.map((bien, index) => (
                                         <tr key={index}>
                                             <td className="texte-gras">{bien.nom}</td>
                                             <td>{bien.type}</td>
@@ -427,7 +393,13 @@ export default function PageTableauDeBord() {
                                                 {formaterMontant(bien.loyer || bien.prix)}
                                             </td>
                                         </tr>
-                                    ))}
+                                    )) : (
+                                        <tr>
+                                            <td colSpan="4" style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>
+                                                Aucun bien enregistré.
+                                            </td>
+                                        </tr>
+                                    )}
                                 </tbody>
                             </table>
                         </div>

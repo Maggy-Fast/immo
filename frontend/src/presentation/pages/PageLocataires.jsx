@@ -3,10 +3,12 @@
  */
 
 import { useState } from 'react';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Loader2 } from 'lucide-react';
 import { utiliserLocataires } from '../../application/hooks/utiliserLocataires';
+import { ModaleConfirmation } from '../composants/communs';
 import CarteLocataire from '../composants/locataires/CarteLocataire';
 import FormulaireLocataire from '../composants/locataires/FormulaireLocataire';
+import ModaleDetailsLocataire from '../composants/locataires/ModaleDetailsLocataire';
 import './PageLocataires.css';
 
 export default function PageLocataires() {
@@ -16,6 +18,10 @@ export default function PageLocataires() {
 
   const [modalOuverte, setModalOuverte] = useState(false);
   const [locataireEnEdition, setLocataireEnEdition] = useState(null);
+  const [confirmationSuppression, setConfirmationSuppression] = useState({ ouverte: false, locataire: null });
+  const [modalDetailsOuverte, setModalDetailsOuverte] = useState(false);
+  const [locataireEnConsultation, setLocataireEnConsultation] = useState(null);
+
 
   const {
     locataires,
@@ -26,6 +32,7 @@ export default function PageLocataires() {
     supprimer,
     enCoursCreation,
     enCoursModification,
+    enCoursSuppression,
   } = utiliserLocataires(filtres);
 
   const gererChangementRecherche = (valeur) => {
@@ -35,6 +42,16 @@ export default function PageLocataires() {
   const ouvrirModalCreation = () => {
     setLocataireEnEdition(null);
     setModalOuverte(true);
+  };
+
+  const ouvrirModalDetails = (locataire) => {
+    setLocataireEnConsultation(locataire);
+    setModalDetailsOuverte(true);
+  };
+
+  const fermerModalDetails = () => {
+    setModalDetailsOuverte(false);
+    setLocataireEnConsultation(null);
   };
 
   const ouvrirModalModification = (locataire) => {
@@ -60,13 +77,19 @@ export default function PageLocataires() {
     }
   };
 
-  const gererSuppression = async (locataire) => {
-    if (window.confirm(`Êtes-vous sûr de vouloir supprimer "${locataire.nom}" ?`)) {
-      try {
-        await supprimer(locataire.id);
-      } catch (error) {
-        console.error('Erreur suppression:', error);
-      }
+  const gererSuppression = (locataire) => {
+    setConfirmationSuppression({ ouverte: true, locataire });
+  };
+
+  const confirmerSuppression = async () => {
+    const { locataire } = confirmationSuppression;
+    if (!locataire) return;
+
+    try {
+      await supprimer(locataire.id);
+      setConfirmationSuppression({ ouverte: false, locataire: null });
+    } catch (error) {
+      console.error('Erreur suppression:', error);
     }
   };
 
@@ -104,7 +127,7 @@ export default function PageLocataires() {
       <div className="page-locataires__contenu">
         {chargement && (
           <div className="page-locataires__chargement">
-            <div className="chargement__spinner" />
+            <Loader2 size={24} className="chargement__spinner" />
             <p>Chargement des locataires...</p>
           </div>
         )}
@@ -140,6 +163,7 @@ export default function PageLocataires() {
               <CarteLocataire
                 key={locataire.id}
                 locataire={locataire}
+                surClic={ouvrirModalDetails}
                 surModifier={ouvrirModalModification}
                 surSupprimer={gererSuppression}
               />
@@ -157,6 +181,29 @@ export default function PageLocataires() {
           enCours={enCoursCreation || enCoursModification}
         />
       )}
+
+      {/* Modale détails */}
+      {modalDetailsOuverte && (
+        <ModaleDetailsLocataire
+          locataire={locataireEnConsultation}
+          surFermer={fermerModalDetails}
+          surModifierLocataire={(loc) => {
+            fermerModalDetails();
+            ouvrirModalModification(loc);
+          }}
+        />
+      )}
+      {/* Modale de confirmation de suppression */}
+      <ModaleConfirmation
+        ouverte={confirmationSuppression.ouverte}
+        titre="Supprimer le locataire"
+        message={`Êtes-vous sûr de vouloir supprimer le locataire "${confirmationSuppression.locataire?.nom}" ? cette action est irréversible et supprimera également les données associées.`}
+        surConfirmer={confirmerSuppression}
+        surAnnuler={() => setConfirmationSuppression({ ouverte: false, locataire: null })}
+        enCours={enCoursSuppression}
+        type="danger"
+        texteConfirmer="Supprimer"
+      />
     </div>
   );
 }

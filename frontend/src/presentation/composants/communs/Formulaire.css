@@ -1,0 +1,51 @@
+/* ============================================
+   FORMULAIRE — Composant centralisé
+   ============================================ */
+
+.formulaire {
+  display: grid;
+  width: 100%;
+}
+
+/* Colonnes */
+.formulaire--colonnes-1 {
+  grid-template-columns: 1fr;
+  gap: var(--espace-4);
+}
+
+.formulaire--colonnes-2 {
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--espace-4);
+}
+
+.formulaire--colonnes-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espace-4);
+}
+
+/* Espacement vertical */
+.formulaire--espacement-compact {
+  row-gap: var(--espace-3);
+}
+
+.formulaire--espacement-normal {
+  row-gap: var(--espace-4);
+}
+
+.formulaire--espacement-large {
+  row-gap: var(--espace-6);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .formulaire--colonnes-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .formulaire--colonnes-2,
+  .formulaire--colonnes-3 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -48,6 +48,7 @@ class LotissementController extends Controller
             'nombre_parcelles' => 'required|integer|min:1',
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
+            'plan' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -83,6 +84,7 @@ class LotissementController extends Controller
             'nombre_parcelles' => 'sometimes|integer|min:1',
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
+            'plan' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120',
         ]);
 
         if ($validator->fails()) {

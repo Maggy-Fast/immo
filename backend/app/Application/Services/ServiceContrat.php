@@ -22,6 +22,16 @@ class ServiceContrat
             $query->where('statut', $filtres['statut']);
         }
 
+        // Filtre par locataire
+        if (!empty($filtres['id_locataire'])) {
+            $query->where('id_locataire', $filtres['id_locataire']);
+        }
+
+        // Filtre par bien
+        if (!empty($filtres['id_bien'])) {
+            $query->where('id_bien', $filtres['id_bien']);
+        }
+
         return $query->paginate(15);
     }
 

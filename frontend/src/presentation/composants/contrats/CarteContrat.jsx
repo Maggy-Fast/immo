@@ -4,23 +4,44 @@
 
 import { Home, User, Calendar, DollarSign, Shield } from 'lucide-react';
 import { LABELS_STATUTS_CONTRAT, COULEURS_STATUTS_CONTRAT } from '../../../domaine/valeursObjets/statutContrat';
+import { formaterMontant } from '../../../application/utils/formatters';
 import './CarteContrat.css';
 
 export default function CarteContrat({ contrat, surClic, surModifier, surSupprimer }) {
-  const formaterPrix = (prix) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      minimumFractionDigits: 0,
-    }).format(prix);
-  };
 
   const formaterDate = (date) => {
-    return new Date(date).toLocaleDateString('fr-FR', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
+    if (!date) return 'Non définie';
+    
+    try {
+      const dateObj = new Date(date);
+      if (isNaN(dateObj.getTime())) return 'Date invalide';
+      
+      return dateObj.toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      });
+    } catch (error) {
+      return 'Date invalide';
+    }
+  };
+
+  const getLoyerMensuel = () => {
+    if (contrat.loyerMensuel === null || contrat.loyerMensuel === undefined || contrat.loyerMensuel === '') return 0;
+    if (typeof contrat.loyerMensuel === 'string') {
+      const parsed = parseFloat(contrat.loyerMensuel.replace(/[^\d.-]/g, ''));
+      return isNaN(parsed) ? 0 : parsed;
+    }
+    return typeof contrat.loyerMensuel === 'number' ? contrat.loyerMensuel : 0;
+  };
+
+  const getCaution = () => {
+    if (contrat.caution === null || contrat.caution === undefined || contrat.caution === '') return 0;
+    if (typeof contrat.caution === 'string') {
+      const parsed = parseFloat(contrat.caution.replace(/[^\d.-]/g, ''));
+      return isNaN(parsed) ? 0 : parsed;
+    }
+    return typeof contrat.caution === 'number' ? contrat.caution : 0;
   };
 
   return (
@@ -71,14 +92,14 @@ export default function CarteContrat({ contrat, surClic, surModifier, surSupprim
             <DollarSign size={16} />
             <div>
               <span className="carte-contrat__label">Loyer mensuel</span>
-              <span className="carte-contrat__valeur">{formaterPrix(contrat.loyerMensuel)}</span>
+              <span className="carte-contrat__valeur">{formaterMontant(getLoyerMensuel())}</span>
             </div>
           </div>
           <div className="carte-contrat__montant">
             <Shield size={16} />
             <div>
               <span className="carte-contrat__label">Caution</span>
-              <span className="carte-contrat__valeur">{formaterPrix(contrat.caution)}</span>
+              <span className="carte-contrat__valeur">{formaterMontant(getCaution())}</span>
             </div>
           </div>
         </div>

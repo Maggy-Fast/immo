@@ -3,11 +3,12 @@
  */
 
 import { useState } from 'react';
-import { Filter, TrendingUp, TrendingDown, DollarSign } from 'lucide-react';
+import { Filter, TrendingUp, TrendingDown, DollarSign, Loader2 } from 'lucide-react';
 import { utiliserLoyers } from '../../application/hooks/utiliserLoyers';
 import LigneLoyer from '../composants/loyers/LigneLoyer';
 import ModalPaiement from '../composants/loyers/ModalPaiement';
 import { OPTIONS_STATUTS_LOYER } from '../../domaine/valeursObjets/statutLoyer';
+import { formaterMontant } from '../../application/utils/formatters';
 import './PageLoyers.css';
 
 export default function PageLoyers() {
@@ -81,14 +82,6 @@ export default function PageLoyers() {
 
   const tauxRecouvrement = stats.total > 0 ? Math.round((stats.payes / stats.total) * 100) : 0;
 
-  const formaterPrix = (prix) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      minimumFractionDigits: 0,
-    }).format(prix);
-  };
-
   const filtresActifs = Object.values(filtres).some((v) => v !== '');
 
   return (
@@ -112,7 +105,7 @@ export default function PageLoyers() {
             </div>
             <div className="stat-carte__contenu">
               <span className="stat-carte__label">Total attendu</span>
-              <span className="stat-carte__valeur">{formaterPrix(stats.total)}</span>
+              <span className="stat-carte__valeur">{formaterMontant(stats.total)}</span>
             </div>
           </div>
 
@@ -122,7 +115,7 @@ export default function PageLoyers() {
             </div>
             <div className="stat-carte__contenu">
               <span className="stat-carte__label">Payés</span>
-              <span className="stat-carte__valeur">{formaterPrix(stats.payes)}</span>
+              <span className="stat-carte__valeur">{formaterMontant(stats.payes)}</span>
             </div>
           </div>
 
@@ -132,7 +125,7 @@ export default function PageLoyers() {
             </div>
             <div className="stat-carte__contenu">
               <span className="stat-carte__label">Impayés</span>
-              <span className="stat-carte__valeur">{formaterPrix(stats.impayes)}</span>
+              <span className="stat-carte__valeur">{formaterMontant(stats.impayes)}</span>
             </div>
           </div>
 
@@ -205,7 +198,7 @@ export default function PageLoyers() {
       <div className="page-loyers__contenu">
         {chargement && (
           <div className="page-loyers__chargement">
-            <div className="chargement__spinner" />
+            <Loader2 size={24} className="chargement__spinner" />
             <p>Chargement des loyers...</p>
           </div>
         )}

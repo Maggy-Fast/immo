@@ -22,6 +22,7 @@ class Lotissement extends Model
         'latitude',
         'longitude',
         'statut',
+        'plan',
     ];
 
     public function tenant(): BelongsTo

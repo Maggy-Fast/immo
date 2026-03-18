@@ -1,11 +1,12 @@
 /**
  * Composant — Formulaire de création/modification d'un lotissement
+ * Migré vers les composants centralisés
  */
 
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { MapPin, Map, Maximize } from 'lucide-react';
 import { validerLotissement } from '../../../domaine/validations/validationLotissement';
-import './FormulaireLotissement.css';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire } from '../communs';
 
 export default function FormulaireLotissement({
   lotissement = null,
@@ -44,9 +45,7 @@ export default function FormulaireLotissement({
     }
   };
 
-  const gererSoumission = async (e) => {
-    e.preventDefault();
-
+  const gererSoumission = async () => {
     const erreursValidation = validerLotissement(formulaire);
     if (Object.keys(erreursValidation).length > 0) {
       setErreurs(erreursValidation);
@@ -61,139 +60,101 @@ export default function FormulaireLotissement({
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal">
-        <div className="modal__entete">
-          <h2>{lotissement ? 'Modifier le lotissement' : 'Nouveau lotissement'}</h2>
-          <button className="modal__fermer" onClick={surAnnuler} disabled={enCours}>
-            <X size={20} />
-          </button>
+    <Modale
+      titre={lotissement ? 'Modifier le lotissement' : 'Nouveau lotissement'}
+      surFermer={surAnnuler}
+      taille="moyen"
+      enCours={enCours}
+    >
+      <Formulaire surSoumettre={gererSoumission} colonnes={2}>
+        <ChampFormulaire
+          id="nom"
+          label="Nom du lotissement"
+          type="text"
+          valeur={formulaire.nom}
+          onChange={(val) => gererChangement('nom', val)}
+          erreur={erreurs.nom}
+          obligatoire
+          placeholder="Ex: Lotissement Diamalaye"
+          icone={<Map size={18} />}
+          largeurComplete
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="localisation"
+          label="Localisation"
+          type="text"
+          valeur={formulaire.localisation}
+          onChange={(val) => gererChangement('localisation', val)}
+          erreur={erreurs.localisation}
+          obligatoire
+          placeholder="Ex: Diamniadio, Dakar"
+          icone={<MapPin size={18} />}
+          largeurComplete
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="superficieTotale"
+          label="Superficie totale (m²)"
+          type="number"
+          step="0.01"
+          valeur={formulaire.superficieTotale}
+          onChange={(val) => gererChangement('superficieTotale', val)}
+          erreur={erreurs.superficieTotale}
+          placeholder="50000"
+          icone={<Maximize size={18} />}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="nombreParcelles"
+          label="Nombre de parcelles"
+          type="number"
+          step="1"
+          valeur={formulaire.nombreParcelles}
+          onChange={(val) => gererChangement('nombreParcelles', val)}
+          erreur={erreurs.nombreParcelles}
+          placeholder="120"
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="latitude"
+          label="Latitude"
+          type="number"
+          step="0.000001"
+          valeur={formulaire.latitude}
+          onChange={(val) => gererChangement('latitude', val)}
+          erreur={erreurs.latitude}
+          placeholder="14.7167"
+          aide="Coordonnées GPS (optionnel)"
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="longitude"
+          label="Longitude"
+          type="number"
+          step="0.000001"
+          valeur={formulaire.longitude}
+          onChange={(val) => gererChangement('longitude', val)}
+          erreur={erreurs.longitude}
+          placeholder="-17.1833"
+          aide="Coordonnées GPS (optionnel)"
+          disabled={enCours}
+        />
+
+        <div style={{ gridColumn: '1 / -1' }}>
+          <ActionsFormulaire
+            surAnnuler={surAnnuler}
+            texteBoutonPrincipal={lotissement ? 'Modifier' : 'Créer'}
+            enCours={enCours}
+            iconePrincipal={<Map size={18} />}
+          />
         </div>
-
-        <form onSubmit={gererSoumission} className="formulaire-lotissement">
-          <div className="formulaire-lotissement__grille">
-            {/* Nom */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="nom" className="champ-formulaire__label">
-                Nom du lotissement <span className="requis">*</span>
-              </label>
-              <input
-                id="nom"
-                type="text"
-                value={formulaire.nom}
-                onChange={(e) => gererChangement('nom', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.nom ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="Ex: Lotissement Diamalaye"
-                disabled={enCours}
-              />
-              {erreurs.nom && <span className="champ-formulaire__erreur">{erreurs.nom}</span>}
-            </div>
-
-            {/* Localisation */}
-            <div className="champ-formulaire champ-formulaire--pleine-largeur">
-              <label htmlFor="localisation" className="champ-formulaire__label">
-                Localisation <span className="requis">*</span>
-              </label>
-              <input
-                id="localisation"
-                type="text"
-                value={formulaire.localisation}
-                onChange={(e) => gererChangement('localisation', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.localisation ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="Ex: Diamniadio, Dakar"
-                disabled={enCours}
-              />
-              {erreurs.localisation && <span className="champ-formulaire__erreur">{erreurs.localisation}</span>}
-            </div>
-
-            {/* Superficie totale */}
-            <div className="champ-formulaire">
-              <label htmlFor="superficieTotale" className="champ-formulaire__label">
-                Superficie totale (m²)
-              </label>
-              <input
-                id="superficieTotale"
-                type="number"
-                step="0.01"
-                value={formulaire.superficieTotale}
-                onChange={(e) => gererChangement('superficieTotale', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.superficieTotale ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="50000"
-                disabled={enCours}
-              />
-              {erreurs.superficieTotale && <span className="champ-formulaire__erreur">{erreurs.superficieTotale}</span>}
-            </div>
-
-            {/* Nombre de parcelles */}
-            <div className="champ-formulaire">
-              <label htmlFor="nombreParcelles" className="champ-formulaire__label">
-                Nombre de parcelles
-              </label>
-              <input
-                id="nombreParcelles"
-                type="number"
-                step="1"
-                value={formulaire.nombreParcelles}
-                onChange={(e) => gererChangement('nombreParcelles', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.nombreParcelles ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="120"
-                disabled={enCours}
-              />
-              {erreurs.nombreParcelles && <span className="champ-formulaire__erreur">{erreurs.nombreParcelles}</span>}
-            </div>
-
-            {/* Latitude */}
-            <div className="champ-formulaire">
-              <label htmlFor="latitude" className="champ-formulaire__label">
-                Latitude
-              </label>
-              <input
-                id="latitude"
-                type="number"
-                step="0.000001"
-                value={formulaire.latitude}
-                onChange={(e) => gererChangement('latitude', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.latitude ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="14.7167"
-                disabled={enCours}
-              />
-              {erreurs.latitude && <span className="champ-formulaire__erreur">{erreurs.latitude}</span>}
-            </div>
-
-            {/* Longitude */}
-            <div className="champ-formulaire">
-              <label htmlFor="longitude" className="champ-formulaire__label">
-                Longitude
-              </label>
-              <input
-                id="longitude"
-                type="number"
-                step="0.000001"
-                value={formulaire.longitude}
-                onChange={(e) => gererChangement('longitude', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.longitude ? 'champ-formulaire__input--erreur' : ''}`}
-                placeholder="-17.1833"
-                disabled={enCours}
-              />
-              {erreurs.longitude && <span className="champ-formulaire__erreur">{erreurs.longitude}</span>}
-            </div>
-          </div>
-
-          <div className="formulaire-lotissement__actions">
-            <button
-              type="button"
-              className="bouton bouton--secondaire"
-              onClick={surAnnuler}
-              disabled={enCours}
-            >
-              Annuler
-            </button>
-            <button type="submit" className="bouton bouton--primaire" disabled={enCours}>
-              {enCours ? 'Enregistrement...' : lotissement ? 'Modifier' : 'Créer'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+      </Formulaire>
+    </Modale>
   );
 }

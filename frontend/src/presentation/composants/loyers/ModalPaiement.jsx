@@ -1,10 +1,13 @@
 /**
  * Composant — Modal d'enregistrement de paiement
+ * Migré vers les composants centralisés
  */
 
 import { useState } from 'react';
-import { X, DollarSign } from 'lucide-react';
+import { DollarSign, Calendar, CreditCard } from 'lucide-react';
 import { OPTIONS_MODES_PAIEMENT } from '../../../domaine/valeursObjets/modePaiement';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire } from '../communs';
+import { formaterMontant } from '../../../application/utils/formatters';
 import './ModalPaiement.css';
 
 export default function ModalPaiement({ loyer, surSoumettre, surAnnuler, enCours = false }) {
@@ -15,14 +18,6 @@ export default function ModalPaiement({ loyer, surSoumettre, surAnnuler, enCours
   });
 
   const [erreurs, setErreurs] = useState({});
-
-  const formaterPrix = (prix) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      minimumFractionDigits: 0,
-    }).format(prix);
-  };
 
   const formaterMois = (mois) => {
     const [annee, moisNum] = mois.split('-');
@@ -40,9 +35,7 @@ export default function ModalPaiement({ loyer, surSoumettre, surAnnuler, enCours
     }
   };
 
-  const gererSoumission = async (e) => {
-    e.preventDefault();
-
+  const gererSoumission = async () => {
     const erreursValidation = {};
 
     if (!formulaire.montant || parseFloat(formulaire.montant) <= 0) {
@@ -70,112 +63,78 @@ export default function ModalPaiement({ loyer, surSoumettre, surAnnuler, enCours
   };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal modal--petit">
-        <div className="modal__entete">
-          <h2>Enregistrer un paiement</h2>
-          <button className="modal__fermer" onClick={surAnnuler} disabled={enCours}>
-            <X size={20} />
-          </button>
+    <Modale
+      titre="Enregistrer un paiement"
+      surFermer={surAnnuler}
+      taille="moyen"
+      enCours={enCours}
+    >
+      {/* Informations loyer */}
+      <div className="modal-paiement__info">
+        <div className="modal-paiement__ligne">
+          <span className="modal-paiement__label">Période:</span>
+          <span className="modal-paiement__valeur">{formaterMois(loyer.mois)}</span>
         </div>
-
-        <form onSubmit={gererSoumission} className="modal-paiement">
-          {/* Informations loyer */}
-          <div className="modal-paiement__info">
-            <div className="modal-paiement__ligne">
-              <span className="modal-paiement__label">Période:</span>
-              <span className="modal-paiement__valeur">{formaterMois(loyer.mois)}</span>
-            </div>
-            <div className="modal-paiement__ligne">
-              <span className="modal-paiement__label">Montant dû:</span>
-              <span className="modal-paiement__valeur modal-paiement__valeur--montant">
-                {formaterPrix(loyer.montant)}
-              </span>
-            </div>
-            {loyer.montantPaye > 0 && (
-              <div className="modal-paiement__ligne">
-                <span className="modal-paiement__label">Déjà payé:</span>
-                <span className="modal-paiement__valeur">{formaterPrix(loyer.montantPaye)}</span>
-              </div>
-            )}
+        <div className="modal-paiement__ligne">
+          <span className="modal-paiement__label">Montant dû:</span>
+          <span className="modal-paiement__valeur modal-paiement__valeur--montant">
+            {formaterMontant(loyer.montant)}
+          </span>
+        </div>
+        {loyer.montantPaye > 0 && (
+          <div className="modal-paiement__ligne">
+            <span className="modal-paiement__label">Déjà payé:</span>
+            <span className="modal-paiement__valeur">{formaterMontant(loyer.montantPaye)}</span>
           </div>
-
-          <div className="modal-paiement__formulaire">
-            {/* Montant */}
-            <div className="champ-formulaire">
-              <label htmlFor="montant" className="champ-formulaire__label">
-                Montant à payer (FCFA) <span className="requis">*</span>
-              </label>
-              <input
-                id="montant"
-                type="number"
-                step="1"
-                value={formulaire.montant}
-                onChange={(e) => gererChangement('montant', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.montant ? 'champ-formulaire__input--erreur' : ''}`}
-                disabled={enCours}
-              />
-              {erreurs.montant && <span className="champ-formulaire__erreur">{erreurs.montant}</span>}
-            </div>
-
-            {/* Mode de paiement */}
-            <div className="champ-formulaire">
-              <label htmlFor="modePaiement" className="champ-formulaire__label">
-                Mode de paiement <span className="requis">*</span>
-              </label>
-              <select
-                id="modePaiement"
-                value={formulaire.modePaiement}
-                onChange={(e) => gererChangement('modePaiement', e.target.value)}
-                className={`champ-formulaire__select ${erreurs.modePaiement ? 'champ-formulaire__select--erreur' : ''}`}
-                disabled={enCours}
-              >
-                {OPTIONS_MODES_PAIEMENT.map((option) => (
-                  <option key={option.valeur} value={option.valeur}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              {erreurs.modePaiement && (
-                <span className="champ-formulaire__erreur">{erreurs.modePaiement}</span>
-              )}
-            </div>
-
-            {/* Date de paiement */}
-            <div className="champ-formulaire">
-              <label htmlFor="datePaiement" className="champ-formulaire__label">
-                Date de paiement <span className="requis">*</span>
-              </label>
-              <input
-                id="datePaiement"
-                type="date"
-                value={formulaire.datePaiement}
-                onChange={(e) => gererChangement('datePaiement', e.target.value)}
-                className={`champ-formulaire__input ${erreurs.datePaiement ? 'champ-formulaire__input--erreur' : ''}`}
-                disabled={enCours}
-              />
-              {erreurs.datePaiement && (
-                <span className="champ-formulaire__erreur">{erreurs.datePaiement}</span>
-              )}
-            </div>
-          </div>
-
-          <div className="modal-paiement__actions">
-            <button
-              type="button"
-              className="bouton bouton--secondaire"
-              onClick={surAnnuler}
-              disabled={enCours}
-            >
-              Annuler
-            </button>
-            <button type="submit" className="bouton bouton--primaire" disabled={enCours}>
-              <DollarSign size={18} />
-              {enCours ? 'Enregistrement...' : 'Enregistrer le paiement'}
-            </button>
-          </div>
-        </form>
+        )}
       </div>
-    </div>
+
+      <Formulaire surSoumettre={gererSoumission} colonnes={1} espacementVertical="compact">
+        <ChampFormulaire
+          id="montant"
+          label="Montant à payer (FCFA)"
+          type="number"
+          step="1"
+          valeur={formulaire.montant}
+          onChange={(val) => gererChangement('montant', val)}
+          erreur={erreurs.montant}
+          required
+          icone={DollarSign}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="modePaiement"
+          label="Mode de paiement"
+          type="select"
+          valeur={formulaire.modePaiement}
+          onChange={(val) => gererChangement('modePaiement', val)}
+          erreur={erreurs.modePaiement}
+          required
+          options={OPTIONS_MODES_PAIEMENT}
+          icone={CreditCard}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="datePaiement"
+          label="Date de paiement"
+          type="date"
+          valeur={formulaire.datePaiement}
+          onChange={(val) => gererChangement('datePaiement', val)}
+          erreur={erreurs.datePaiement}
+          required
+          icone={Calendar}
+          disabled={enCours}
+        />
+
+        <ActionsFormulaire
+          surAnnuler={surAnnuler}
+          texteBoutonPrincipal="Enregistrer le paiement"
+          enCours={enCours}
+          iconePrincipal={DollarSign}
+        />
+      </Formulaire>
+    </Modale>
   );
 }

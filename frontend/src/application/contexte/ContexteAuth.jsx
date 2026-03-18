@@ -41,7 +41,15 @@ export function FournisseurAuth({ children }) {
 
             return nouvelUtilisateur;
         } catch (err) {
-            const message = err.response?.data?.message || 'Erreur de connexion';
+            let message = 'Erreur de connexion';
+            if (err.response?.data?.message) {
+                message = typeof err.response.data.message === 'string'
+                    ? err.response.data.message
+                    : JSON.stringify(err.response.data.message);
+            } else if (err.message) {
+                message = err.message;
+            }
+
             definirErreur(message);
             throw err;
         } finally {
@@ -62,7 +70,15 @@ export function FournisseurAuth({ children }) {
 
             return nouvelUtilisateur;
         } catch (err) {
-            const message = err.response?.data?.message || "Erreur d'inscription";
+            let message = "Erreur d'inscription";
+            if (err.response?.data?.message) {
+                message = typeof err.response.data.message === 'string'
+                    ? err.response.data.message
+                    : JSON.stringify(err.response.data.message);
+            } else if (err.message) {
+                message = err.message;
+            }
+
             definirErreur(message);
             throw err;
         } finally {
