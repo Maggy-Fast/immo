@@ -7,6 +7,7 @@ import { Modale } from '../communs';
 import { LABELS_TYPES_BIEN } from '../../../domaine/valeursObjets/typeBien';
 import { LABELS_STATUTS_BIEN, COULEURS_STATUTS_BIEN } from '../../../domaine/valeursObjets/statutBien';
 import { formaterMontant } from '../../../application/utils/formatters';
+import { getImageUrl } from '../../../application/utils/imageUtils';
 import './ModaleDetailsBien.css';
 
 export default function ModaleDetailsBien({ bien, surFermer, surModifier }) {
@@ -22,8 +23,7 @@ export default function ModaleDetailsBien({ bien, surFermer, surModifier }) {
   };
 
   const transformerUrlImage = (imageUrl) => {
-    // Laisser l'URL /storage/ telle quelle (le proxy Vite s'en occupe)
-    return imageUrl;
+    return getImageUrl(imageUrl);
   };
 
   const images = bien.photos || [];

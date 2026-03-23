@@ -2,6 +2,7 @@
  * Composant Avatar — Affichage d'avatar avec fallback
  */
 
+import { getImageUrl } from '../../../application/utils/imageUtils';
 import './Avatar.css';
 
 export default function Avatar({
@@ -41,15 +42,6 @@ export default function Avatar({
     `avatar--${taille}`,
     `avatar--${forme}`,
   ].join(' ');
-
-  const getImageUrl = (src) => {
-    if (!src) return null;
-    // Si l'URL commence par /storage, la laisser telle quelle (le proxy Vite s'en occupe)
-    if (src.startsWith('/storage/')) {
-      return src; // Le proxy Vite va rediriger vers le backend
-    }
-    return src;
-  };
 
   const handleImageError = (e) => {
     // Cacher l'image en erreur et laisser les initiales s'afficher

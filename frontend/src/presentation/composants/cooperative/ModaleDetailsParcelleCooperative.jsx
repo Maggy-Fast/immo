@@ -5,6 +5,7 @@
 import { MapPin, Maximize, DollarSign, User, Calendar, Tag, Users, FileText } from 'lucide-react';
 import { Modale } from '../communs';
 import { formaterMontant } from '../../../application/utils/formatters';
+import { getImageUrl } from '../../../application/utils/imageUtils';
 import './ModaleDetailsParcelleCooperative.css';
 
 export default function ModaleDetailsParcelleCooperative({ parcelle, surFermer, surModifier }) {
@@ -45,7 +46,7 @@ export default function ModaleDetailsParcelleCooperative({ parcelle, surFermer, 
         {parcelle.photo ? (
           <div className="details-parcelle__photo">
             <img 
-              src={parcelle.photo} 
+              src={getImageUrl(parcelle.photo, '/images/placeholders/parcelle-placeholder.svg')} 
               alt={`Photo de la parcelle ${parcelle.numero}`}
               onError={(e) => {
                 e.target.style.display = 'none';

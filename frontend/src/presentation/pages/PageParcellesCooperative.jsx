@@ -16,6 +16,7 @@ import ChampFormulaire from '../composants/communs/ChampFormulaire';
 import SelecteurGroupeCooperative from '../composants/cooperative/SelecteurGroupeCooperative';
 import { useToast } from '../composants/communs/ToastContext';
 import { formaterMontant } from '../../application/utils/formatters';
+import { getImageUrl } from '../../application/utils/imageUtils';
 import './PageParcellesCooperative.css';
 
 export default function PageParcellesCooperative() {
@@ -291,7 +292,7 @@ export default function PageParcellesCooperative() {
                   {parcelle.photo ? (
                     <div className="carte-parcelle__photo" onClick={(e) => e.stopPropagation()}>
                       <img 
-                        src={parcelle.photo} 
+                        src={getImageUrl(parcelle.photo, '/images/placeholders/parcelle-placeholder.svg')} 
                         alt={`Photo de la parcelle ${parcelle.numero}`}
                         onError={(e) => {
                           e.target.style.display = 'none';

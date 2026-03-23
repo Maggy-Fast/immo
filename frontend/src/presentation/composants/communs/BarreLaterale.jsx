@@ -29,7 +29,10 @@ import {
 } from 'lucide-react';
 import './BarreLaterale.css';
 
-const LIENS_NAVIGATION = [
+/**
+ * Navigation Immobilier — accessible à tous les rôles
+ */
+const LIENS_IMMOBILIER = [
     { chemin: '/', icone: LayoutDashboard, libelle: 'Tableau de bord' },
     { chemin: '/biens', icone: Building2, libelle: 'Biens' },
     { chemin: '/proprietaires', icone: Users, libelle: 'Propriétaires' },
@@ -41,13 +44,19 @@ const LIENS_NAVIGATION = [
     { chemin: '/documents', icone: FolderLock, libelle: 'Documents' },
     { chemin: '/travaux', icone: Hammer, libelle: 'Travaux' },
     { chemin: '/carte', icone: Map, libelle: 'Carte' },
-    { chemin: '/ia', icone: Brain, libelle: 'IA Documents' },
-    { chemin: '/whatsapp', icone: MessageSquare, libelle: 'Notifications WhatsApp' },
-    { chemin: '/admin/tenants', icone: Building2, libelle: 'Tenants' },
-    { chemin: '/admin/utilisateurs', icone: UserCog, libelle: 'Utilisateurs' },
-    { chemin: '/admin/audit', icone: ScrollText, libelle: 'Audit' },
 ];
 
+/**
+ * Outils — accessible à tous les rôles
+ */
+const LIENS_OUTILS = [
+    { chemin: '/ia', icone: Brain, libelle: 'IA Documents' },
+    { chemin: '/whatsapp', icone: MessageSquare, libelle: 'Notifications WhatsApp' },
+];
+
+/**
+ * Navigation Coopérative — accessible à tous les rôles
+ */
 const LIENS_COOPERATIVE = [
     { chemin: '/cooperative', icone: Home, libelle: 'Tableau de bord' },
     { chemin: '/cooperative/groupes', icone: Grid3X3, libelle: 'Groupes' },
@@ -57,13 +66,49 @@ const LIENS_COOPERATIVE = [
 ];
 
 /**
- * Barre Latérale — Navigation principale
+ * Administration Globale — super_admin UNIQUEMENT
+ */
+const LIENS_ADMIN_GLOBALE = [
+    { chemin: '/admin/tenants', icone: Globe, libelle: 'Tenants' },
+    { chemin: '/admin/utilisateurs', icone: UserCog, libelle: 'Utilisateurs' },
+    { chemin: '/admin/audit', icone: ScrollText, libelle: 'Audit' },
+    { chemin: '/roles', icone: Shield, libelle: 'Rôles & Permissions' },
+];
+
+/**
+ * Composant pour rendre une section de navigation
+ */
+function SectionNavigation({ liens, reduite, labelSection }) {
+    return (
+        <>
+            {labelSection && !reduite && (
+                <div className="sidebar__separateur">{labelSection}</div>
+            )}
+            {liens.map(({ chemin, icone: Icone, libelle }) => (
+                <NavLink
+                    key={chemin}
+                    to={chemin}
+                    className={({ isActive }) =>
+                        `sidebar__lien ${isActive ? 'sidebar__lien--actif' : ''}`
+                    }
+                    title={reduite ? libelle : undefined}
+                    end={chemin === '/' || chemin === '/cooperative'}
+                >
+                    <Icone size={20} />
+                    {!reduite && <span>{libelle}</span>}
+                </NavLink>
+            ))}
+        </>
+    );
+}
+
+/**
+ * Barre Latérale — Navigation principale avec dispatching par rôle
  */
 export default function BarreLaterale() {
     const [reduite, definirReduite] = useState(false);
     const { utilisateur, deconnecter } = utiliserAuth();
     const { isSuperAdmin, roleLibelle } = usePermissions();
-    const localisation = useLocation();
 
     return (
         <aside className={`sidebar ${reduite ? 'sidebar--reduite' : ''}`}>
@@ -95,37 +140,35 @@ export default function BarreLaterale() {
 
             {/* Navigation */}
             <nav className="sidebar__nav">
-                {LIENS_NAVIGATION.map(({ chemin, icone: Icone, libelle }) => (
-                    <NavLink
-                        key={chemin}
-                        to={chemin}
-                        className={({ isActive }) =>
-                            `sidebar__lien ${isActive ? 'sidebar__lien--actif' : ''}`
-                        }
-                        title={reduite ? libelle : undefined}
-                        end={chemin === '/' || chemin === '/whatsapp'}
-                    >
-                        <Icone size={20} />
-                        {!reduite && <span>{libelle}</span>}
-                    </NavLink>
-                ))}
+                {/* Section Immobilier — tous les rôles */}
+                <SectionNavigation 
+                    liens={LIENS_IMMOBILIER} 
+                    reduite={reduite} 
+                    labelSection="Immobilier"
+                />
 
-                {/* Section Coopérative */}
-                {!reduite && <div className="sidebar__separateur">Coopérative</div>}
-                {LIENS_COOPERATIVE.map(({ chemin, icone: Icone, libelle }) => (
-                    <NavLink
-                        key={chemin}
-                        to={chemin}
-                        className={({ isActive }) =>
-                            `sidebar__lien ${isActive ? 'sidebar__lien--actif' : ''}`
-                        }
-                        title={reduite ? libelle : undefined}
-                        end={chemin === '/cooperative'}
-                    >
-                        <Icone size={20} />
-                        {!reduite && <span>{libelle}</span>}
-                    </NavLink>
-                ))}
+                {/* Section Outils — tous les rôles */}
+                <SectionNavigation 
+                    liens={LIENS_OUTILS} 
+                    reduite={reduite} 
+                    labelSection="Outils"
+                />
+
+                {/* Section Coopérative — tous les rôles */}
+                <SectionNavigation 
+                    liens={LIENS_COOPERATIVE} 
+                    reduite={reduite} 
+                    labelSection="Coopérative"
+                />
+
+                {/* Section Administration Globale — super_admin SEULEMENT */}
+                {isSuperAdmin() && (
+                    <SectionNavigation 
+                        liens={LIENS_ADMIN_GLOBALE} 
+                        reduite={reduite} 
+                        labelSection="Administration"
+                    />
+                )}
             </nav>
 
             {/* Pied */}
@@ -140,13 +183,6 @@ export default function BarreLaterale() {
                             <span className="sidebar__utilisateur-role">{roleLibelle || utilisateur.role}</span>
                         </div>
                     </div>
-                )}
-
-                {isSuperAdmin() && (
-                    <NavLink to="/roles" className="sidebar__lien" title="Gestion des Rôles">
-                        <Shield size={20} />
-                        {!reduite && <span>Rôles</span>}
-                    </NavLink>
                 )}
 
                 <NavLink to="/parametres" className="sidebar__lien" title="Paramètres">

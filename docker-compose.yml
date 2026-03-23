@@ -41,8 +41,6 @@ services:
     volumes:
       - ./backend:/var/www/html
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/nginx/sites/:/etc/nginx/sites-available/
-      - ./docker/nginx/ssl/:/etc/nginx/ssl/
     networks:
       - immo-network
     depends_on:

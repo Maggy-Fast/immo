@@ -1,0 +1,108 @@
+.acces-interdit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+.acces-interdit__carte {
+    text-align: center;
+    max-width: 480px;
+    width: 100%;
+    padding: 3rem 2.5rem;
+    background: var(--couleur-blanc, #fff);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--couleur-bordure, #e5e7eb);
+}
+
+.acces-interdit__icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border-radius: 50%;
+    color: #dc2626;
+}
+
+.acces-interdit__titre {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--couleur-noir, #111827);
+    margin-bottom: 0.75rem;
+}
+
+.acces-interdit__message {
+    font-size: 1rem;
+    color: var(--couleur-gris, #6b7280);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.acces-interdit__chemin {
+    font-size: 0.875rem;
+    color: var(--couleur-gris, #6b7280);
+    margin-bottom: 0.5rem;
+}
+
+.acces-interdit__chemin code {
+    background: var(--couleur-fond, #f3f4f6);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #dc2626;
+}
+
+.acces-interdit__role {
+    font-size: 0.875rem;
+    color: var(--couleur-gris, #6b7280);
+    margin-bottom: 2rem;
+}
+
+.acces-interdit__role strong {
+    color: var(--couleur-principal, #2563eb);
+}
+
+.acces-interdit__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.acces-interdit__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.acces-interdit__btn--retour {
+    background: var(--couleur-fond, #f3f4f6);
+    color: var(--couleur-noir, #111827);
+}
+
+.acces-interdit__btn--retour:hover {
+    background: var(--couleur-bordure, #e5e7eb);
+    transform: translateY(-1px);
+}
+
+.acces-interdit__btn--accueil {
+    background: var(--couleur-principal, #2563eb);
+    color: #fff;
+}
+
+.acces-interdit__btn--accueil:hover {
+    background: var(--couleur-principal-sombre, #1d4ed8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}

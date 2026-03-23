@@ -19,6 +19,7 @@ import { OPTIONS_TYPES_BIEN } from '../../../domaine/valeursObjets/typeBien';
 import { OPTIONS_STATUTS_BIEN } from '../../../domaine/valeursObjets/statutBien';
 
 import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire, UploadImage } from '../communs';
+import { getImageUrl } from '../../../application/utils/imageUtils';
 
 
 
@@ -149,7 +150,7 @@ export default function FormulaireBien({
             {photosExistantes.map((url, index) => (
               <div key={`existante-${index}`} style={{ position: 'relative' }}>
                 <img
-                  src={url}
+                  src={getImageUrl(url, '/images/placeholders/bien-placeholder.svg')}
                   alt={`Existant ${index}`}
                   style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px', border: '2px solid #e2e8f0' }}
                 />

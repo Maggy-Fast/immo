@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import { Plus, X, Image as ImageIcon } from 'lucide-react';
+import { getImageUrl } from '../../../application/utils/imageUtils';
 import './GalerieImages.css';
 
 export default function GalerieImages({
@@ -82,7 +83,7 @@ export default function GalerieImages({
         {images.map((image, index) => (
           <div key={image.id} className="galerie-images__item">
             <img
-              src={image.apercu || image.url}
+              src={image.apercu || getImageUrl(image.url)}
               alt={`Image ${index + 1}`}
               className="galerie-images__image"
               onClick={() => !disabled && definirPrincipale(image.id)}

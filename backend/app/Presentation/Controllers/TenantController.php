@@ -56,6 +56,10 @@ class TenantController extends Controller
             'domaine' => 'nullable|string|unique:tenants,domaine|max:255',
             'plan' => 'sometimes|string|in:gratuit,pro,premium',
             'actif' => 'sometimes|boolean',
+            // Admin default user
+            'admin_nom' => 'required_without:id|string|max:255',
+            'admin_email' => 'required_without:id|email|unique:users,email|max:255',
+            'admin_password' => 'required_without:id|string|min:8',
         ]);
 
         if ($validator->fails()) {

@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const BASE_URL = API_BASE_URL.replace('/api', '');
+
+export { API_BASE_URL, BASE_URL };
 
 class ApiService {
   constructor() {

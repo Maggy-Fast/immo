@@ -6,16 +6,17 @@ import { MapPin, Home, DollarSign, Maximize, User } from 'lucide-react';
 import { LABELS_TYPES_BIEN } from '../../../domaine/valeursObjets/typeBien';
 import { LABELS_STATUTS_BIEN, COULEURS_STATUTS_BIEN } from '../../../domaine/valeursObjets/statutBien';
 import { formaterMontant } from '../../../application/utils/formatters';
+import { getImageUrl } from '../../../application/utils/imageUtils';
 import './CarteBien.css';
 
 export default function CarteBien({ bien, surClic, surModifier, surSupprimer }) {
 
   // Obtenir la première photo ou utiliser le placeholder
   const obtenirImagePrincipale = () => {
-    if (bien.photos && bien.photos.length > 0) {
-      const photoUrl = bien.photos[0].url || bien.photos[0];
-      // Laisser l'URL /storage/ telle quelle (le proxy Vite s'en occupe)
-      return photoUrl;
+    const photos = bien.photos || [];
+    if (photos.length > 0) {
+      const photoUrl = photos[0].url || photos[0];
+      return getImageUrl(photoUrl, '/images/placeholders/bien-placeholder.svg');
     }
     return '/images/placeholders/bien-placeholder.svg';
   };

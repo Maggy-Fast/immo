@@ -27,6 +27,8 @@ import PageNotificationsWhatsapp from './presentation/pages/PageNotificationsWha
 import PageGestionTenants from './presentation/pages/PageGestionTenants';
 import PageGestionUtilisateursGlobaux from './presentation/pages/PageGestionUtilisateursGlobaux';
 import PageJournauxAudit from './presentation/pages/PageJournauxAudit';
+import PageAccesInterdit from './presentation/pages/PageAccesInterdit';
+import RouteProtegeeParRole from './presentation/composants/communs/RouteProtegeeParRole';
 import { Loader2 } from 'lucide-react';
 import './styles/global.css';
 import './styles/composants.css';
@@ -82,24 +84,6 @@ function RoutePublique({ children }) {
   return children;
 }
 
-/**
- * Composant placeholder pour les pages non encore implémentées
- */
-function PageEnConstruction({ titre }) {
-  return (
-    <>
-      <div style={{ padding: '2rem' }}>
-        <div className="carte">
-          <div className="carte__corps" style={{ textAlign: 'center', padding: '4rem' }}>
-            <h2 style={{ marginBottom: '0.5rem', color: 'var(--couleur-noir)' }}>{titre}</h2>
-            <p style={{ color: 'var(--couleur-gris)' }}>Cette page sera bientôt disponible.</p>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
-
 import { ToastProvider, ToastContainer } from './presentation/composants/communs';
 
 export default function App() {
@@ -135,6 +119,7 @@ export default function App() {
                   </RouteProtegee>
                 }
               >
+                {/* === Routes accessibles à TOUS les rôles === */}
                 <Route index element={<PageTableauDeBord />} />
                 <Route path="biens" element={<PageBiens />} />
                 <Route path="proprietaires" element={<PageProprietaires />} />
@@ -147,21 +132,52 @@ export default function App() {
                 <Route path="travaux" element={<PageTravauxDepenses />} />
                 <Route path="carte" element={<PageTravauxDepensesCarte />} />
                 <Route path="ia" element={<PageIA />} />
-                <Route path="roles" element={<PageGestionRoles />} />
                 <Route path="parametres" element={<PageParametres />} />
+                <Route path="whatsapp" element={<PageNotificationsWhatsapp />} />
 
-                {/* Module Coopérative */}
+                {/* Module Coopérative — tous les rôles */}
                 <Route path="cooperative" element={<PageTableauBordCooperative />} />
                 <Route path="cooperative/groupes" element={<PageGroupesCooperative />} />
                 <Route path="cooperative/adherents" element={<PageAdherents />} />
                 <Route path="cooperative/cotisations" element={<PageCotisations />} />
                 <Route path="cooperative/parcelles" element={<PageParcellesCooperative />} />
-                <Route path="whatsapp" element={<PageNotificationsWhatsapp />} />
 
-                {/* Administration Globale */}
-                <Route path="admin/tenants" element={<PageGestionTenants />} />
-                <Route path="admin/utilisateurs" element={<PageGestionUtilisateursGlobaux />} />
-                <Route path="admin/audit" element={<PageJournauxAudit />} />
+                {/* === Routes réservées SUPER ADMIN uniquement === */}
+                <Route
+                  path="roles"
+                  element={
+                    <RouteProtegeeParRole rolesAutorises={['super_admin']}>
+                      <PageGestionRoles />
+                    </RouteProtegeeParRole>
+                  }
+                />
+                <Route
+                  path="admin/tenants"
+                  element={
+                    <RouteProtegeeParRole rolesAutorises={['super_admin']}>
+                      <PageGestionTenants />
+                    </RouteProtegeeParRole>
+                  }
+                />
+                <Route
+                  path="admin/utilisateurs"
+                  element={
+                    <RouteProtegeeParRole rolesAutorises={['super_admin']}>
+                      <PageGestionUtilisateursGlobaux />
+                    </RouteProtegeeParRole>
+                  }
+                />
+                <Route
+                  path="admin/audit"
+                  element={
+                    <RouteProtegeeParRole rolesAutorises={['super_admin']}>
+                      <PageJournauxAudit />
+                    </RouteProtegeeParRole>
+                  }
+                />
+
+                {/* Page accès interdit */}
+                <Route path="acces-interdit" element={<PageAccesInterdit />} />
               </Route>
 
               {/* Fallback */}
@@ -174,4 +190,3 @@ export default function App() {
     </QueryClientProvider>
   );
 }
-

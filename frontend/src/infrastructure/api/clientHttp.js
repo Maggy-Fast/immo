@@ -5,7 +5,7 @@ import axios from 'axios';
  * Gère le token d'authentification et les erreurs globales
  */
 const clientHttp = axios.create({
-    baseURL: '/api',
+    baseURL: import.meta.env.VITE_API_URL || 'https://api.maggyfast-immo.tech/api',
     headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',

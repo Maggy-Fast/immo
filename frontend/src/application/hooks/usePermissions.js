@@ -1,4 +1,5 @@
 import { utiliserAuth } from '../contexte/ContexteAuth';
+import { roleAutorise } from '../../domaine/valeursObjets/roleUtilisateur';
 
 export const usePermissions = () => {
     const { utilisateur } = utiliserAuth();
@@ -30,12 +31,32 @@ export const usePermissions = () => {
         return utilisateur?.role_info?.nom === 'admin' || isSuperAdmin();
     };
 
+    const isGestionnaire = () => {
+        return utilisateur?.role_info?.nom === 'gestionnaire';
+    };
+
+    const isAgent = () => {
+        return utilisateur?.role_info?.nom === 'agent';
+    };
+
+    /**
+     * Vérifie si l'utilisateur courant peut accéder à une route
+     */
+    const canAccessRoute = (chemin) => {
+        const roleNom = utilisateur?.role_info?.nom;
+        if (!roleNom) return false;
+        return roleAutorise(roleNom, chemin);
+    };
+
     return {
         hasPermission,
         hasAnyPermission,
         hasAllPermissions,
         isSuperAdmin,
         isAdmin,
+        isGestionnaire,
+        isAgent,
+        canAccessRoute,
         permissions: utilisateur?.role_info?.permissions || [],
         role: utilisateur?.role_info?.nom || null,
         roleLibelle: utilisateur?.role_info?.libelle || null,

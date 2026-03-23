@@ -3,6 +3,13 @@
 namespace App\Application\Services;
 
 use App\Domaine\Entities\Tenant;
+use App\Domaine\Entities\Utilisateur;
+use App\Domaine\Entities\Role;
+use App\Mail\BienvenueTenant;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class ServiceTenant
@@ -23,12 +30,44 @@ class ServiceTenant
 
     public function creerTenant(array $donnees)
     {
-        return Tenant::create([
-            'nom' => $donnees['nom'],
-            'domaine' => $donnees['domaine'] ?? null,
-            'plan' => $donnees['plan'] ?? 'gratuit',
-            'actif' => $donnees['actif'] ?? true,
-        ]);
+        return DB::transaction(function () use ($donnees) {
+            // 1. Créer le tenant
+            $tenant = Tenant::create([
+                'nom' => $donnees['nom'],
+                'domaine' => $donnees['domaine'] ?? null,
+                'plan' => $donnees['plan'] ?? 'gratuit',
+                'actif' => $donnees['actif'] ?? true,
+            ]);
+
+            // 2. Récupérer le rôle admin (Tenant)
+            $roleAdmin = Role::where('nom', 'admin')->first();
+            if (!$roleAdmin) {
+                throw new Exception("Le rôle 'admin' n'existe pas dans le système.");
+            }
+
+            // 3. Créer l'utilisateur administrateur
+            Utilisateur::create([
+                'id_tenant' => $tenant->id,
+                'id_role' => $roleAdmin->id,
+                'nom' => $donnees['admin_nom'],
+                'email' => $donnees['admin_email'],
+                'password' => Hash::make($donnees['admin_password']),
+                'role' => 'admin',
+            ]);
+
+            // 4. Envoyer l'email de bienvenue
+            try {
+                Mail::to($donnees['admin_email'])->send(new BienvenueTenant(
+                    $donnees['nom'],
+                    $donnees['admin_email'],
+                    $donnees['admin_password']
+                ));
+            } catch (Exception $e) {
+                Log::error("Erreur envoi email bienvenue : " . $e->getMessage());
+            }
+
+            return $tenant;
+        });
     }
 
     public function modifierTenant(int $id, array $donnees)
@@ -41,7 +80,6 @@ class ServiceTenant
     public function supprimerTenant(int $id)
     {
         $tenant = $this->obtenirTenant($id);
-        // On pourrait ajouter des vérifications ici (ex: ne pas supprimer si des données existent)
         return $tenant->delete();
     }
 

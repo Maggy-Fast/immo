@@ -29,7 +29,10 @@ export default function PageGestionTenants() {
         nom: '',
         domaine: '',
         plan: 'gratuit',
-        actif: true
+        actif: true,
+        admin_nom: '',
+        admin_email: '',
+        admin_password: ''
     });
 
     useEffect(() => {
@@ -91,7 +94,10 @@ export default function PageGestionTenants() {
                 nom: '',
                 domaine: '',
                 plan: 'gratuit',
-                actif: true
+                actif: true,
+                admin_nom: '',
+                admin_email: '',
+                admin_password: ''
             });
         }
         setModalOuverte(true);
@@ -238,6 +244,67 @@ export default function PageGestionTenants() {
                                         <option value="premium">Premium</option>
                                     </select>
                                 </div>
+
+                                {!tenantSelectionne && (
+                                    <div style={{ marginTop: 'var(--espace-6)', paddingTop: 'var(--espace-6)', borderTop: '1px solid var(--couleur-bordure)' }}>
+                                        <h3 className="texte-sm texte-gras" style={{ marginBottom: 'var(--espace-4)', color: 'var(--couleur-primaire)' }}>
+                                            Accès de connexion Tenant
+                                        </h3>
+                                        <div className="champ">
+                                            <label className="champ__label">Nom de l'utilisateur principal</label>
+                                            <input 
+                                                type="text" 
+                                                className="champ__input"
+                                                value={formulaire.admin_nom}
+                                                onChange={(e) => setFormulaire({...formulaire, admin_nom: e.target.value})}
+                                                required={!tenantSelectionne}
+                                                placeholder="ex: Jean Dupont"
+                                            />
+                                        </div>
+                                        <div className="champ">
+                                            <label className="champ__label">Email de connexion</label>
+                                            <div className="flex" style={{ gap: 'var(--espace-2)' }}>
+                                                <input 
+                                                    type="email" 
+                                                    className="champ__input"
+                                                    value={formulaire.admin_email}
+                                                    onChange={(e) => setFormulaire({...formulaire, admin_email: e.target.value})}
+                                                    required={!tenantSelectionne}
+                                                    placeholder="admin@agence.com"
+                                                />
+                                                <button 
+                                                    type="button" 
+                                                    className="bouton bouton--contour bouton--petit"
+                                                    style={{ whiteSpace: 'nowrap' }}
+                                                    onClick={() => {
+                                                        if (formulaire.nom) {
+                                                            const slug = formulaire.nom.toLowerCase().replace(/\s+/g, '.');
+                                                            setFormulaire({...formulaire, admin_email: `contact@${slug}.com`, admin_nom: formulaire.nom});
+                                                        }
+                                                    }}
+                                                >
+                                                    Auto
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="champ">
+                                            <label className="champ__label">Mot de passe par défaut</label>
+                                            <input 
+                                                type="text" // Use text so it's visible during creation for the super_admin
+                                                className="champ__input"
+                                                value={formulaire.admin_password}
+                                                onChange={(e) => setFormulaire({...formulaire, admin_password: e.target.value})}
+                                                required={!tenantSelectionne}
+                                                placeholder="Min 8 caractères"
+                                                minLength={8}
+                                            />
+                                            <p className="texte-xs texte-gris" style={{ marginTop: '4px' }}>
+                                                Ce mot de passe sera communiqué au tenant pour sa première connexion.
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div className="flex" style={{ gap: 'var(--espace-2)', marginTop: 'var(--espace-4)' }}>
                                     <input 
                                         type="checkbox" 

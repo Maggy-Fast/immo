@@ -25,6 +25,15 @@ use App\Presentation\Controllers\TenantController;
 use App\Presentation\Controllers\JournalAuditController;
 use Illuminate\Support\Facades\Route;
 
+// Root API
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok', 'message' => 'MaggyFast API is running']);
+});
+
+Route::get('/test', function () {
+    return response()->json(['message' => 'Test successful']);
+});
+
 // Routes publiques
 Route::post('/auth/connexion', [AuthController::class, 'connexion']);
 

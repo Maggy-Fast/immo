@@ -12,7 +12,7 @@ class Utilisateur extends Authenticatable
 {
     use HasApiTokens, Notifiable, MultiTenancy;
 
-    protected $table = 'utilisateurs';
+    protected $table = 'users';
 
     protected $fillable = [
         'id_tenant',

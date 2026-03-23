@@ -15,11 +15,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $tenant = \App\Domaine\Entities\Tenant::first() ?? \App\Domaine\Entities\Tenant::create([
+            'nom' => 'Maggyfast Immo',
+            'domaine' => 'maggyfast.com',
+            'plan' => 'premium',
+            'actif' => true,
+        ]);
 
         User::factory()->create([
-            'name' => 'Test User',
+            'id_tenant' => $tenant->id,
+            'nom' => 'Test User',
             'email' => 'test@example.com',
+        ]);
+        
+        $this->call([
+            SuperAdminSeeder::class,
+            // Ajoutez d'autres seeders si nécessaire
         ]);
     }
 }
