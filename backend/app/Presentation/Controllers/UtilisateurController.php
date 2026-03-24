@@ -43,7 +43,7 @@ class UtilisateurController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nom' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $request->user()->id,
+            'email' => 'sometimes|email|unique:utilisateurs,email,' . $request->user()->id,
             'telephone' => 'sometimes|string|max:20',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -189,7 +189,7 @@ class UtilisateurController extends Controller
 
             // Statistiques
             $stats = [
-                'utilisateurs' => DB::table('users')->count(),
+                'utilisateurs' => DB::table('utilisateurs')->count(),
                 'roles' => DB::table('roles')->count(),
                 'tenants' => DB::table('tenants')->count(),
             ];
@@ -271,7 +271,7 @@ class UtilisateurController extends Controller
             $donnees = [
                 'export_date' => now()->toIso8601String(),
                 'tenant' => DB::table('tenants')->where('id', $idTenant)->first(),
-                'utilisateurs' => DB::table('users')->where('id_tenant', $idTenant)->get(),
+                'utilisateurs' => DB::table('utilisateurs')->where('id_tenant', $idTenant)->get(),
                 'adherents' => DB::table('adherents')->where('id_tenant', $idTenant)->get(),
                 'parcelles_cooperative' => DB::table('parcelles_cooperative')->where('id_tenant', $idTenant)->get(),
                 'biens' => DB::table('biens')->where('id_tenant', $idTenant)->get(),
