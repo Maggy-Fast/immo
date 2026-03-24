@@ -2,15 +2,15 @@
 
 namespace App\Presentation\Controllers;
 
-use App\Application\Services\ServiceTenant;
 use App\Http\Controllers\Controller;
+use App\Application\Services\ServiceTenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
 
 class TenantController extends Controller
 {
-    protected ServiceTenant $serviceTenant;
+    protected $serviceTenant;
 
     public function __construct(ServiceTenant $serviceTenant)
     {
@@ -19,18 +19,11 @@ class TenantController extends Controller
 
     public function index()
     {
-        try {
-            $tenants = $this->serviceTenant->listerTenants();
-            return response()->json([
-                'success' => true,
-                'data' => $tenants,
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
-        }
+        $tenants = $this->serviceTenant->listerTenants();
+        return response()->json([
+            'success' => true,
+            'data' => $tenants
+        ]);
     }
 
     public function show($id)
@@ -39,12 +32,12 @@ class TenantController extends Controller
             $tenant = $this->serviceTenant->obtenirTenant($id);
             return response()->json([
                 'success' => true,
-                'data' => $tenant,
+                'data' => $tenant
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $e->getMessage()
             ], 404);
         }
     }
@@ -53,20 +46,17 @@ class TenantController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nom' => 'required|string|max:255',
-            'domaine' => 'nullable|string|unique:tenants,domaine|max:255',
-            'plan' => 'sometimes|string|in:gratuit,pro,premium',
-            'actif' => 'sometimes|boolean',
-            // Admin default user
-            'admin_nom' => 'required_without:id|string|max:255',
-            'admin_email' => 'required_without:id|email|unique:users,email|max:255',
-            'admin_password' => 'required_without:id|string|min:8',
+            'domaine' => 'nullable|string|max:255|unique:tenants,domaine',
+            'plan' => 'sometimes|string|in:gratuit,standard,premium',
+            'admin_nom' => 'required|string|max:255',
+            'admin_email' => 'required|email|unique:utilisateurs,email',
+            'admin_password' => 'required|string|min:8',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Erreur de validation',
-                'errors' => $validator->errors(),
+                'errors' => $validator->errors()
             ], 422);
         }
 
@@ -75,12 +65,12 @@ class TenantController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Tenant créé avec succès',
-                'data' => $tenant,
+                'data' => $tenant
             ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => 'Erreur lors de la création du tenant : ' . $e->getMessage()
             ], 500);
         }
     }
@@ -89,16 +79,15 @@ class TenantController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'nom' => 'sometimes|string|max:255',
-            'domaine' => 'nullable|string|unique:tenants,domaine,' . $id . '|max:255',
-            'plan' => 'sometimes|string|in:gratuit,pro,premium',
+            'domaine' => 'sometimes|string|max:255|unique:tenants,domaine,' . $id,
+            'plan' => 'sometimes|string|in:gratuit,standard,premium',
             'actif' => 'sometimes|boolean',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Erreur de validation',
-                'errors' => $validator->errors(),
+                'errors' => $validator->errors()
             ], 422);
         }
 
@@ -106,13 +95,13 @@ class TenantController extends Controller
             $tenant = $this->serviceTenant->modifierTenant($id, $request->all());
             return response()->json([
                 'success' => true,
-                'message' => 'Tenant modifié avec succès',
-                'data' => $tenant,
+                'message' => 'Tenant mis à jour avec succès',
+                'data' => $tenant
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $e->getMessage()
             ], 500);
         }
     }
@@ -123,12 +112,29 @@ class TenantController extends Controller
             $this->serviceTenant->supprimerTenant($id);
             return response()->json([
                 'success' => true,
-                'message' => 'Tenant supprimé avec succès',
+                'message' => 'Tenant supprimé avec succès'
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function toggleStatus(Request $request, $id)
+    {
+        try {
+            $tenant = $this->serviceTenant->changerStatut($id, $request->actif);
+            return response()->json([
+                'success' => true,
+                'message' => 'Statut du tenant mis à jour avec succès',
+                'data' => $tenant
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
             ], 500);
         }
     }
