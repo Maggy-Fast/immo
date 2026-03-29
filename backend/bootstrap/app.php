@@ -15,16 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'permission' => \App\Http\Middleware\CheckPermission::class,
         ]);
-        
-        // Appliquer CORS globalement à toutes les routes
-        $middleware->use([
-            \Fruitcake\Cors\HandleCors::class,
-        ]);
-        
-        // Ajouter le middleware CORS au groupe API
-        $middleware->group('api', [
-            \Fruitcake\Cors\HandleCors::class,
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
