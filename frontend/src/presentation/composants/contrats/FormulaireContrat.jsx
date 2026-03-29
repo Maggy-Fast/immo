@@ -24,6 +24,7 @@ export default function FormulaireContrat({
     dateFin: '',
     loyerMensuel: '',
     caution: '',
+    jourPaiement: 5,
     statut: 'actif',
   });
 
@@ -40,6 +41,7 @@ export default function FormulaireContrat({
           new Date(contrat.dateFin || contrat.date_fin).toISOString().split('T')[0] : '',
         loyerMensuel: contrat.loyerMensuel || contrat.loyer_mensuel || '',
         caution: contrat.caution || '',
+        jourPaiement: contrat.jourPaiement || contrat.jour_paiement || 5,
         statut: contrat.statut || 'actif',
       });
     }
@@ -166,6 +168,20 @@ export default function FormulaireContrat({
           required
           placeholder="300000"
           icone={DollarSign}
+          disabled={enCours}
+        />
+
+        <ChampFormulaire
+          id="jourPaiement"
+          label="Jour de paiement (1-31)"
+          type="number"
+          min="1"
+          max="31"
+          valeur={formulaire.jourPaiement}
+          onChange={(val) => gererChangement('jourPaiement', val)}
+          erreur={erreurs.jourPaiement}
+          required
+          icone={Calendar}
           disabled={enCours}
         />
 

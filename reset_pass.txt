@@ -1,0 +1,1 @@
+docker exec immo-backend-app php artisan tinker --execute="App\Domaine\Entities\Utilisateur::where('email', 'superadmin@maggyfast.com')->update(['password' => Hash::make('SuperAdmin2026!')]);"

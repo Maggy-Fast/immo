@@ -127,6 +127,20 @@ class LoyerController extends Controller
     }
 
     /**
+     * POST /api/loyers/generer
+     */
+    public function generer(Request $request)
+    {
+        $nombre = $this->serviceLoyer->genererLoyersMensuels();
+        
+        return response()->json([
+            'success' => true,
+            'message' => "$nombre loyers ont été générés pour le mois en cours.",
+            'nombre_generes' => $nombre
+        ]);
+    }
+
+    /**
      * GET /api/quittances/{id}/pdf
      */
     public function telechargerQuittance($id)

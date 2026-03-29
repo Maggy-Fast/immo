@@ -87,4 +87,12 @@ export const serviceLoyer = {
     const reponse = await clientHttp.delete(`${BASE_URL}/${id}`);
     return reponse.data;
   },
+
+  /**
+   * Générer les loyers pour le mois en cours (Automatique)
+   */
+  async generer() {
+    const reponse = await clientHttp.post(`${BASE_URL}/generer`);
+    return reponse.data;
+  },
 };

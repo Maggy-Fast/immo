@@ -51,6 +51,14 @@ export function utiliserLoyers(filtres = {}) {
     },
   });
 
+  // Générer les loyers
+  const mutationGenerer = useMutation({
+    mutationFn: serviceLoyer.generer,
+    onSuccess: () => {
+      clientRequete.invalidateQueries({ queryKey: [CLE_REQUETE] });
+    },
+  });
+
   return {
     loyers: donnees?.donnees || [],
     meta: donnees?.meta || null,
@@ -61,10 +69,12 @@ export function utiliserLoyers(filtres = {}) {
     enregistrerPaiement: mutationPayer.mutateAsync,
     telechargerQuittance: mutationTelechargerQuittance.mutateAsync,
     supprimer: mutationSupprimer.mutateAsync,
+    generer: mutationGenerer.mutateAsync,
     enCoursCreation: mutationCreer.isPending,
     enCoursPaiement: mutationPayer.isPending,
     enCoursTelechargement: mutationTelechargerQuittance.isPending,
     enCoursSuppression: mutationSupprimer.isPending,
+    enCoursGeneration: mutationGenerer.isPending,
   };
 }
 

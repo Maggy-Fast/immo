@@ -117,6 +117,42 @@ class ServiceLoyer
     }
 
     /**
+     * Générer les loyers mensuels pour tous les contrats actifs du mois en cours
+     */
+    public function genererLoyersMensuels()
+    {
+        $idTenant = Auth::user()->id_tenant;
+        $moisEnCours = date('Y-m');
+        
+        // Trouver tous les contrats actifs pour ce tenant
+        $contrats = \App\Domaine\Entities\Contrat::where('id_tenant', $idTenant)
+            ->where('statut', 'actif')
+            ->get();
+            
+        $generes = 0;
+        
+        foreach ($contrats as $contrat) {
+            // Vérifier si le loyer pour ce mois existe déjà
+            $existe = Loyer::where('id_contrat', $contrat->id)
+                ->where('mois', $moisEnCours)
+                ->exists();
+                
+            if (!$existe) {
+                Loyer::create([
+                    'id_tenant' => $idTenant,
+                    'id_contrat' => $contrat->id,
+                    'mois' => $moisEnCours,
+                    'montant' => $contrat->loyer_mensuel,
+                    'statut' => 'impaye',
+                ]);
+                $generes++;
+            }
+        }
+        
+        return $generes;
+    }
+
+    /**
      * Supprimer un loyer
      */
     public function supprimer(int $id)

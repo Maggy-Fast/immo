@@ -31,7 +31,7 @@ export default function PageGestionTenants() {
         plan: 'gratuit',
         actif: true,
         admin_nom: '',
-        admin_email: '',
+        email: '',
         admin_password: ''
     });
 
@@ -96,7 +96,7 @@ export default function PageGestionTenants() {
                 plan: 'gratuit',
                 actif: true,
                 admin_nom: '',
-                admin_email: '',
+                email: '',
                 admin_password: ''
             });
         }
@@ -267,8 +267,8 @@ export default function PageGestionTenants() {
                                                 <input 
                                                     type="email" 
                                                     className="champ__input"
-                                                    value={formulaire.admin_email}
-                                                    onChange={(e) => setFormulaire({...formulaire, admin_email: e.target.value})}
+                                                    value={formulaire.email}
+                                                    onChange={(e) => setFormulaire({...formulaire, email: e.target.value})}
                                                     required={!tenantSelectionne}
                                                     placeholder="admin@agence.com"
                                                 />
@@ -279,7 +279,7 @@ export default function PageGestionTenants() {
                                                     onClick={() => {
                                                         if (formulaire.nom) {
                                                             const slug = formulaire.nom.toLowerCase().replace(/\s+/g, '.');
-                                                            setFormulaire({...formulaire, admin_email: `contact@${slug}.com`, admin_nom: formulaire.nom});
+                                                            setFormulaire({...formulaire, email: `contact@${slug}.com`, admin_nom: formulaire.nom});
                                                         }
                                                     }}
                                                 >

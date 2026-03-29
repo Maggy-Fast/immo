@@ -3,7 +3,7 @@
  */
 
 import { useState } from 'react';
-import { Filter, TrendingUp, TrendingDown, DollarSign, Loader2 } from 'lucide-react';
+import { Filter, TrendingUp, TrendingDown, DollarSign, Loader2, Play } from 'lucide-react';
 import { utiliserLoyers } from '../../application/hooks/utiliserLoyers';
 import LigneLoyer from '../composants/loyers/LigneLoyer';
 import ModalPaiement from '../composants/loyers/ModalPaiement';
@@ -27,8 +27,10 @@ export default function PageLoyers() {
     erreur,
     enregistrerPaiement,
     telechargerQuittance,
+    generer,
     enCoursPaiement,
     enCoursTelechargement,
+    enCoursGeneration,
   } = utiliserLoyers(filtres);
 
   const gererChangementFiltre = (champ, valeur) => {
@@ -66,6 +68,16 @@ export default function PageLoyers() {
     }
   };
 
+  const gererGenerationLoyers = async () => {
+    try {
+      await generer();
+      alert('Génération terminée avec succès !');
+    } catch (error) {
+      console.error('Erreur génération:', error);
+      alert('Erreur lors de la génération des loyers.');
+    }
+  };
+
   // Calculer statistiques
   const stats = loyers.reduce(
     (acc, loyer) => {
@@ -94,6 +106,18 @@ export default function PageLoyers() {
             Suivez les paiements et générez les quittances
           </p>
         </div>
+        <button 
+          className="bouton bouton--primaire" 
+          onClick={gererGenerationLoyers}
+          disabled={enCoursGeneration}
+        >
+          {enCoursGeneration ? (
+            <Loader2 size={20} className="chargement__spinner" />
+          ) : (
+            <Play size={20} />
+          )}
+          Générer les loyers du mois
+        </button>
       </div>
 
       {/* Statistiques */}

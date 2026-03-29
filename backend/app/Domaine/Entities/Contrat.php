@@ -21,6 +21,7 @@ class Contrat extends Model
         'date_fin',
         'loyer_mensuel',
         'caution',
+        'jour_paiement',
         'statut',
     ];
 
@@ -82,6 +83,7 @@ class Contrat extends Model
         $array['dateFin'] = $this->getDateFinAttribute();
         $array['loyerMensuel'] = $this->getLoyerMensuelAttribute();
         $array['caution'] = $this->getCautionAttribute();
+        $array['jourPaiement'] = $this->jour_paiement;
         
         return $array;
     }

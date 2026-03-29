@@ -74,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Loyers
     Route::get('/loyers', [LoyerController::class, 'index']);
     Route::post('/loyers', [LoyerController::class, 'store']);
+    Route::post('/loyers/generer', [LoyerController::class, 'generer']);
     Route::get('/loyers/{id}', [LoyerController::class, 'show']);
     Route::put('/loyers/{id}', [LoyerController::class, 'update']);
     Route::put('/loyers/{id}/payer', [LoyerController::class, 'payer']);
