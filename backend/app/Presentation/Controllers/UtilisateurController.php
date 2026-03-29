@@ -481,7 +481,7 @@ class UtilisateurController extends Controller
             });
         }
 
-        if ($request->has('id_tenant')) {
+        if ($request->filled('id_tenant')) {
             $query->where('id_tenant', $request->id_tenant);
         }
 
