@@ -50,16 +50,16 @@ class ServiceTenant
                 'id_tenant' => $tenant->id,
                 'id_role' => $roleAdmin->id,
                 'nom' => $donnees['admin_nom'],
-                'email' => $donnees['admin_email'],
+                'email' => $donnees['email'],
                 'password' => Hash::make($donnees['admin_password']),
                 'role' => 'admin',
             ]);
 
             // 4. Envoyer l'email de bienvenue
             try {
-                Mail::to($donnees['admin_email'])->send(new BienvenueTenant(
+                Mail::to($donnees['email'])->send(new BienvenueTenant(
                     $donnees['nom'],
-                    $donnees['admin_email'],
+                    $donnees['email'],
                     $donnees['admin_password']
                 ));
             } catch (Exception $e) {
