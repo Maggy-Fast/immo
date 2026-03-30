@@ -1,0 +1,119 @@
+.selecteur-adresse {
+    position: relative;
+    width: 100%;
+    margin-bottom: var(--espace-4);
+}
+
+.selecteur-adresse__recherche {
+    position: relative;
+    margin-bottom: var(--espace-2);
+}
+
+.selecteur-adresse__suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-md);
+    box-shadow: var(--ombre-lg);
+    z-index: 2000;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.selecteur-adresse__suggestion-item {
+    padding: var(--espace-3) var(--espace-4);
+    cursor: pointer;
+    transition: background 0.2s;
+    border-bottom: 1px solid var(--couleur-bordure-legere);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--espace-2);
+}
+
+.selecteur-adresse__suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.selecteur-adresse__suggestion-item:hover {
+    background: var(--couleur-fond-leger);
+}
+
+.selecteur-adresse__suggestion-nom {
+    font-size: var(--taille-sm);
+    font-weight: 500;
+    color: var(--couleur-texte);
+}
+
+.selecteur-adresse__suggestion-adresse {
+    font-size: var(--taille-xs);
+    color: var(--couleur-texte-gris);
+}
+
+.selecteur-adresse__carte-conteneur {
+    width: 100%;
+    height: 250px;
+    border-radius: var(--rayon-md);
+    overflow: hidden;
+    border: 1px solid var(--couleur-bordure);
+    position: relative;
+}
+
+.selecteur-adresse__carte-overlay {
+    position: absolute;
+    top: var(--espace-2);
+    right: var(--espace-2);
+    z-index: 1000;
+}
+
+.selecteur-adresse__bouton-localiser {
+    background: white;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: var(--rayon-sm);
+    padding: var(--espace-2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--ombre-sm);
+    transition: all 0.2s;
+}
+
+.selecteur-adresse__bouton-localiser:hover {
+    background: var(--couleur-fond-leger);
+    color: var(--couleur-primaire);
+}
+
+.selecteur-adresse__chargement {
+    position: absolute;
+    right: var(--espace-3);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--couleur-primaire);
+    animation: rotation 1s infinite linear;
+}
+
+@keyframes rotation {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.selecteur-adresse__indications {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--espace-2);
+    font-size: var(--taille-xs);
+    color: var(--couleur-texte-gris);
+}
+
+.coordonnees-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--couleur-fond-foncé);
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: var(--couleur-texte-clair);
+}

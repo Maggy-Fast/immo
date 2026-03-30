@@ -6,7 +6,7 @@
 import { useState, useEffect } from 'react';
 import { MapPin, Map, Maximize } from 'lucide-react';
 import { validerLotissement } from '../../../domaine/validations/validationLotissement';
-import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire } from '../communs';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire, SelecteurAdresseCarte } from '../communs';
 
 export default function FormulaireLotissement({
   lotissement = null,
@@ -37,6 +37,15 @@ export default function FormulaireLotissement({
       });
     }
   }, [lotissement]);
+
+  const gererChangementCoordonnees = ({ adresse, latitude, longitude }) => {
+    setFormulaire(prev => ({
+      ...prev,
+      localisation: adresse,
+      latitude,
+      longitude
+    }));
+  };
 
   const gererChangement = (champ, valeur) => {
     setFormulaire((prev) => ({ ...prev, [champ]: valeur }));
@@ -81,19 +90,15 @@ export default function FormulaireLotissement({
           disabled={enCours}
         />
 
-        <ChampFormulaire
-          id="localisation"
-          label="Localisation"
-          type="text"
-          valeur={formulaire.localisation}
-          onChange={(val) => gererChangement('localisation', val)}
-          erreur={erreurs.localisation}
-          obligatoire
-          placeholder="Ex: Diamniadio, Dakar"
-          icone={<MapPin size={18} />}
-          largeurComplete
-          disabled={enCours}
-        />
+        <div style={{ gridColumn: '1 / -1' }}>
+          <SelecteurAdresseCarte 
+            adresseInitial={formulaire.localisation}
+            latInitial={formulaire.latitude}
+            lngInitial={formulaire.longitude}
+            onChangement={gererChangementCoordonnees}
+            label="Localisation du lotissement"
+          />
+        </div>
 
         <ChampFormulaire
           id="superficieTotale"
@@ -120,31 +125,7 @@ export default function FormulaireLotissement({
           disabled={enCours}
         />
 
-        <ChampFormulaire
-          id="latitude"
-          label="Latitude"
-          type="number"
-          step="0.000001"
-          valeur={formulaire.latitude}
-          onChange={(val) => gererChangement('latitude', val)}
-          erreur={erreurs.latitude}
-          placeholder="14.7167"
-          aide="Coordonnées GPS (optionnel)"
-          disabled={enCours}
-        />
-
-        <ChampFormulaire
-          id="longitude"
-          label="Longitude"
-          type="number"
-          step="0.000001"
-          valeur={formulaire.longitude}
-          onChange={(val) => gererChangement('longitude', val)}
-          erreur={erreurs.longitude}
-          placeholder="-17.1833"
-          aide="Coordonnées GPS (optionnel)"
-          disabled={enCours}
-        />
+        {/* Les coordonnées sont maintenant gérées par le SelecteurAdresseCarte */}
 
         <div style={{ gridColumn: '1 / -1' }}>
           <ActionsFormulaire

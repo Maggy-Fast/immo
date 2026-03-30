@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Tenant extends Model
 {
     protected $table = 'tenants';
-    protected $fillable = ['nom', 'domaine', 'plan', 'actif'];
+    protected $fillable = ['nom', 'domaine', 'id_plan', 'actif'];
+
+    public function plan(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Plan::class, 'id_plan');
+    }
 
     public function utilisateurs(): HasMany
     {

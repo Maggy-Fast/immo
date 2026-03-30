@@ -16,12 +16,12 @@ class ServiceTenant
 {
     public function listerTenants()
     {
-        return Tenant::withCount(['utilisateurs', 'biens'])->get();
+        return Tenant::with(['plan'])->withCount(['utilisateurs', 'biens'])->get();
     }
 
     public function obtenirTenant(int $id)
     {
-        $tenant = Tenant::find($id);
+        $tenant = Tenant::with(['plan'])->find($id);
         if (!$tenant) {
             throw new Exception("Tenant non trouvé");
         }
@@ -35,7 +35,7 @@ class ServiceTenant
             $tenant = Tenant::create([
                 'nom' => $donnees['nom'],
                 'domaine' => $donnees['domaine'] ?? null,
-                'plan' => $donnees['plan'] ?? 'gratuit',
+                'id_plan' => $donnees['id_plan'] ?? null,
                 'actif' => $donnees['actif'] ?? true,
             ]);
 

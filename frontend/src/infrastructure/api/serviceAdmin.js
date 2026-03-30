@@ -5,6 +5,34 @@ import clientHttp from './clientHttp';
  */
 export const serviceAdmin = {
     /**
+     * Gestion des Plans
+     */
+    async listerPlans() {
+        const reponse = await clientHttp.get('/admin/plans');
+        return reponse.data.data;
+    },
+
+    async obtenirPlan(id) {
+        const reponse = await clientHttp.get(`/admin/plans/${id}`);
+        return reponse.data.data;
+    },
+
+    async creerPlan(donnees) {
+        const reponse = await clientHttp.post('/admin/plans', donnees);
+        return reponse.data;
+    },
+
+    async modifierPlan(id, donnees) {
+        const reponse = await clientHttp.put(`/admin/plans/${id}`, donnees);
+        return reponse.data;
+    },
+
+    async supprimerPlan(id) {
+        const reponse = await clientHttp.delete(`/admin/plans/${id}`);
+        return reponse.data;
+    },
+
+    /**
      * Gestion des Tenants
      */
     async listerTenants() {

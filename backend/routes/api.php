@@ -202,6 +202,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // ADMINISTRATION GLOBALE (Super Admin uniquement)
     Route::prefix('admin')->group(function () {
+        // Gestion des Plans
+        Route::prefix('plans')->group(function () {
+            Route::get('/', [\App\Presentation\Controllers\PlanController::class, 'index']);
+            Route::get('/{id}', [\App\Presentation\Controllers\PlanController::class, 'show']);
+            Route::post('/', [\App\Presentation\Controllers\PlanController::class, 'store']);
+            Route::put('/{id}', [\App\Presentation\Controllers\PlanController::class, 'update']);
+            Route::delete('/{id}', [\App\Presentation\Controllers\PlanController::class, 'destroy']);
+        });
+
         // Gestion des Tenants
         Route::prefix('tenants')->group(function () {
             Route::get('/', [TenantController::class, 'index']);

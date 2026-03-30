@@ -23,12 +23,13 @@ export default function PageGestionTenants() {
     const [modalOuverte, setModalOuverte] = useState(false);
     const [modalConfirmation, setModalConfirmation] = useState(false);
     const [tenantSelectionne, setTenantSelectionne] = useState(null);
+    const [listePlans, setListePlans] = useState([]);
     const { notifier } = useToast();
 
     const [formulaire, setFormulaire] = useState({
         nom: '',
         domaine: '',
-        plan: 'gratuit',
+        id_plan: '',
         actif: true,
         admin_nom: '',
         email: '',
@@ -37,7 +38,17 @@ export default function PageGestionTenants() {
 
     useEffect(() => {
         chargerTenants();
+        chargerPlans();
     }, []);
+
+    const chargerPlans = async () => {
+        try {
+            const data = await serviceAdmin.listerPlans();
+            setListePlans(data);
+        } catch (erreur) {
+            console.error('Erreur chargement plans', erreur);
+        }
+    };
 
     const chargerTenants = async () => {
         try {
@@ -85,7 +96,7 @@ export default function PageGestionTenants() {
             setFormulaire({
                 nom: tenant.nom,
                 domaine: tenant.domaine || '',
-                plan: tenant.plan,
+                id_plan: tenant.id_plan || '',
                 actif: tenant.actif
             });
         } else {
@@ -93,7 +104,7 @@ export default function PageGestionTenants() {
             setFormulaire({
                 nom: '',
                 domaine: '',
-                plan: 'gratuit',
+                id_plan: listePlans.length > 0 ? listePlans[0].id : '',
                 actif: true,
                 admin_nom: '',
                 email: '',
@@ -180,7 +191,9 @@ export default function PageGestionTenants() {
                                     </div>
                                     <div className="flex-entre">
                                         <span className="texte-gris" style={{ fontSize: 'var(--taille-xs)' }}>Plan:</span>
-                                        <span className="badge badge--primaire" style={{ textTransform: 'capitalize' }}>{tenant.plan}</span>
+                                        <span className="badge badge--primaire" style={{ textTransform: 'capitalize' }}>
+                                            {tenant.plan?.nom || 'N/A'}
+                                        </span>
                                     </div>
                                     <div className="flex-entre">
                                         <span className="texte-gris" style={{ fontSize: 'var(--taille-xs)' }}>Utilisateurs:</span>
@@ -236,12 +249,14 @@ export default function PageGestionTenants() {
                                     <label className="champ__label">Plan d'abonnement</label>
                                     <select 
                                         className="champ__input"
-                                        value={formulaire.plan}
-                                        onChange={(e) => setFormulaire({...formulaire, plan: e.target.value})}
+                                        value={formulaire.id_plan}
+                                        onChange={(e) => setFormulaire({...formulaire, id_plan: e.target.value})}
+                                        required
                                     >
-                                        <option value="gratuit">Gratuit</option>
-                                        <option value="pro">Professionnel</option>
-                                        <option value="premium">Premium</option>
+                                        <option value="">Sélectionner un plan</option>
+                                        {listePlans.map(p => (
+                                            <option key={p.id} value={p.id}>{p.nom} ({p.duree_mois} mois)</option>
+                                        ))}
                                     </select>
                                 </div>
 

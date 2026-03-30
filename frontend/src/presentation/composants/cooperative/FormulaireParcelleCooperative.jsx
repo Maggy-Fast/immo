@@ -7,6 +7,7 @@ import { MapPin, Maximize, DollarSign, FileText, Image, Users } from 'lucide-rea
 import { utiliserGroupesCooperative } from '../../../application/hooks/utiliserGroupesCooperative';
 import Modal from '../communs/Modal';
 import ChampFormulaire from '../communs/ChampFormulaire';
+import { SelecteurAdresseCarte } from '../communs';
 import './FormulaireParcelleCooperative.css';
 
 export default function FormulaireParcelleCooperative({ parcelle, initialIdGroupe, surSoumettre, surAnnuler, enCours }) {
@@ -17,6 +18,9 @@ export default function FormulaireParcelleCooperative({ parcelle, initialIdGroup
     description: '',
     photo: null,
     id_groupe: initialIdGroupe || '',
+    adresse: '',
+    latitude: '',
+    longitude: '',
   });
 
   const { groupes } = utiliserGroupesCooperative();
@@ -38,17 +42,28 @@ export default function FormulaireParcelleCooperative({ parcelle, initialIdGroup
         prix: parcelle.prix || '',
         description: parcelle.description || '',
         id_groupe: parcelle.id_groupe || '',
-        photo: null, // Réinitialiser la photo pour modification
+        photo: null,
+        adresse: parcelle.adresse || '',
+        latitude: parcelle.latitude || '',
+        longitude: parcelle.longitude || '',
       });
     }
   }, [parcelle]);
 
   const gererChangement = (champ, valeur) => {
     setDonnees((prev) => ({ ...prev, [champ]: valeur }));
-    // Effacer l'erreur du champ modifié
     if (erreurs[champ]) {
       setErreurs((prev) => ({ ...prev, [champ]: null }));
     }
+  };
+
+  const gererChangementCoordonnees = ({ adresse, latitude, longitude }) => {
+    setDonnees(prev => ({
+      ...prev,
+      adresse,
+      latitude,
+      longitude
+    }));
   };
 
   const valider = () => {
@@ -191,6 +206,17 @@ export default function FormulaireParcelleCooperative({ parcelle, initialIdGroup
             aide="Photo de la parcelle (JPEG, PNG, max 2MB)"
             className="formulaire-parcelle__champ--plein"
           />
+
+          <div className="formulaire-parcelle__champ--plein">
+            <SelecteurAdresseCarte 
+              adresseInitial={donnees.adresse}
+              latInitial={donnees.latitude}
+              lngInitial={donnees.longitude}
+              onChangement={gererChangementCoordonnees}
+              label="Localisation de la parcelle"
+            />
+          </div>
+
           {donnees.photo && typeof donnees.photo === 'object' && (
             <div className="formulaire-parcelle__info-fichier">
               <small>Fichier sélectionné : {donnees.photo.name}</small>

@@ -70,6 +70,7 @@ const LIENS_COOPERATIVE = [
  */
 const LIENS_ADMIN_GLOBALE = [
     { chemin: '/admin/tenants', icone: Globe, libelle: 'Tenants' },
+    { chemin: '/admin/plans', icone: ScrollText, libelle: 'Plans' },
     { chemin: '/admin/utilisateurs', icone: UserCog, libelle: 'Utilisateurs' },
     { chemin: '/admin/audit', icone: ScrollText, libelle: 'Audit' },
     { chemin: '/roles', icone: Shield, libelle: 'Rôles & Permissions' },

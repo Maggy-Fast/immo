@@ -18,7 +18,7 @@ import { OPTIONS_TYPES_BIEN } from '../../../domaine/valeursObjets/typeBien';
 
 import { OPTIONS_STATUTS_BIEN } from '../../../domaine/valeursObjets/statutBien';
 
-import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire, UploadImage } from '../communs';
+import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire, UploadImage, SelecteurAdresseCarte } from '../communs';
 import { getImageUrl } from '../../../application/utils/imageUtils';
 
 
@@ -88,6 +88,15 @@ export default function FormulaireBien({
       }
     }
   }, [bien]);
+
+  const gererChangementCoordonnees = ({ adresse, latitude, longitude }) => {
+    setFormulaire(prev => ({
+      ...prev,
+      adresse,
+      latitude,
+      longitude
+    }));
+  };
 
   const gererChangement = (champ, valeur) => {
     setFormulaire((prev) => ({ ...prev, [champ]: valeur }));
@@ -272,31 +281,15 @@ export default function FormulaireBien({
 
 
 
-        <ChampFormulaire
-
-          id="adresse"
-
-          label="Adresse"
-
-          type="text"
-
-          valeur={formulaire.adresse}
-
-          onChange={(val) => gererChangement('adresse', val)}
-
-          erreur={erreurs.adresse}
-
-          required
-
-          placeholder="Ex: Rue 10, Médina, Dakar"
-
-          icone={MapPin}
-
-          disabled={enCours}
-
-          largeurComplete
-
-        />
+        <div style={{ gridColumn: '1 / -1' }}>
+          <SelecteurAdresseCarte 
+            adresseInitial={formulaire.adresse}
+            latInitial={formulaire.latitude}
+            lngInitial={formulaire.longitude}
+            onChangement={gererChangementCoordonnees}
+            label="Adresse et Emplacement du bien"
+          />
+        </div>
 
 
 
@@ -376,55 +369,7 @@ export default function FormulaireBien({
 
 
 
-        <ChampFormulaire
-
-          id="latitude"
-
-          label="Latitude"
-
-          type="number"
-
-          step="0.000001"
-
-          valeur={formulaire.latitude}
-
-          onChange={(val) => gererChangement('latitude', val)}
-
-          erreur={erreurs.latitude}
-
-          placeholder="14.6937"
-
-          aide="Coordonnées GPS (optionnel)"
-
-          disabled={enCours}
-
-        />
-
-
-
-        <ChampFormulaire
-
-          id="longitude"
-
-          label="Longitude"
-
-          type="number"
-
-          step="0.000001"
-
-          valeur={formulaire.longitude}
-
-          onChange={(val) => gererChangement('longitude', val)}
-
-          erreur={erreurs.longitude}
-
-          placeholder="-17.4441"
-
-          aide="Coordonnées GPS (optionnel)"
-
-          disabled={enCours}
-
-        />
+        {/* Les coordonnées sont maintenant gérées par le SelecteurAdresseCarte */}
 
 
 

@@ -47,7 +47,7 @@ class TenantController extends Controller
         $validator = Validator::make($request->all(), [
             'nom' => 'required|string|max:255',
             'domaine' => 'nullable|string|max:255|unique:tenants,domaine',
-            'plan' => 'sometimes|string|in:gratuit,pro,premium',
+            'id_plan' => 'nullable|exists:plans,id',
             'admin_nom' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'admin_password' => 'required|string|min:8',
@@ -82,7 +82,7 @@ class TenantController extends Controller
         $validator = Validator::make($request->all(), [
             'nom' => 'sometimes|string|max:255',
             'domaine' => 'sometimes|string|max:255|unique:tenants,domaine,' . $id,
-            'plan' => 'sometimes|string|in:gratuit,pro,premium',
+            'id_plan' => 'nullable|exists:plans,id',
             'actif' => 'sometimes|boolean',
         ]);
 

@@ -18,3 +18,4 @@ export { default as EnTete } from './EnTete';
 export { default as BoutonTheme } from './BoutonTheme';
 export { default as ProtectionPermission } from './ProtectionPermission';
 export { default as ModaleConfirmation } from './ModaleConfirmation';
+export { default as SelecteurAdresseCarte } from './SelecteurAdresseCarte';

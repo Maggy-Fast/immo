@@ -27,6 +27,7 @@ import PageNotificationsWhatsapp from './presentation/pages/PageNotificationsWha
 import PageGestionTenants from './presentation/pages/PageGestionTenants';
 import PageGestionUtilisateursGlobaux from './presentation/pages/PageGestionUtilisateursGlobaux';
 import PageJournauxAudit from './presentation/pages/PageJournauxAudit';
+import PageGestionPlans from './presentation/pages/PageGestionPlans';
 import PageAccesInterdit from './presentation/pages/PageAccesInterdit';
 import RouteProtegeeParRole from './presentation/composants/communs/RouteProtegeeParRole';
 import { Loader2 } from 'lucide-react';
@@ -156,6 +157,14 @@ export default function App() {
                   element={
                     <RouteProtegeeParRole rolesAutorises={['super_admin']}>
                       <PageGestionTenants />
+                    </RouteProtegeeParRole>
+                  }
+                />
+                <Route
+                  path="admin/plans"
+                  element={
+                    <RouteProtegeeParRole rolesAutorises={['super_admin']}>
+                      <PageGestionPlans />
                     </RouteProtegeeParRole>
                   }
                 />
