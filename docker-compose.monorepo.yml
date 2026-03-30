@@ -5,8 +5,8 @@ services:
   # Backend Laravel
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: backend/Dockerfile.prod
     container_name: immo-backend-app
     restart: unless-stopped
     working_dir: /var/www/html
@@ -83,8 +83,8 @@ services:
   # Worker Laravel
   worker:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+      context: .
+      dockerfile: backend/Dockerfile.prod
     container_name: immo-worker
     restart: unless-stopped
     working_dir: /var/www/html
