@@ -52,7 +52,7 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Copier le fichier .env
-COPY .env.aws .env
+# COPY .env.aws .env
 
 # Générer la clé d'application
 RUN php artisan key:generate
