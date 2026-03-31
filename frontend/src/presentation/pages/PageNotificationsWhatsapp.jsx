@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send, BarChart3, Clock, CheckCircle, XCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Send, BarChart3, Clock, CheckCircle, XCircle, AlertCircle, Loader2, User } from 'lucide-react';
 import { useToast } from '../composants/communs/ToastContext';
 import apiService from '../../application/services/apiService';
 import './PageNotificationsWhatsapp.css';
@@ -9,6 +9,10 @@ export default function PageNotificationsWhatsapp() {
     const [ongletActif, setOngletActif] = useState('envoi');
     const [statistiques, setStatistiques] = useState(null);
     const [chargementStats, setChargementStats] = useState(false);
+    
+    // Adhérents pour la sélection
+    const [adherents, setAdherents] = useState([]);
+    const [chargementAdherents, setChargementAdherents] = useState(false);
     
     // Formulaire d'envoi
     const [formulaire, setFormulaire] = useState({
@@ -23,20 +27,53 @@ export default function PageNotificationsWhatsapp() {
     const [resultatTraitement, setResultatTraitement] = useState(null);
 
     useEffect(() => {
-        if (ongletActif === 'statistiques') {
+        if (ongletActif === 'envoi') {
+            chargerAdherents();
+        } else if (ongletActif === 'statistiques') {
             chargerStatistiques();
         }
     }, [ongletActif]);
+
+    const chargerAdherents = async () => {
+        try {
+            setChargementAdherents(true);
+            const reponse = await apiService.get('/adherents');
+            if (reponse.data.success) {
+                setAdherents(reponse.data.data);
+            }
+        } catch (erreur) {
+            console.error('Erreur chargement adhérents:', erreur);
+        } finally {
+            setChargementAdherents(false);
+        }
+    };
 
     const chargerStatistiques = async () => {
         try {
             setChargementStats(true);
             const reponse = await apiService.get('/whatsapp/statistiques');
-            setStatistiques(reponse.data);
+            setStatistiques(reponse.data.data);
         } catch (erreur) {
             notifier('Erreur lors du chargement des statistiques', 'error');
         } finally {
             setChargementStats(false);
+        }
+    };
+
+    const selectionnerAdherent = (id) => {
+        const adherent = adherents.find(a => a.id === parseInt(id));
+        if (adherent) {
+            setFormulaire({
+                ...formulaire,
+                id_adherent: id,
+                telephone: adherent.telephone || ''
+            });
+        } else {
+            setFormulaire({
+                ...formulaire,
+                id_adherent: '',
+                telephone: ''
+            });
         }
     };
 
@@ -58,37 +95,11 @@ export default function PageNotificationsWhatsapp() {
                 notifier('Message WhatsApp envoyé avec succès', 'success');
                 setFormulaire({ telephone: '', message: '', id_adherent: '' });
             } else {
-                notifier(reponse.data.message, 'error');
+                notifier(reponse.data.message || 'Échec de l\'envoi du message', 'error');
             }
         } catch (erreur) {
-            notifier('Erreur lors de l\'envoi du message', 'error');
-        } finally {
-            setChargementEnvoi(false);
-        }
-    };
-
-    const envoyerRappel = async () => {
-        if (!formulaire.id_adherent) {
-            notifier('Veuillez sélectionner un adhérent', 'error');
-            return;
-        }
-
-        try {
-            setChargementEnvoi(true);
-            const reponse = await apiService.post('/whatsapp/rappel', {
-                id_adherent: formulaire.id_adherent,
-                date_echeance: new Date().toISOString().split('T')[0],
-                montant: 50000
-            });
-            
-            if (reponse.data.success) {
-                notifier('Rappel créé et mis en file d\'attente', 'success');
-                setFormulaire({ ...formulaire, id_adherent: '' });
-            } else {
-                notifier(reponse.data.message, 'error');
-            }
-        } catch (erreur) {
-            notifier('Erreur lors de la création du rappel', 'error');
+            const messageErreur = erreur.response?.data?.message || 'Erreur lors de l\'envoi du message';
+            notifier(messageErreur, 'error');
         } finally {
             setChargementEnvoi(false);
         }
@@ -103,7 +114,7 @@ export default function PageNotificationsWhatsapp() {
             if (reponse.data.success) {
                 notifier(`${reponse.data.nb_envoyes} message(s) traité(s) avec succès`, 'success');
             } else {
-                notifier(reponse.data.message, 'error');
+                notifier(reponse.data.message || 'Échec du traitement', 'error');
             }
         } catch (erreur) {
             notifier('Erreur lors du traitement de la file d\'attente', 'error');
@@ -149,6 +160,41 @@ export default function PageNotificationsWhatsapp() {
                     <div className="carte__corps">
                         <form onSubmit={envoyerMessageTest} style={{ display: 'grid', gap: '1rem' }}>
                             <div className="champ-formulaire">
+                                <label className="champ-formulaire__label">Sélectionner un adhérent (optionnel)</label>
+                                <div style={{ position: 'relative' }}>
+                                    <User size={18} style={{ 
+                                        position: 'absolute', 
+                                        left: '1rem', 
+                                        top: '50%', 
+                                        transform: 'translateY(-50%)',
+                                        color: '#64748b'
+                                    }} />
+                                    <select
+                                        className="champ-formulaire__input"
+                                        style={{ paddingLeft: '2.75rem' }}
+                                        value={formulaire.id_adherent}
+                                        onChange={(e) => selectionnerAdherent(e.target.value)}
+                                        disabled={chargementAdherents}
+                                    >
+                                        <option value="">-- Choisir un membre --</option>
+                                        {adherents.map(adherent => (
+                                            <option key={adherent.id} value={adherent.id}>
+                                                {adherent.prenom} {adherent.nom} ({adherent.telephone})
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {chargementAdherents && (
+                                        <Loader2 size={16} className="chargement__spinner" style={{ 
+                                            position: 'absolute', 
+                                            right: '1rem', 
+                                            top: '50%', 
+                                            transform: 'translateY(-50%)' 
+                                        }} />
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="champ-formulaire">
                                 <label className="champ-formulaire__label">Numéro WhatsApp</label>
                                 <input
                                     type="tel"
@@ -157,6 +203,9 @@ export default function PageNotificationsWhatsapp() {
                                     onChange={(e) => setFormulaire({ ...formulaire, telephone: e.target.value })}
                                     placeholder="771234567"
                                 />
+                                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+                                    Inclure le code pays si ce n'est pas le Sénégal (ex: 22177...)
+                                </p>
                             </div>
                             
                             <div className="champ-formulaire">

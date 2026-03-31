@@ -148,7 +148,7 @@ class ServiceNotificationWhatsapp
 
         } catch (Exception $e) {
             Log::error("Erreur envoi WhatsApp à {$telephone}: " . $e->getMessage());
-            return false;
+            throw new Exception("Erreur Twilio : " . $e->getMessage());
         }
     }
 

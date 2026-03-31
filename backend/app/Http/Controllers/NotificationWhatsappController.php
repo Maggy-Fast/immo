@@ -34,13 +34,13 @@ class NotificationWhatsappController extends Controller
                 'success' => $resultat,
                 'message' => $resultat 
                     ? 'Message WhatsApp envoyé avec succès' 
-                    : 'Échec de l\'envoi du message'
+                    : 'Le service WhatsApp est configuré mais l\'envoi a échoué. Vérifiez le numéro ou les crédits Twilio.'
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Erreur: ' . $e->getMessage()
+                'message' => $e->getMessage()
             ], 500);
         }
     }
@@ -128,19 +128,18 @@ class NotificationWhatsappController extends Controller
     public function statistiques(): JsonResponse
     {
         try {
+            $idTenant = Auth::user()->id_tenant;
+            $query = \App\Domaine\Entities\NotificationWhatsapp::query();
+            
+            if ($idTenant) {
+                $query->where('id_tenant', $idTenant);
+            }
+
             $stats = [
-                'en_attente' => \App\Domaine\Entities\NotificationWhatsapp::where('id_tenant', Auth::user()->id_tenant)
-                    ->where('statut', 'en_attente')
-                    ->count(),
-                'envoyees' => \App\Domaine\Entities\NotificationWhatsapp::where('id_tenant', Auth::user()->id_tenant)
-                    ->where('statut', 'envoye')
-                    ->count(),
-                'echecs' => \App\Domaine\Entities\NotificationWhatsapp::where('id_tenant', Auth::user()->id_tenant)
-                    ->where('statut', 'echec')
-                    ->count(),
-                'total_24h' => \App\Domaine\Entities\NotificationWhatsapp::where('id_tenant', Auth::user()->id_tenant)
-                    ->where('created_at', '>=', now()->subDay())
-                    ->count(),
+                'en_attente' => (clone $query)->where('statut', 'en_attente')->count(),
+                'envoyees' => (clone $query)->where('statut', 'envoye')->count(),
+                'echecs' => (clone $query)->where('statut', 'echec')->count(),
+                'total_24h' => (clone $query)->where('created_at', '>=', now()->subDay())->count(),
             ];
 
             return response()->json([
@@ -151,7 +150,7 @@ class NotificationWhatsappController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Erreur: ' . $e->getMessage()
+                'message' => $e->getMessage()
             ], 500);
         }
     }
