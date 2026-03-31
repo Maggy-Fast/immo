@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send, MessageSquare, BarChart3, Clock, CheckCircle, XCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { Send, BarChart3, Clock, CheckCircle, XCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { useToast } from '../composants/communs/ToastContext';
 import apiService from '../../application/services/apiService';
 import './PageNotificationsWhatsapp.css';
@@ -181,15 +181,6 @@ export default function PageNotificationsWhatsapp() {
                                     ) : (
                                         <><Send size={16} /> Envoyer</>
                                     )}
-                                </button>
-                                
-                                <button 
-                                    type="button" 
-                                    className="bouton bouton--secondaire"
-                                    onClick={envoyerRappel}
-                                    disabled={chargementEnvoi}
-                                >
-                                    <MessageSquare size={16} /> Créer rappel
                                 </button>
                             </div>
                         </form>
