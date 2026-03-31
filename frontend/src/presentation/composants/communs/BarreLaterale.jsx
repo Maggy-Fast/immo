@@ -141,12 +141,14 @@ export default function BarreLaterale() {
 
             {/* Navigation */}
             <nav className="sidebar__nav">
-                {/* Section Immobilier — tous les rôles */}
-                <SectionNavigation 
-                    liens={LIENS_IMMOBILIER} 
-                    reduite={reduite} 
-                    labelSection="Immobilier"
-                />
+                {/* Section Immobilier — visible pour tous sauf Super Admin */}
+                {!isSuperAdmin() && (
+                    <SectionNavigation 
+                        liens={LIENS_IMMOBILIER} 
+                        reduite={reduite} 
+                        labelSection="Immobilier"
+                    />
+                )}
 
                 {/* Section Outils — tous les rôles */}
                 <SectionNavigation 
@@ -155,12 +157,14 @@ export default function BarreLaterale() {
                     labelSection="Outils"
                 />
 
-                {/* Section Coopérative — tous les rôles */}
-                <SectionNavigation 
-                    liens={LIENS_COOPERATIVE} 
-                    reduite={reduite} 
-                    labelSection="Coopérative"
-                />
+                {/* Section Coopérative — visible pour tous sauf Super Admin */}
+                {!isSuperAdmin() && (
+                    <SectionNavigation 
+                        liens={LIENS_COOPERATIVE} 
+                        reduite={reduite} 
+                        labelSection="Coopérative"
+                    />
+                )}
 
                 {/* Section Administration Globale — super_admin SEULEMENT */}
                 {isSuperAdmin() && (

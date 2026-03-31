@@ -86,9 +86,13 @@ class TenantController extends Controller
             $donnees['id_plan'] = null;
         }
 
+        if (isset($donnees['domaine']) && $donnees['domaine'] === '') {
+            $donnees['domaine'] = null;
+        }
+
         $validator = Validator::make($donnees, [
             'nom' => 'sometimes|string|max:255',
-            'domaine' => 'sometimes|string|max:255|unique:tenants,domaine,' . $id,
+            'domaine' => 'sometimes|nullable|string|max:255|unique:tenants,domaine,' . $id,
             'id_plan' => 'nullable|exists:plans,id',
             'actif' => 'sometimes|boolean',
         ]);

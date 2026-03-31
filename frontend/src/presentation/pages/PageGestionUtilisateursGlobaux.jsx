@@ -11,11 +11,15 @@ import {
     Filter,
     ChevronLeft,
     ChevronRight,
-    Lock
+    Lock,
+    X,
+    UserCircle,
+    Activity,
+    ShieldCheck
 } from 'lucide-react';
 import { serviceAdmin } from '../../infrastructure/api/serviceAdmin';
 import { useToast } from '../composants/communs/ToastContext';
-import './PageAdherents.css'; // Reusing similar list layout styles
+import './PageGestionUtilisateursGlobaux.css';
 
 export default function PageGestionUtilisateursGlobaux() {
     const [utilisateurs, setUtilisateurs] = useState([]);
@@ -75,114 +79,119 @@ export default function PageGestionUtilisateursGlobaux() {
     };
 
     return (
-        <div className="tableau-de-bord fade-in">
-            <div className="flex-entre" style={{ marginBottom: 'var(--espace-8)' }}>
-                <div>
-                    <h1 className="page-titre">Utilisateurs Globaux</h1>
-                    <p className="texte-gris">Gestion de tous les utilisateurs de la plateforme</p>
+        <div className="page-utilisateurs fade-in">
+            {/* En-tête */}
+            <header className="page-utilisateurs__entete">
+                <div className="page-utilisateurs__titre-groupe">
+                    <span className="page-utilisateurs__badge-section">Administration</span>
+                    <h1 className="page-utilisateurs__titre">Utilisateurs Globaux</h1>
+                    <p className="page-utilisateurs__soustitre">Gérez l'ensemble des accès à la plateforme MaggyFast</p>
                 </div>
-            </div>
-
-            <div className="carte" style={{ marginBottom: 'var(--espace-6)' }}>
-                <div className="carte__corps">
-                    <form onSubmit={handleRecherche} className="flex" style={{ gap: 'var(--espace-4)', alignItems: 'center' }}>
-                        <div className="recherche" style={{ flex: 1, maxWidth: '500px' }}>
-                            <Search className="recherche__icone" size={20} />
-                            <input 
-                                type="text" 
-                                placeholder="Rechercher par nom, email..." 
-                                className="recherche__input"
-                                value={recherche}
-                                onChange={(e) => setRecherche(e.target.value)}
-                            />
+                <div className="flex" style={{gap: '1rem'}}>
+                    <div className="carte-petite flex-centre" style={{padding: '0.75rem 1.25rem', background: 'white', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.4)'}}>
+                        <Users size={18} className="texte-primaire" style={{marginRight: '0.75rem'}} />
+                        <div>
+                            <div className="texte-xs texte-gris">Total Utilisateurs</div>
+                            <div className="texte-sm texte-gras">{utilisateurs.length > 0 ? 'Chargé' : '--'}</div>
                         </div>
-                        <button type="submit" className="bouton bouton--primaire">
-                            <Filter size={18} /> Filtrer
-                        </button>
-                    </form>
+                    </div>
                 </div>
+            </header>
+
+            {/* Filtres */}
+            <div className="filters-container">
+                <form onSubmit={handleRecherche} className="flex" style={{ width: '100%', gap: '1rem', alignItems: 'center' }}>
+                    <div className="search-wrapper">
+                        <Search size={22} />
+                        <input 
+                            type="text" 
+                            className="search-input"
+                            placeholder="Rechercher par nom, email ou domaine..."
+                            value={recherche}
+                            onChange={(e) => setRecherche(e.target.value)}
+                        />
+                    </div>
+                    <button type="submit" className="bouton bouton--primaire" style={{height: '52px', borderRadius: '14px', padding: '0 2rem'}}>
+                        <Filter size={18} /> Filtrer les résultats
+                    </button>
+                </form>
             </div>
 
+            {/* Table */}
             {chargement ? (
-                <div className="chargement">
-                    <div className="chargement__spinner"></div>
+                <div className="flex-centre" style={{padding: '5rem'}}>
+                    <Loader2 className="chargement__spinner" size={48} />
                 </div>
             ) : (
-                <div className="carte fade-in">
-                    <div className="tableau-conteneur">
-                        <table className="tableau">
-                            <thead>
-                                <tr>
-                                    <th>Utilisateur</th>
-                                    <th>Contact</th>
-                                    <th>Tenant / Rôle</th>
-                                    <th>Statut</th>
-                                    <th style={{textAlign: 'right'}}>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {utilisateurs.map(user => (
-                                    <tr key={user.id}>
-                                        <td>
-                                            <div style={{display: 'flex', alignItems: 'center', gap: 'var(--espace-3)'}}>
-                                                <div className="avatar-sm" style={{ 
-                                                    background: 'var(--couleur-primaire-tres-claire)', 
-                                                    color: 'var(--couleur-primaire)',
-                                                    width: '36px',
-                                                    height: '36px',
-                                                    borderRadius: '50%',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    fontWeight: 'bold',
-                                                    fontSize: 'var(--taille-sm)'
-                                                }}>
-                                                    {user.nom?.charAt(0).toUpperCase()}
-                                                </div>
-                                                <div>
-                                                    <div className="texte-gras">{user.nom}</div>
-                                                    <div className="texte-gris" style={{fontSize: 'var(--taille-xs)'}}>ID: {user.id}</div>
-                                                </div>
+                <div className="table-container fade-in">
+                    <table className="users-table">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Contact</th>
+                                <th>Tenant & Rôle</th>
+                                <th>Statut</th>
+                                <th style={{textAlign: 'right'}}>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {utilisateurs.map(user => (
+                                <tr key={user.id}>
+                                    <td>
+                                        <div className="user-cell">
+                                            <div className="user-avatar">
+                                                {user.nom?.charAt(0).toUpperCase()}
                                             </div>
-                                        </td>
-                                        <td>
-                                            <div style={{display: 'flex', flexDirection: 'column', gap: 'var(--espace-1)'}}>
-                                                <div className="flex" style={{alignItems: 'center', gap: '6px', fontSize: 'var(--taille-sm)'}}>
-                                                    <Mail size={14} className="texte-gris" /> {user.email}
-                                                </div>
-                                                <div className="flex" style={{alignItems: 'center', gap: '6px', fontSize: 'var(--taille-sm)'}}>
-                                                    <Phone size={14} className="texte-gris" /> {user.telephone || 'N/A'}
-                                                </div>
+                                            <div className="user-info-text">
+                                                <span className="user-name">{user.nom}</span>
+                                                <span className="user-id">UID-{user.id.toString().padStart(4, '0')}</span>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <div style={{display: 'flex', flexDirection: 'column', gap: 'var(--espace-1)'}}>
-                                                <div className="flex" style={{alignItems: 'center', gap: '6px', fontSize: 'var(--taille-sm)', fontWeight: '500'}}>
-                                                    <Building2 size={14} className="texte-primaire" /> {user.tenant?.nom || 'Système'}
-                                                </div>
-                                                <div className="flex" style={{alignItems: 'center', gap: '6px', fontSize: 'var(--taille-xs)', color: 'var(--couleur-gris)'}}>
-                                                    <Shield size={14} /> {user.roleEntity?.libelle || user.role}
-                                                </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="contact-list">
+                                            <div className="contact-item">
+                                                <Mail size={14} /> <span>{user.email}</span>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <span className="badge badge--succes">Actif</span>
-                                        </td>
-                                        <td style={{textAlign: 'right'}}>
-                                            <button className="bouton bouton--fantome bouton--petit" title="Réinitialiser MDP" onClick={() => {
+                                            <div className="contact-item">
+                                                <Phone size={14} /> <span>{user.telephone || 'Nouveau utilisateur'}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="flex-col" style={{gap: '0.4rem'}}>
+                                            <div className="tenant-tag">
+                                                <Building2 size={14} className="texte-primaire" />
+                                                {user.tenant?.nom || 'Plateforme Système'}
+                                            </div>
+                                            <div className="flex" style={{gap: '6px', alignItems: 'center', fontSize: '0.75rem', color: '#64748b', paddingLeft: '4px'}}>
+                                                <ShieldCheck size={14} />
+                                                {user.roleEntity?.libelle || user.role || 'Utilisateur'}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span className="status-badge">ACTIF</span>
+                                    </td>
+                                    <td style={{textAlign: 'right'}}>
+                                        <button 
+                                            className="bouton bouton--carre bouton--gris-clair" 
+                                            title="Réinitialiser le mot de passe"
+                                            onClick={() => {
                                                 setUtilisateurSelectionne(user);
                                                 setModalPassword(true);
-                                            }}>
-                                                <Lock size={16} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                            }}
+                                        >
+                                            <Key size={18} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
 
-                    <div className="pagination" style={{ padding: 'var(--espace-4)', borderTop: 'var(--bordure-fine)' }}>
+                    {/* Pagination */}
+                    <div className="pagination" style={{ padding: '1.5rem', borderTop: '1px solid #f1f5f9' }}>
                         <button 
                             className="pagination__bouton"
                             disabled={pagination.current_page === 1}
@@ -190,9 +199,12 @@ export default function PageGestionUtilisateursGlobaux() {
                         >
                             <ChevronLeft size={16} /> Précédent
                         </button>
-                        <span className="texte-gris texte-sm">
-                            Page {pagination.current_page} / {pagination.last_page}
-                        </span>
+                        <div className="flex-centre" style={{gap: '0.5rem'}}>
+                            <span className="texte-sm texte-gris">Page</span>
+                            <span className="texte-sm texte-gras">{pagination.current_page}</span>
+                            <span className="texte-sm texte-gris">sur</span>
+                            <span className="texte-sm texte-gras">{pagination.last_page}</span>
+                        </div>
                         <button 
                             className="pagination__bouton"
                             disabled={pagination.current_page === pagination.last_page}
@@ -204,38 +216,47 @@ export default function PageGestionUtilisateursGlobaux() {
                 </div>
             )}
 
+            {/* Modal Password Reset */}
             {modalPassword && (
-                <div className="modal-fond">
-                    <div className="modal fade-in" style={{ maxWidth: '450px' }}>
-                        <div className="modal__entete">
-                            <h2 className="modal__titre">Réinitialiser le mot de passe</h2>
+                <div className="modal-overlay" onClick={() => setModalPassword(false)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <div className="flex-centre" style={{ marginBottom: '1.5rem', width: '60px', height: '60px', borderRadius: '15px', background: 'rgba(196, 30, 58, 0.1)', color: '#C41E3A', margin: '0 auto 1.5rem' }}>
+                            <Lock size={28} />
                         </div>
+                        
+                        <h2 className="texte-xl texte-gras texte-centre" style={{marginBottom: '1rem'}}>
+                            Sécuriser le compte
+                        </h2>
+                        
+                        <p className="texte-sm texte-gris texte-centre" style={{marginBottom: '2rem'}}>
+                            Vous définissez un nouveau mot de passe pour <strong>{utilisateurSelectionne?.nom}</strong>.
+                            L'utilisateur pourra se connecter immédiatement après la validation.
+                        </p>
+
                         <form onSubmit={handleResetPassword}>
-                            <div className="modal__corps">
-                                <p className="texte-gris" style={{ marginBottom: 'var(--espace-5)', fontSize: 'var(--taille-sm)' }}>
-                                    Vous allez définir un nouveau mot de passe pour <strong>{utilisateurSelectionne?.nom}</strong>.
-                                </p>
-                                <div className="champ">
-                                    <label className="champ__label">Nouveau mot de passe</label>
-                                    <div className="champ-avec-icone">
-                                        <Lock size={16} className="champ-icone" />
-                                        <input 
-                                            type="text"
-                                            className="champ__input champ__input--avec-icone"
-                                            value={nouveauPassword}
-                                            onChange={(e) => setNouveauPassword(e.target.value)}
-                                            placeholder="Minimum 8 caractères"
-                                            required
-                                        />
-                                    </div>
+                            <div className="champ" style={{marginBottom: '2rem'}}>
+                                <label className="champ__label" style={{fontWeight: '700', color: '#1e293b'}}>Nouveau mot de passe</label>
+                                <div className="filter-input-wrapper">
+                                    <Lock size={18} style={{position: 'absolute', left: '1rem', color: '#94a3b8'}} />
+                                    <input 
+                                        type="text"
+                                        className="filter-input"
+                                        style={{paddingLeft: '2.75rem'}}
+                                        value={nouveauPassword}
+                                        onChange={(e) => setNouveauPassword(e.target.value)}
+                                        placeholder="Min. 8 caractères sécurisés"
+                                        required
+                                        autoFocus
+                                    />
                                 </div>
                             </div>
-                            <div className="modal__pied">
-                                <button type="button" className="bouton bouton--fantome" onClick={() => setModalPassword(false)}>
+                            
+                            <div className="flex" style={{gap: '1rem'}}>
+                                <button type="button" className="bouton bouton--fantome" style={{flex: 1}} onClick={() => setModalPassword(false)}>
                                     Annuler
                                 </button>
-                                <button type="submit" className="bouton bouton--primaire">
-                                    Confirmer
+                                <button type="submit" className="bouton bouton--primaire" style={{flex: 1.5}}>
+                                    Mettre à jour le mot de passe
                                 </button>
                             </div>
                         </form>

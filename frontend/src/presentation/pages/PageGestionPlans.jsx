@@ -10,12 +10,19 @@ import {
     Loader2,
     DollarSign,
     Calendar,
-    Info
+    Info,
+    LayoutGrid,
+    Check,
+    Hash,
+    Terminal,
+    ArrowRight,
+    CircleCheck,
+    Users
 } from 'lucide-react';
 import { serviceAdmin } from '../../infrastructure/api/serviceAdmin';
 import { useToast } from '../composants/communs/ToastContext';
 import ModaleConfirmation from '../composants/communs/ModaleConfirmation';
-import './PageLotissements.css'; // Reusing similar styles for consistency
+import './PageGestionPlans.css';
 
 export default function PageGestionPlans() {
     const [plans, setPlans] = useState([]);
@@ -104,173 +111,182 @@ export default function PageGestionPlans() {
         setModalOuverte(true);
     };
 
+    const formaterPrix = (prix) => {
+        return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF', maximumFractionDigits: 0 }).format(prix);
+    };
+
     const plansFiltrés = plans.filter(p => 
         p.nom.toLowerCase().includes(recherche.toLowerCase()) ||
         p.slug.toLowerCase().includes(recherche.toLowerCase())
     );
 
     return (
-        <div className="tableau-de-bord fade-in">
-            <div className="flex-entre" style={{ marginBottom: 'var(--espace-8)' }}>
-                <div>
-                    <h1 className="page-titre">Gestion des Plans</h1>
-                    <p className="texte-gris">Configurez les offres de licence pour vos tenants</p>
+        <div className="page-plans fade-in">
+            {/* En-tête */}
+            <header className="page-plans__entete">
+                <div className="page-plans__titre-groupe">
+                    <span className="page-plans__badge-section">Administration</span>
+                    <h1 className="page-plans__titre">Gestion des Plans</h1>
+                    <p className="page-plans__soustitre">Configurez les offres de licence pour vos tenants</p>
                 </div>
-                <button className="bouton bouton--primaire" onClick={() => ouvrirModal()}>
+                <button className="bouton bouton--primaire bouton--large" style={{borderRadius: '16px', height: '52px'}} onClick={() => ouvrirModal()}>
                     <Plus size={20} />
-                    Nouveau Plan
+                    Créer une Nouvelle Offre
                 </button>
-            </div>
+            </header>
 
             {/* Statistiques rapides */}
-            <div className="stats-grille">
-                <div className="stat-carte">
-                    <div className="stat-carte__contenu">
-                        <div className="stat-carte__entete">
-                            <span className="stat-carte__titre">Total Plans</span>
-                            <div className="stat-carte__icone"><ScrollText size={18} /></div>
-                        </div>
-                        <span className="stat-carte__valeur">{plans.length}</span>
+            <div className="plans-stats">
+                <div className="stat-item">
+                    <div className="stat-icon stat-icon--primary">
+                        <ScrollText size={24} />
+                    </div>
+                    <div className="stat-info">
+                        <span className="stat-label">Total des Plans</span>
+                        <span className="stat-value">{plans.length}</span>
                     </div>
                 </div>
-                <div className="stat-carte">
-                    <div className="stat-carte__contenu">
-                        <div className="stat-carte__entete">
-                            <span className="stat-carte__titre">Plans Actifs</span>
-                            <div className="stat-carte__icone" style={{ color: 'var(--couleur-succes)' }}><CheckCircle size={18} /></div>
-                        </div>
-                        <span className="stat-carte__valeur">{plans.filter(p => p.actif).length}</span>
+                <div className="stat-item">
+                    <div className="stat-icon stat-icon--success">
+                        <CircleCheck size={24} />
+                    </div>
+                    <div className="stat-info">
+                        <span className="stat-label">Offres Actives</span>
+                        <span className="stat-value">{plans.filter(p => p.actif).length}</span>
                     </div>
                 </div>
             </div>
 
-            <div className="carte" style={{ marginBottom: 'var(--espace-6)' }}>
-                <div className="carte__corps">
-                    <div className="recherche" style={{ maxWidth: '400px' }}>
-                        <Search className="recherche__icone" size={20} />
-                        <input 
-                            type="text" 
-                            placeholder="Rechercher un plan..." 
-                            className="recherche__input"
-                            value={recherche}
-                            onChange={(e) => setRecherche(e.target.value)}
-                        />
-                    </div>
+            {/* Barre de Recherche */}
+            <div className="filters-container">
+                <div className="search-wrapper">
+                    <Search size={22} />
+                    <input 
+                        type="text" 
+                        className="search-input"
+                        placeholder="Rechercher par nom d'offre (Pro, Premium...)"
+                        value={recherche}
+                        onChange={(e) => setRecherche(e.target.value)}
+                    />
                 </div>
             </div>
 
             {chargement ? (
-                <div className="chargement">
-                    <div className="chargement__spinner"></div>
+                <div className="flex-centre" style={{padding: '5rem'}}>
+                    <Loader2 className="chargement__spinner" size={48} />
                 </div>
             ) : (
-                <div className="grille" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))' }}>
+                <div className="plans-grid">
                     {plansFiltrés.map(plan => (
-                        <div key={plan.id} className="carte fade-in">
-                            <div className="carte__entete">
-                                <h3 className="carte__titre">{plan.nom}</h3>
-                                <div className={`badge ${plan.actif ? 'badge--succes' : 'badge--erreur'}`}>
-                                    {plan.actif ? 'Actif' : 'Inactif'}
+                        <div key={plan.id} className="plan-card fade-in">
+                            <div className="plan-card__header">
+                                <div className="flex-col">
+                                    <h3 className="plan-card__title">{plan.nom}</h3>
+                                    <span className="texte-xs texte-gris" style={{fontFamily: 'monospace'}}>Slug: {plan.slug}</span>
                                 </div>
+                                <span className={`badge-status ${plan.actif ? 'badge-status--active' : 'badge-status--inactive'}`}>
+                                    {plan.actif ? 'Actif' : 'Désactivé'}
+                                </span>
                             </div>
-                            <div className="carte__corps">
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--espace-3)' }}>
-                                    <div className="flex-entre">
-                                        <div className="flex-centre" style={{ gap: 'var(--espace-2)' }}>
-                                            <Calendar size={16} className="texte-gris" />
-                                            <span className="texte-gris">Durée:</span>
-                                        </div>
-                                        <span className="texte-medium">{plan.duree_mois} mois</span>
-                                    </div>
-                                    <div className="flex-entre">
-                                        <div className="flex-centre" style={{ gap: 'var(--espace-2)' }}>
-                                            <DollarSign size={16} className="texte-gris" />
-                                            <span className="texte-gris">Prix:</span>
-                                        </div>
-                                        <span className="texte-medium">{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'XOF' }).format(plan.prix)}</span>
-                                    </div>
-                                    <div className="flex-entre">
-                                        <div className="flex-centre" style={{ gap: 'var(--espace-2)' }}>
-                                            <Info size={16} className="texte-gris" />
-                                            <span className="texte-gris">Tenants:</span>
-                                        </div>
-                                        <span className="badge badge--primaire">{plan.tenants_count || 0} agences</span>
-                                    </div>
-                                    {plan.description && (
-                                        <p className="texte-xs texte-gris" style={{ marginTop: 'var(--espace-2)', borderTop: '1px solid var(--couleur-bordure)', paddingTop: 'var(--espace-2)' }}>
-                                            {plan.description}
-                                        </p>
-                                    )}
+
+                            <div className="plan-price-box">
+                                <span className="plan-price">{formaterPrix(plan.prix)}</span>
+                                <span className="plan-duration">pour {plan.duree_mois} mois</span>
+                            </div>
+
+                            <div className="plan-details">
+                                <div className="plan-info-item">
+                                    <Users size={16} />
+                                    <span><strong>{plan.tenants_count || 0}</strong> Agences utilisent ce plan</span>
                                 </div>
+                                <div className="plan-info-item">
+                                    <ArrowRight size={16} />
+                                    <span>Accès complet aux modules immo</span>
+                                </div>
+                                
+                                {plan.description && (
+                                    <p className="plan-description">
+                                        {plan.description}
+                                    </p>
+                                )}
                             </div>
-                            <div className="carte__pied flex-centre" style={{ gap: 'var(--espace-3)' }}>
-                                <button className="bouton bouton--contour bouton--petit" onClick={() => ouvrirModal(plan)}>
-                                    <Edit2 size={14} /> Modifier
+
+                            <div className="plan-actions">
+                                <button className="bouton bouton--gris-clair" onClick={() => ouvrirModal(plan)}>
+                                    <Edit2 size={16} /> Modifier
                                 </button>
                                 <button 
-                                    className="bouton bouton--fantome bouton--petit" 
-                                    style={{ color: 'var(--couleur-erreur)' }} 
+                                    className="bouton bouton--erreur-clair" 
                                     onClick={() => {
                                         setPlanSelectionne(plan);
                                         setModalConfirmation(true);
                                     }}
                                     disabled={plan.tenants_count > 0}
-                                    title={plan.tenants_count > 0 ? "Impossible de supprimer un plan utilisé" : ""}
+                                    title={plan.tenants_count > 0 ? "Impossible de supprimer un plan utilisé" : "Supprimer ce plan"}
                                 >
-                                    <Trash2 size={14} /> Supprimer
+                                    <Trash2 size={16} /> {plan.tenants_count > 0 ? 'Utilisé' : 'Supprimer'}
                                 </button>
                             </div>
                         </div>
                     ))}
+                    {plansFiltrés.length === 0 && (
+                        <div className="flex-centre card-vide" style={{gridColumn: '1 / -1', padding: '5rem', background: 'rgba(255,255,255,0.5)', borderRadius: '24px', border: '2px dashed #e2e8f0'}}>
+                            <div className="flex-col flex-centre">
+                                <Search size={48} className="texte-gris" style={{marginBottom: '1rem'}} />
+                                <p className="texte-gris">Aucun plan ne correspond à votre recherche.</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 
+            {/* Modal de Création / Edition */}
             {modalOuverte && (
-                <div className="modal-fond">
-                    <div className="modal fade-in">
-                        <div className="modal__entete">
-                            <h2 className="modal__titre">{planSelectionne ? 'Modifier le Plan' : 'Nouveau Plan'}</h2>
+                <div className="modal-overlay" onClick={() => setModalOuverte(false)}>
+                    <div className="modal-glass" onClick={e => e.stopPropagation()}>
+                        <div className="flex-entre" style={{marginBottom: '2rem'}}>
+                            <h2 className="texte-2xl texte-gras">{planSelectionne ? "Modifier l'Offre" : "Nouvelle Offre"}</h2>
+                            <button className="bouton bouton--carre bouton--gris-clair" onClick={() => setModalOuverte(false)}>
+                                <XCircle size={20} />
+                            </button>
                         </div>
+
                         <form onSubmit={handleSoumettre}>
-                            <div className="modal__corps">
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
                                 <div className="champ">
-                                    <label className="champ__label">Nom du plan</label>
+                                    <label className="champ__label">Nom de l'offre</label>
                                     <input 
                                         type="text" 
-                                        className="champ__input"
+                                        className="search-input"
+                                        style={{paddingLeft: '1.25rem'}}
                                         value={formulaire.nom}
                                         onChange={(e) => setFormulaire({...formulaire, nom: e.target.value})}
                                         required
-                                        placeholder="ex: Licence Annuelle"
+                                        placeholder="ex: Licence Pro Annuelle"
                                     />
                                 </div>
-                                <div className="champ">
-                                    <label className="champ__label">Identifiant unique (Slug)</label>
-                                    <input 
-                                        type="text" 
-                                        className="champ__input"
-                                        value={formulaire.slug}
-                                        onChange={(e) => setFormulaire({...formulaire, slug: e.target.value})}
-                                        placeholder="laissé vide pour générer auto"
-                                    />
-                                </div>
-                                <div className="grille" style={{ gridTemplateColumns: '1fr 1fr', gap: 'var(--espace-4)' }}>
+
+                                <div className="grille" style={{gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem'}}>
                                     <div className="champ">
                                         <label className="champ__label">Prix (FCFA)</label>
-                                        <input 
-                                            type="number" 
-                                            className="champ__input"
-                                            value={formulaire.prix}
-                                            onChange={(e) => setFormulaire({...formulaire, prix: e.target.value})}
-                                            required
-                                            min="0"
-                                        />
+                                        <div style={{position: 'relative'}}>
+                                            <input 
+                                                type="number" 
+                                                className="search-input"
+                                                style={{paddingLeft: '1.25rem'}}
+                                                value={formulaire.prix}
+                                                onChange={(e) => setFormulaire({...formulaire, prix: e.target.value})}
+                                                required
+                                                min="0"
+                                            />
+                                        </div>
                                     </div>
                                     <div className="champ">
-                                        <label className="champ__label">Durée (mois)</label>
+                                        <label className="champ__label">Durée (Mois)</label>
                                         <input 
                                             type="number" 
-                                            className="champ__input"
+                                            className="search-input"
+                                            style={{paddingLeft: '1.25rem'}}
                                             value={formulaire.duree_mois}
                                             onChange={(e) => setFormulaire({...formulaire, duree_mois: e.target.value})}
                                             required
@@ -278,33 +294,36 @@ export default function PageGestionPlans() {
                                         />
                                     </div>
                                 </div>
+
                                 <div className="champ">
-                                    <label className="champ__label">Description</label>
+                                    <label className="champ__label">Description de l'offre</label>
                                     <textarea 
-                                        className="champ__input"
+                                        className="search-input"
+                                        style={{paddingLeft: '1.25rem', height: '100px', resize: 'none'}}
                                         value={formulaire.description}
                                         onChange={(e) => setFormulaire({...formulaire, description: e.target.value})}
-                                        rows="3"
-                                        placeholder="Détails du plan..."
+                                        placeholder="Décrivez les avantages de ce plan..."
                                     ></textarea>
                                 </div>
-                                <div className="flex" style={{ gap: 'var(--espace-2)', marginTop: 'var(--espace-2)' }}>
+
+                                <div className="flex" style={{gap: '0.75rem', alignItems: 'center', background: '#f8fafc', padding: '1rem', borderRadius: '14px'}}>
                                     <input 
                                         type="checkbox" 
                                         id="plan_actif"
                                         checked={formulaire.actif}
                                         onChange={(e) => setFormulaire({...formulaire, actif: e.target.checked})}
-                                        style={{ width: '18px', height: '18px', accentColor: 'var(--couleur-primaire)' }}
+                                        style={{width: '20px', height: '20px', cursor: 'pointer'}}
                                     />
-                                    <label htmlFor="plan_actif" className="texte-sm texte-gras">Plan actif</label>
+                                    <label htmlFor="plan_actif" style={{cursor: 'pointer', fontWeight: '600', color: '#1e293b'}}>Activer cette offre immédiatement</label>
                                 </div>
                             </div>
-                            <div className="modal__pied">
-                                <button type="button" className="bouton bouton--fantome" onClick={() => setModalOuverte(false)}>
+
+                            <div className="flex" style={{marginTop: '2.5rem', gap: '1rem'}}>
+                                <button type="button" className="bouton bouton--fantome" style={{flex: 1}} onClick={() => setModalOuverte(false)}>
                                     Annuler
                                 </button>
-                                <button type="submit" className="bouton bouton--primaire">
-                                    {planSelectionne ? 'Enregistrer' : 'Créer'}
+                                <button type="submit" className="bouton bouton--primaire" style={{flex: 2}}>
+                                    {planSelectionne ? 'Sauvegarder les modifications' : 'Créer le plan'}
                                 </button>
                             </div>
                         </form>
@@ -314,8 +333,8 @@ export default function PageGestionPlans() {
 
             <ModaleConfirmation 
                 ouverte={modalConfirmation}
-                titre="Supprimer le plan"
-                message={`Êtes-vous sûr de vouloir supprimer le plan "${planSelectionne?.nom}" ?`}
+                titre="Supprimer l'offre"
+                message={`Êtes-vous sûr de vouloir supprimer le plan "${planSelectionne?.nom}" ? Cette action est irréversible.`}
                 surConfirmer={handleSupprimer}
                 surAnnuler={() => setModalConfirmation(false)}
             />
