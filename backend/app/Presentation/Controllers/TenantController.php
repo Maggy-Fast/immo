@@ -79,7 +79,14 @@ class TenantController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
+        $donnees = $request->all();
+        
+        // Conversion des chaînes vides en null pour la validation
+        if (isset($donnees['id_plan']) && $donnees['id_plan'] === '') {
+            $donnees['id_plan'] = null;
+        }
+
+        $validator = Validator::make($donnees, [
             'nom' => 'sometimes|string|max:255',
             'domaine' => 'sometimes|string|max:255|unique:tenants,domaine,' . $id,
             'id_plan' => 'nullable|exists:plans,id',
@@ -89,12 +96,13 @@ class TenantController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
+                'message' => 'Erreur de validation des données',
                 'errors' => $validator->errors()
             ], 422);
         }
 
         try {
-            $tenant = $this->serviceTenant->modifierTenant($id, $request->all());
+            $tenant = $this->serviceTenant->modifierTenant($id, $donnees);
             return response()->json([
                 'success' => true,
                 'message' => 'Tenant mis à jour avec succès',
