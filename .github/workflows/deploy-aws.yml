@@ -31,11 +31,12 @@ jobs:
         run: |
           cd backend
           composer install --no-interaction --prefer-dist
+          php artisan config:clear --ansi
 
       - name: Run tests
         run: |
           cd backend
-          php artisan test --env=testing
+          php artisan test --env=testing --ansi
 
   build-and-deploy:
     needs: test
