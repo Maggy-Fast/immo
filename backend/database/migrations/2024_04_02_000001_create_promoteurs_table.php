@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('adresse')->nullable();
             $table->string('cin')->nullable();
             $table->string('photo')->nullable();
-            $table->foreignId('id_utilisateur')->nullable()->constrained('utilisateurs')->onDelete('set null');
+            $table->foreignId('id_utilisateur')->nullable()->constrained('users')->onDelete('set null');
             $table->string('licence')->nullable(); // Numéro de licence promoteur
             $table->string('registre_commerce')->nullable(); // Document registre de commerce
             $table->string('statut_juridique')->nullable(); // SARL, SA, EURL, etc.
