@@ -35,8 +35,6 @@ Route::get('/test', function () {
     return response()->json(['message' => 'Test successful']);
 });
 
-Route::get('/promoteurs-pub', [PromoteurController::class, 'index']);
-
 // Routes publiques
 Route::post('/auth/connexion', [AuthController::class, 'connexion']);
 

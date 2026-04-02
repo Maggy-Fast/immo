@@ -25,10 +25,9 @@ class PromoteurController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json(['message' => 'DEBUG: Controller reached!']);
         try {
             $terme = $request->query('recherche');
-        $promoteurs = $terme ? $this->servicePromoteur->rechercher($terme) : $this->servicePromoteur->lister();
+            $promoteurs = $terme ? $this->servicePromoteur->rechercher($terme) : $this->servicePromoteur->lister();
 
         return response()->json([
             'donnees' => $promoteurs->items(),
