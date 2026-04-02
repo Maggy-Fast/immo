@@ -25,11 +25,9 @@ class PromoteurController extends Controller
      */
     public function index(Request $request)
     {
+        return response()->json(['message' => 'DEBUG: Controller reached!']);
         try {
-        $validate = $request->validate([
-            'recherche' => 'nullable|string|max:255',
-        ]);
-        $terme = $validate['recherche'];
+            $terme = $request->query('recherche');
         $promoteurs = $terme ? $this->servicePromoteur->rechercher($terme) : $this->servicePromoteur->lister();
 
         return response()->json([
