@@ -5,6 +5,7 @@ namespace App\Presentation\Controllers;
 use App\Application\Services\ServicePromoteur;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -40,6 +41,7 @@ class PromoteurController extends Controller
             ],
         ]);
     } catch (\Exception $e) {
+        Log::error($e->getMessage());
         return response()->json([
             'message' => 'Erreur lors de la récupération des promoteurs',
             'erreur' => $e->getMessage()
