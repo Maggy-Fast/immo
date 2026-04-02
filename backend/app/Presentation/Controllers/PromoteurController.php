@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Contrôleur de présentation pour les promoteurs
+ * Controleur de presentation pour les promoteurs
  */
 class PromoteurController extends Controller
 {
@@ -21,7 +21,7 @@ class PromoteurController extends Controller
     }
 
     /**
-     * GET /api/promoteurs
+     * Lister les promoteurs avec pagination et recherche optionnelle
      */
     public function index(Request $request)
     {
@@ -29,145 +29,139 @@ class PromoteurController extends Controller
             $terme = $request->query('recherche');
             $promoteurs = $terme ? $this->servicePromoteur->rechercher($terme) : $this->servicePromoteur->lister();
 
-        return response()->json([
-            'donnees' => $promoteurs->items(),
-            'meta' => [
-                'page_courante' => $promoteurs->currentPage(),
-                'total_pages' => $promoteurs->lastPage(),
-                'total' => $promoteurs->total(),
-            ],
-        ]);
-    } catch (\Throwable $e) {
-        Log::error($e->getMessage());
-        return response()->json([
-            'message' => 'Erreur lors de la récupération des promoteurs',
-            'erreur' => $e->getMessage()
-        ], 500);
-    }
-    }
-
-    /**
-     * POST /api/promoteurs
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'nom' => 'required|string|max:255',
-            'telephone' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'adresse' => 'nullable|string|max:500',
-            'cin' => 'nullable|string|max:50',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'licence' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'registre_commerce' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'statut_juridique' => 'nullable|string|max:100',
-            'id_utilisateur' => 'nullable|exists:utilisateurs,id',
-        ]);
-
-        if ($validator->fails()) {
             return response()->json([
-                'message' => 'Données invalides',
-                'erreurs' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            $promoteur = $this->servicePromoteur->creer($request->all());
-
-            return response()->json([
-                'message' => 'Promoteur créé avec succès',
-                'donnees' => $promoteur
-            ], 201);
+                'donnees' => $promoteurs->items(),
+                'meta' => [
+                    'page_courante' => $promoteurs->currentPage(),
+                    'total_pages' => $promoteurs->lastPage(),
+                    'total' => $promoteurs->total(),
+                ],
+            ]);
         } catch (\Throwable $e) {
+            Log::error($e->getMessage());
             return response()->json([
-                'message' => 'Erreur lors de la création du promoteur',
+                'message' => 'Erreur lors de la recuperation des promoteurs',
                 'erreur' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * GET /api/promoteurs/{id}
+     * Creer un nouveau promoteur
+     */
+    public function store(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'nom' => 'required|string|max:255',
+                'id_tenant' => 'nullable|exists:tenants,id',
+                'email' => 'nullable|email|max:255',
+                'telephone' => 'required|string|max:20',
+                'adresse' => 'nullable|string',
+                'cin' => 'nullable|string|max:20',
+                'photo' => 'nullable|image|max:2048',
+                'id_utilisateur' => 'nullable|exists:users,id',
+                'licence' => 'nullable|file|max:5120',
+                'registre_commerce' => 'nullable|file|max:5120',
+                'statut_juridique' => 'nullable|string|max:100',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Donnees invalides',
+                    'erreurs' => $validator->errors()
+                ], 422);
+            }
+
+            $promoteur = $this->servicePromoteur->creer($request->all());
+
+            return response()->json([
+                'message' => 'Promoteur cree avec succes',
+                'donnees' => $promoteur
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Erreur lors de la creation du promoteur',
+                'erreur' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Afficher les details d'un promoteur
      */
     public function show($id)
     {
         try {
             $promoteur = $this->servicePromoteur->obtenirParId($id);
-
-            return response()->json([
-                'donnees' => $promoteur
-            ]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'message' => 'Promoteur non trouvé'
-            ], 404);
+            if (!$promoteur) {
+                return response()->json([
+                    'message' => 'Promoteur non trouve'
+                ], 404);
+            }
+            return response()->json($promoteur);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Erreur lors de la récupération du promoteur',
+                'message' => 'Erreur lors de la recuperation du promoteur',
                 'erreur' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * PUT /api/promoteurs/{id}
+     * Mettre a jour un promoteur
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'nom' => 'sometimes|required|string|max:255',
-            'telephone' => 'sometimes|required|string|max:20',
-            'email' => 'sometimes|nullable|email|max:255',
-            'adresse' => 'sometimes|nullable|string|max:500',
-            'cin' => 'sometimes|nullable|string|max:50',
-            'photo' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'licence' => 'sometimes|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'registre_commerce' => 'sometimes|nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'statut_juridique' => 'sometimes|nullable|string|max:100',
-            'id_utilisateur' => 'sometimes|nullable|exists:utilisateurs,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Données invalides',
-                'erreurs' => $validator->errors()
-            ], 422);
-        }
-
         try {
-            $promoteur = $this->servicePromoteur->mettreAJour($id, $request->all());
+            $validator = Validator::make($request->all(), [
+                'nom' => 'sometimes|required|string|max:255',
+                'email' => 'nullable|email|max:255',
+                'telephone' => 'sometimes|required|string|max:20',
+                'adresse' => 'nullable|string',
+                'cin' => 'nullable|string|max:20',
+                'photo' => 'nullable|image|max:2048',
+                'id_utilisateur' => 'nullable|exists:users,id',
+                'licence' => 'nullable|file|max:5120',
+                'registre_commerce' => 'nullable|file|max:5120',
+                'statut_juridique' => 'nullable|string|max:100',
+            ]);
 
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Donnees invalides',
+                    'erreurs' => $validator->errors()
+                ], 422);
+            }
+
+            $promoteur = $this->servicePromoteur->mettreAJour($id, $request->all());
             return response()->json([
-                'message' => 'Promoteur mis à jour avec succès',
+                'message' => 'Promoteur mis a jour avec succes',
                 'donnees' => $promoteur
             ]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'message' => 'Promoteur non trouvé'
-            ], 404);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Erreur lors de la mise à jour du promoteur',
+                'message' => 'Erreur lors de la mise a jour du promoteur',
                 'erreur' => $e->getMessage()
             ], 500);
         }
     }
 
     /**
-     * DELETE /api/promoteurs/{id}
+     * Supprimer un promoteur
      */
     public function destroy($id)
     {
         try {
-            $this->servicePromoteur->supprimer($id);
-
+            $resultat = $this->servicePromoteur->supprimer($id);
+            if (!$resultat) {
+                return response()->json([
+                    'message' => 'Promoteur non trouve'
+                ], 404);
+            }
             return response()->json([
-                'message' => 'Promoteur supprimé avec succès'
+                'message' => 'Promoteur supprime avec succes'
             ]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'message' => 'Promoteur non trouvé'
-            ], 404);
         } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Erreur lors de la suppression du promoteur',
