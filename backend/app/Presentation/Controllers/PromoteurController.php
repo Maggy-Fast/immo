@@ -40,7 +40,7 @@ class PromoteurController extends Controller
                 'total' => $promoteurs->total(),
             ],
         ]);
-    } catch (\Exception $e) {
+    } catch (\Throwable $e) {
         Log::error($e->getMessage());
         return response()->json([
             'message' => 'Erreur lors de la récupération des promoteurs',
@@ -81,7 +81,7 @@ class PromoteurController extends Controller
                 'message' => 'Promoteur créé avec succès',
                 'donnees' => $promoteur
             ], 201);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Erreur lors de la création du promoteur',
                 'erreur' => $e->getMessage()
@@ -104,7 +104,7 @@ class PromoteurController extends Controller
             return response()->json([
                 'message' => 'Promoteur non trouvé'
             ], 404);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Erreur lors de la récupération du promoteur',
                 'erreur' => $e->getMessage()
@@ -148,7 +148,7 @@ class PromoteurController extends Controller
             return response()->json([
                 'message' => 'Promoteur non trouvé'
             ], 404);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Erreur lors de la mise à jour du promoteur',
                 'erreur' => $e->getMessage()
@@ -171,7 +171,7 @@ class PromoteurController extends Controller
             return response()->json([
                 'message' => 'Promoteur non trouvé'
             ], 404);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Erreur lors de la suppression du promoteur',
                 'erreur' => $e->getMessage()
