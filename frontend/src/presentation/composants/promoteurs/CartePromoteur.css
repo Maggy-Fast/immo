@@ -1,0 +1,84 @@
+.carte-promoteur {
+    background: var(--couleur-blanc);
+    border: 1px solid var(--couleur-gris-tres-clair);
+    border-radius: var(--rayon-lg);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.carte-promoteur:hover {
+    box-shadow: var(--ombre-md);
+    transform: translateY(-2px);
+}
+
+.carte-promoteur__entete {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--couleur-gris-tres-clair);
+}
+
+.carte-promoteur__info-principale {
+    flex: 1;
+    min-width: 0;
+}
+
+.carte-promoteur__nom {
+    font-size: var(--taille-lg);
+    font-weight: var(--poids-semibold);
+    color: var(--couleur-noir);
+    margin-bottom: 0.375rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.carte-promoteur__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    background: var(--couleur-fond);
+    border-radius: 12px;
+    font-size: var(--taille-xs);
+    font-weight: var(--poids-semibold);
+    color: var(--couleur-gris-sombre);
+}
+
+.carte-promoteur__corps {
+    margin-bottom: 1rem;
+}
+
+.carte-promoteur__contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.carte-promoteur__ligne {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--couleur-gris-sombre);
+    font-size: var(--taille-sm);
+}
+
+.carte-promoteur__ligne svg {
+    color: var(--couleur-gris);
+    flex-shrink: 0;
+}
+
+.carte-promoteur__ligne span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.carte-promoteur__actions {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--couleur-gris-tres-clair);
+}

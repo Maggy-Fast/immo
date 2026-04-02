@@ -1,18 +1,23 @@
 import React, { useState } from 'react';
-import { Plus, Search, Loader2 } from 'lucide-react';
+import { Plus, Search, Loader2, Users, AlertCircle } from 'lucide-react';
 import utiliserPromoteurs from '../../application/hooks/utiliserPromoteurs';
-import CartePromoteur from './CartePromoteur';
-import FormulairePromoteur from './FormulairePromoteur';
+import CartePromoteur from '../composants/promoteurs/CartePromoteur';
+import FormulairePromoteur from '../composants/promoteurs/FormulairePromoteur';
 import { useToast } from '../composants/communs/ToastContext';
 import { Modale } from '../composants/communs';
+import './PagePromoteurs.css';
 
 const PagePromoteurs = () => {
+  const [filtres, setFiltres] = useState({ recherche: '' });
   const [modalOuverte, setModalOuverte] = useState(false);
   const [promoteurEnEdition, setPromoteurEnEdition] = useState(null);
-  const [termeRecherche, setTermeRecherche] = useState('');
   const { notifier } = useToast();
 
-  const { promoteurs, chargement, erreur, lister, supprimer } = utiliserPromoteurs();
+  const { promoteurs, chargement, erreur, lister, supprimer } = utiliserPromoteurs(filtres);
+
+  const gererChangementRecherche = (valeur) => {
+    setFiltres((prev) => ({ ...prev, recherche: valeur }));
+  };
 
   const ouvrirModalCreation = () => {
     setPromoteurEnEdition(null);
@@ -45,64 +50,79 @@ const PagePromoteurs = () => {
     }
   };
 
-  const gererRecherche = (terme) => {
-    setTermeRecherche(terme);
-    lister({ recherche: terme });
-  };
-
   return (
     <div className="page-promoteurs">
-      <div className="page__en-tete">
-        <div className="page__titre">
-          <h1>Promoteurs</h1>
-          <p>Gestion des promoteurs immobiliers</p>
+      {/* En-tête */}
+      <div className="page-promoteurs__entete">
+        <div>
+          <h1 className="page-promoteurs__titre">Gestion des Promoteurs</h1>
+          <p className="page-promoteurs__description">
+            Supervisez vos partenaires immobiliers et leurs documents officiels.
+          </p>
         </div>
-        
-        <div className="page__actions">
-          <div className="entete__recherche">
-            <Search size={16} className="entete__recherche-icone" />
-            <input
-              type="text"
-              value={termeRecherche}
-              onChange={(e) => gererRecherche(e.target.value)}
-              placeholder="Rechercher un promoteur..."
-              className="entete__recherche-input"
-            />
-          </div>
-          
-          <button
-            className="bouton bouton--primaire"
-            onClick={ouvrirModalCreation}
-          >
-            <Plus size={18} />
-            Nouveau promoteur
-          </button>
+        <button
+          className="bouton bouton--primaire"
+          onClick={ouvrirModalCreation}
+        >
+          <Plus size={20} />
+          Nouveau promoteur
+        </button>
+      </div>
+
+      {/* Barre de recherche */}
+      <div className="page-promoteurs__barre-recherche">
+        <div className="champ-recherche">
+          <Search size={20} className="champ-recherche__icone" />
+          <input
+            type="text"
+            value={filtres.recherche}
+            onChange={(e) => gererChangementRecherche(e.target.value)}
+            placeholder="Rechercher par nom, téléphone..."
+            className="champ-recherche__input"
+          />
         </div>
       </div>
 
-      <div className="page__contenu">
-        {chargement ? (
-          <div className="chargement">
-            <Loader2 className="animate-spin" />
+      {/* Contenu */}
+      <div className="page-promoteurs__contenu">
+        {chargement && (
+          <div className="page-promoteurs__chargement">
+            <Loader2 size={24} className="chargement__spinner" />
             <p>Chargement des promoteurs...</p>
           </div>
-        ) : erreur ? (
-          <div className="erreur">
-            <p>{typeof erreur === 'string' ? erreur : erreur.message || 'Une erreur est survenue lors du chargement des promoteurs.'}</p>
-          </div>
-        ) : promoteurs.length === 0 ? (
-          <div className="vide">
-            <p>Aucun promoteur trouvé.</p>
-            <button
-              className="bouton bouton--primaire"
-              onClick={ouvrirModalCreation}
-            >
-              <Plus size={18} />
-              Ajouter un promoteur
+        )}
+
+        {erreur && (
+          <div className="page-promoteurs__erreur">
+            <p>Une erreur est survenue lors du chargement des promoteurs.</p>
+            <button className="bouton bouton--secondaire" onClick={() => lister()}>
+              Réessayer
             </button>
           </div>
-        ) : (
-          <div className="promoteurs__grid">
+        )}
+
+        {!chargement && !erreur && promoteurs.length === 0 && (
+          <div className="page-promoteurs__vide">
+            <Users size={48} style={{ color: 'var(--couleur-gris-clair)', marginBottom: 'var(--espace-4)' }} />
+            <p>Aucun promoteur trouvé.</p>
+            {filtres.recherche ? (
+              <button className="bouton bouton--secondaire" onClick={() => gererChangementRecherche('')}>
+                Réinitialiser la recherche
+              </button>
+            ) : (
+              <button
+                className="bouton bouton--primaire"
+                onClick={ouvrirModalCreation}
+              >
+                <Plus size={20} />
+                Ajouter votre premier promoteur
+              </button>
+            )}
+          </div>
+        )}
+
+        {!chargement && !erreur && promoteurs.length > 0 && (
+          <div className="page-promoteurs__grille">
             {promoteurs.map((promoteur) => (
               <CartePromoteur
                 key={promoteur.id}
@@ -117,7 +137,7 @@ const PagePromoteurs = () => {
 
       {modalOuverte && (
         <Modale
-          titre={promoteurEnEdition ? 'Modifier le promoteur' : 'Nouveau promoteur'}
+          titre={promoteurEnEdition ? 'Modifier le partenaire' : 'Nouveau partenaire immobilier'}
           surFermer={fermerModal}
           taille="grand"
         >

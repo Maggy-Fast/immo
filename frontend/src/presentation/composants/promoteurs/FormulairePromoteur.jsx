@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import utiliserPromoteurs from '../../application/hooks/utiliserPromoteurs';
-import { Formulaire, ChampFormulaire, ActionsFormulaire } from '../composants/communs';
+import utiliserPromoteurs from '../../../application/hooks/utiliserPromoteurs';
+import { Formulaire, ChampFormulaire, ActionsFormulaire } from '../communs';
 
 const FormulairePromoteur = ({ promoteur, surAnnuler, surSoumission }) => {
   const [donnees, setDonnees] = useState({
@@ -65,7 +65,7 @@ const FormulairePromoteur = ({ promoteur, surAnnuler, surSoumission }) => {
       nouveauxErreurs.telephone = 'Le téléphone est requis';
     }
     
-    setErreurs(nouveuxErreurs);
+    setErreurs(nouveauxErreurs);
     return Object.keys(nouveauxErreurs).length === 0;
   };
 

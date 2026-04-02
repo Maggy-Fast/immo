@@ -24,7 +24,11 @@ class PromoteurController extends Controller
      */
     public function index(Request $request)
     {
-        $terme = $request->get('recherche');
+        try {
+        $validate = $request->validate([
+            'recherche' => 'nullable|string|max:255',
+        ]);
+        $terme = $validate['recherche'];
         $promoteurs = $terme ? $this->servicePromoteur->rechercher($terme) : $this->servicePromoteur->lister();
 
         return response()->json([
@@ -35,6 +39,12 @@ class PromoteurController extends Controller
                 'total' => $promoteurs->total(),
             ],
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Erreur lors de la récupération des promoteurs',
+            'erreur' => $e->getMessage()
+        ], 500);
+    }
     }
 
     /**

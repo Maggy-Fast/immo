@@ -108,8 +108,7 @@ function SectionNavigation({ liens, reduite, labelSection }) {
 /**
  * Barre Latérale — Navigation principale avec dispatching par rôle
  */
-export default function BarreLaterale() {
-    const [reduite, definirReduite] = useState(false);
+export default function BarreLaterale({ reduite, auBasculement }) {
     const { utilisateur, deconnecter } = utiliserAuth();
     const { isSuperAdmin, roleLibelle } = usePermissions();
 
@@ -135,7 +134,7 @@ export default function BarreLaterale() {
             {/* Toggle */}
             <button
                 className="sidebar__toggle"
-                onClick={() => definirReduite(!reduite)}
+                onClick={auBasculement}
                 title={reduite ? 'Agrandir' : 'Réduire'}
             >
                 {reduite ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}

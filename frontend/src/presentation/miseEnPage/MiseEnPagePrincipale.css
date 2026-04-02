@@ -10,14 +10,16 @@
 
 .mise-en-page__contenu {
     flex: 1;
-    margin-left: var(--largeur-sidebar);
+    margin-left: var(--largeur-sidebar, 260px);
     display: flex;
     flex-direction: column;
-    transition: margin-left var(--transition-base);
+    width: calc(100% - var(--largeur-sidebar, 260px));
+    transition: all var(--transition-base, 200ms);
 }
 
 .mise-en-page__contenu--reduit {
-    margin-left: var(--largeur-sidebar-reduite);
+    margin-left: var(--largeur-sidebar-reduite, 72px);
+    width: calc(100% - var(--largeur-sidebar-reduite, 72px));
 }
 
 .mise-en-page__principal {

@@ -1,0 +1,93 @@
+/* ============================================
+   PAGE PROMOTEURS — Design Harmonisé
+   ============================================ */
+
+.page-promoteurs {
+    padding: var(--espace-6);
+    max-width: var(--largeur-max-contenu);
+    margin: 0 auto;
+    background: var(--couleur-fond);
+    min-height: 100vh;
+}
+
+.page-promoteurs__entete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--espace-6);
+    gap: var(--espace-4);
+}
+
+.page-promoteurs__titre {
+    font-size: var(--taille-2xl);
+    font-weight: var(--poids-bold);
+    color: var(--couleur-noir);
+    margin-bottom: var(--espace-1);
+}
+
+.page-promoteurs__description {
+    color: var(--couleur-gris);
+    font-size: var(--taille-sm);
+    margin: 0;
+}
+
+.page-promoteurs__barre-recherche {
+    margin-bottom: var(--espace-5);
+}
+
+.page-promoteurs__contenu {
+    min-height: 400px;
+}
+
+.page-promoteurs__grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--espace-4);
+}
+
+.page-promoteurs__chargement,
+.page-promoteurs__erreur,
+.page-promoteurs__vide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--espace-12);
+    text-align: center;
+    background: var(--couleur-blanc);
+    border: 2px dashed var(--couleur-gris-clair);
+    border-radius: var(--rayon-lg);
+}
+
+.page-promoteurs__chargement p,
+.page-promoteurs__erreur p,
+.page-promoteurs__vide p {
+    color: var(--couleur-gris);
+    margin-bottom: var(--espace-4);
+    font-size: var(--taille-sm);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .page-promoteurs {
+        padding: var(--espace-4);
+    }
+
+    .page-promoteurs__entete {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--espace-3);
+    }
+
+    .page-promoteurs__entete button {
+        width: 100%;
+    }
+
+    .page-promoteurs__titre {
+        font-size: var(--taille-xl);
+    }
+
+    .page-promoteurs__grille {
+        grid-template-columns: 1fr;
+    }
+}
