@@ -55,7 +55,7 @@ class ServiceTenant
                 'role' => 'admin',
             ]);
 
-            // 4. Envoyer l'email de bienvenue
+            // 4. Envoyer l'email de bienvenue (non bloquant)
             try {
                 Mail::to($donnees['email'])->send(new BienvenueTenant(
                     $donnees['nom'],
@@ -63,7 +63,12 @@ class ServiceTenant
                     $donnees['admin_password']
                 ));
             } catch (Exception $e) {
-                Log::error("Erreur envoi email bienvenue : " . $e->getMessage());
+                // L'email est optionnel - on ne bloque pas la création du tenant
+                try {
+                    Log::error("Erreur envoi email bienvenue : " . $e->getMessage());
+                } catch (Exception $logException) {
+                    // Le fichier de log est inaccessible - on ignore silencieusement
+                }
             }
 
             return $tenant;

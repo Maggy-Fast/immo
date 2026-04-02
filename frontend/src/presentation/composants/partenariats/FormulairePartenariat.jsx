@@ -10,7 +10,8 @@ import { Modale, Formulaire, ChampFormulaire, ActionsFormulaire } from '../commu
 
 export default function FormulairePartenariat({
   partenariat = null,
-  proprietaires = [],
+  promoteurs = [], // NOUVEAU: Liste des promoteurs
+  proprietaires = [], // NOUVEAU: Liste des propriétaires
   lotissements = [],
   surSoumettre,
   surAnnuler,
@@ -78,6 +79,15 @@ export default function FormulairePartenariat({
       return;
     }
 
+    // Vérifier que le promoteur et le propriétaire sont différents
+    if (formulaire.idPromoteur === formulaire.idProprietaire) {
+      setErreurs({
+        idPromoteur: 'Le promoteur et le propriétaire doivent être différents',
+        idProprietaire: 'Le promoteur et le propriétaire doivent être différents',
+      });
+      return;
+    }
+
     try {
       await surSoumettre(formulaire);
     } catch (error) {
@@ -90,9 +100,14 @@ export default function FormulairePartenariat({
     ...lotissements.map((l) => ({ valeur: l.id, label: l.nom })),
   ];
 
+  const optionsPromoteurs = [
+    { valeur: '', label: 'Sélectionner un promoteur' },
+    ...promoteurs.map((p) => ({ valeur: p.id, label: `${p.nom} ${p.telephone ? `(${p.telephone})` : ''}` })),
+  ];
+
   const optionsProprietaires = [
-    { valeur: '', label: 'Sélectionner' },
-    ...proprietaires.map((p) => ({ valeur: p.id, label: p.nom })),
+    { valeur: '', label: 'Sélectionner un propriétaire' },
+    ...proprietaires.map((p) => ({ valeur: p.id, label: `${p.nom} ${p.telephone ? `(${p.telephone})` : ''}` })),
   ];
 
   return (
@@ -119,20 +134,20 @@ export default function FormulairePartenariat({
 
         <ChampFormulaire
           id="idPromoteur"
-          label="Promoteur"
+          label="Promoteur *"
           type="select"
           valeur={formulaire.idPromoteur}
           onChange={(val) => gererChangement('idPromoteur', val)}
           erreur={erreurs.idPromoteur}
           required
-          options={optionsProprietaires}
+          options={optionsPromoteurs}
           icone={User}
           disabled={enCours}
         />
 
         <ChampFormulaire
           id="idProprietaire"
-          label="Propriétaire"
+          label="Propriétaire *"
           type="select"
           valeur={formulaire.idProprietaire}
           onChange={(val) => gererChangement('idProprietaire', val)}

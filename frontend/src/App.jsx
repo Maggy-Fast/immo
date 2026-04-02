@@ -7,6 +7,7 @@ import PageInscription from './presentation/pages/PageInscription';
 import PageTableauDeBord from './presentation/pages/PageTableauDeBord';
 import PageBiens from './presentation/pages/PageBiens';
 import PageProprietaires from './presentation/pages/PageProprietaires';
+import PagePromoteurs from './presentation/pages/PagePromoteurs';
 import PageLocataires from './presentation/pages/PageLocataires';
 import PageContrats from './presentation/pages/PageContrats';
 import PageLoyers from './presentation/pages/PageLoyers';
@@ -124,6 +125,7 @@ export default function App() {
                 <Route index element={<PageTableauDeBord />} />
                 <Route path="biens" element={<PageBiens />} />
                 <Route path="proprietaires" element={<PageProprietaires />} />
+                <Route path="promoteurs" element={<PagePromoteurs />} />
                 <Route path="locataires" element={<PageLocataires />} />
                 <Route path="contrats" element={<PageContrats />} />
                 <Route path="loyers" element={<PageLoyers />} />

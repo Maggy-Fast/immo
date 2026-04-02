@@ -25,7 +25,8 @@ import {
     Globe,
     UserCog,
     Activity,
-    ScrollText
+    ScrollText,
+    Briefcase
 } from 'lucide-react';
 import './BarreLaterale.css';
 
@@ -36,6 +37,7 @@ const LIENS_IMMOBILIER = [
     { chemin: '/', icone: LayoutDashboard, libelle: 'Tableau de bord' },
     { chemin: '/biens', icone: Building2, libelle: 'Biens' },
     { chemin: '/proprietaires', icone: Users, libelle: 'Propriétaires' },
+    { chemin: '/promoteurs', icone: Briefcase, libelle: 'Promoteurs' },
     { chemin: '/locataires', icone: UserCheck, libelle: 'Locataires' },
     { chemin: '/contrats', icone: FileText, libelle: 'Contrats' },
     { chemin: '/loyers', icone: DollarSign, libelle: 'Loyers' },

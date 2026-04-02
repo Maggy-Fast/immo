@@ -42,7 +42,7 @@ class PartenariatController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_promoteur' => 'required|exists:proprietaires,id',
+            'id_promoteur' => 'required|exists:promoteurs,id',
             'id_proprietaire' => 'required|exists:proprietaires,id',
             'id_lotissement' => 'required|exists:lotissements,id',
             'ticket_entree' => 'required|numeric|min:0',

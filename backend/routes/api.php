@@ -2,6 +2,7 @@
 
 use App\Presentation\Controllers\AuthController;
 use App\Presentation\Controllers\BienController;
+use App\Presentation\Controllers\PromoteurController;
 use App\Presentation\Controllers\ProprietaireController;
 use App\Presentation\Controllers\LocataireController;
 use App\Presentation\Controllers\ContratController;
@@ -23,8 +24,8 @@ use App\Presentation\Controllers\DepenseController;
 use App\Http\Controllers\NotificationWhatsappController;
 use App\Presentation\Controllers\TenantController;
 use App\Presentation\Controllers\JournalAuditController;
-use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Route;
 // Root API
 Route::get('/health', function () {
     return response()->json(['status' => 'ok', 'message' => 'MaggyFast API is running']);
@@ -49,6 +50,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/biens/{id}', [BienController::class, 'show']);
     Route::put('/biens/{id}', [BienController::class, 'update']);
     Route::delete('/biens/{id}', [BienController::class, 'destroy']);
+
+    // Promoteurs
+    Route::get('/promoteurs', [PromoteurController::class, 'index']);
+    Route::post('/promoteurs', [PromoteurController::class, 'store']);
+    Route::get('/promoteurs/{id}', [PromoteurController::class, 'show']);
+    Route::put('/promoteurs/{id}', [PromoteurController::class, 'update']);
+    Route::delete('/promoteurs/{id}', [PromoteurController::class, 'destroy']);
 
     // Propriétaires
     Route::get('/proprietaires', [ProprietaireController::class, 'index']);

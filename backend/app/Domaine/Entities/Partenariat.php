@@ -34,7 +34,7 @@ class Partenariat extends Model
 
     public function promoteur(): BelongsTo
     {
-        return $this->belongsTo(Proprietaire::class, 'id_promoteur');
+        return $this->belongsTo(Promoteur::class, 'id_promoteur');
     }
 
     public function proprietaire(): BelongsTo
