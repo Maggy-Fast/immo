@@ -23,7 +23,12 @@ const FormulairePromoteur = ({ promoteur, surAnnuler, surSoumission }) => {
   const { creer, modifier } = utiliserPromoteurs();
 
   const mutation = useMutation({
-    mutationFn: promoteur ? (formData) => modifier(promoteur.id, formData) : creer,
+    mutationFn: (variables) => {
+      if (promoteur) {
+        return modifier({ id: promoteur.id, donnees: variables });
+      }
+      return creer(variables);
+    },
     onSuccess: () => {
       surSoumission();
     },
@@ -76,31 +81,16 @@ const FormulairePromoteur = ({ promoteur, surAnnuler, surSoumission }) => {
       return;
     }
 
-    // Créer FormData pour gérer les fichiers
-    const formData = new FormData();
-    
-    // Ajouter tous les champs texte
-    formData.append('nom', donnees.nom);
-    formData.append('telephone', donnees.telephone);
-    formData.append('email', donnees.email || '');
-    formData.append('adresse', donnees.adresse || '');
-    formData.append('cin', donnees.cin || '');
-    formData.append('licence', donnees.licence || '');
-    formData.append('registre_commerce', donnees.registre_commerce || '');
-    formData.append('statut_juridique', donnees.statut_juridique || '');
-    
-    // Ajouter les fichiers
-    if (donnees.photo instanceof File) {
-      formData.append('photo', donnees.photo);
-    }
-    if (donnees.licence_file instanceof File) {
-      formData.append('licence', donnees.licence_file);
-    }
-    if (donnees.registre_commerce_file instanceof File) {
-      formData.append('registre_commerce', donnees.registre_commerce_file);
-    }
+    // On prépare les données pour le service
+    // Le service s'attend à ce que 'licence' et 'registre_commerce' soient les champs contenant les fichiers ou numéros
+    const donneesSoumission = {
+      ...donnees,
+      // Si un fichier est présent dans licence_file, on l'utilise pour 'licence'
+      licence: donnees.licence_file instanceof File ? donnees.licence_file : donnees.licence,
+      registre_commerce: donnees.registre_commerce_file instanceof File ? donnees.registre_commerce_file : donnees.registre_commerce,
+    };
 
-    mutation.mutate(formData);
+    mutation.mutate(donneesSoumission);
   };
 
   return (
