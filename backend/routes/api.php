@@ -38,7 +38,7 @@ Route::get('/test', function () {
 // Routes publiques
 Route::post('/auth/connexion', [AuthController::class, 'connexion']);
 
-// Routes protégées
+// Routes prot??g??es
 Route::middleware('auth:sanctum')->group(function () {
     // Auth
     Route::get('/auth/profil', [AuthController::class, 'profil']);
@@ -58,7 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/promoteurs/{id}', [PromoteurController::class, 'update']);
     Route::delete('/promoteurs/{id}', [PromoteurController::class, 'destroy']);
 
-    // Propriétaires
+    // Propri??taires
     Route::get('/proprietaires', [ProprietaireController::class, 'index']);
     Route::post('/proprietaires', [ProprietaireController::class, 'store']);
     Route::get('/proprietaires/{id}', [ProprietaireController::class, 'show']);
@@ -125,9 +125,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/travaux/{id}', [TravauxController::class, 'update']);
     Route::delete('/travaux/{id}', [TravauxController::class, 'destroy']);
 
-    // Dépenses
+    // D??penses
     Route::get('/depenses/test', function() {
-        return response()->json(['message' => 'API dépenses fonctionne']);
+        return response()->json(['message' => 'API d??penses fonctionne']);
     });
     Route::get('/depenses', [DepenseController::class, 'index']);
     Route::post('/depenses', [DepenseController::class, 'store']);
@@ -150,7 +150,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tableau-bord', [TableauBordController::class, 'index']);
     Route::get('/tableau-bord/carte', [TableauBordController::class, 'carte']);
 
-    // MODULE COOPERATIVE - Adhérents
+    // MODULE COOPERATIVE - Adh??rents
     Route::get('/adherents', [AdherentController::class, 'index']);
     Route::post('/adherents', [AdherentController::class, 'store']);
     Route::get('/adherents/statistiques', [AdherentController::class, 'statistiques']);
@@ -199,7 +199,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/preferences', [App\Presentation\Controllers\UtilisateurController::class, 'mettreAJourPreferences']);
     });
 
-    // INFORMATIONS SYSTÈME (Super Admin uniquement)
+    // INFORMATIONS SYST??ME (Super Admin uniquement)
     Route::group(['prefix' => 'systeme'], function () {
         Route::get('/informations', [App\Presentation\Controllers\UtilisateurController::class, 'informationsSysteme']);
         Route::post('/vider-cache', [App\Presentation\Controllers\UtilisateurController::class, 'viderCache']);
