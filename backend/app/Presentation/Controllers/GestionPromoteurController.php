@@ -61,8 +61,8 @@ class GestionPromoteurController extends Controller
                 'cin' => 'nullable|string|max:20',
                 'photo' => 'nullable|image|max:2048',
                 'id_utilisateur' => 'nullable|exists:users,id',
-                'licence' => 'nullable|file|max:5120',
-                'registre_commerce' => 'nullable|file|max:5120',
+                'licence' => 'nullable',
+                'registre_commerce' => 'nullable',
                 'statut_juridique' => 'nullable|string|max:100',
             ]);
 
@@ -122,8 +122,8 @@ class GestionPromoteurController extends Controller
                 'cin' => 'nullable|string|max:20',
                 'photo' => 'nullable|image|max:2048',
                 'id_utilisateur' => 'nullable|exists:users,id',
-                'licence' => 'nullable|file|max:5120',
-                'registre_commerce' => 'nullable|file|max:5120',
+                'licence' => 'nullable',
+                'registre_commerce' => 'nullable',
                 'statut_juridique' => 'nullable|string|max:100',
             ]);
 
