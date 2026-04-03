@@ -7,6 +7,7 @@ import { Plus, Search, Loader2 } from 'lucide-react';
 import { utiliserPartenariats, utiliserCalculRepartition } from '../../application/hooks/utiliserPartenariats';
 import { utiliserProprietaires } from '../../application/hooks/utiliserProprietaires';
 import { utiliserLotissements } from '../../application/hooks/utiliserLotissements';
+import { utiliserPromoteurs } from '../../application/hooks/utiliserPromoteurs';
 import CartePartenariat from '../composants/partenariats/CartePartenariat';
 import FormulairePartenariat from '../composants/partenariats/FormulairePartenariat';
 import ModalRepartition from '../composants/partenariats/ModalRepartition';
@@ -41,6 +42,7 @@ export default function PagePartenariats() {
 
   const { proprietaires } = utiliserProprietaires();
   const { lotissements } = utiliserLotissements();
+  const { promoteurs } = utiliserPromoteurs();
 
   const { repartition, chargement: chargementRepartition, calculer } = utiliserCalculRepartition();
 
@@ -180,6 +182,7 @@ export default function PagePartenariats() {
       {modalOuverte && (
         <FormulairePartenariat
           partenariat={partenariatEnEdition}
+          promoteurs={promoteurs}
           proprietaires={proprietaires}
           lotissements={lotissements}
           surSoumettre={gererSoumission}
