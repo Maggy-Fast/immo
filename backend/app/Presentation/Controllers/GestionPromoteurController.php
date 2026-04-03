@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 /**
  * Controleur de presentation pour les promoteurs
  */
-class PromoteurController extends Controller
+class GestionPromoteurController extends Controller
 {
     protected $servicePromoteur;
 

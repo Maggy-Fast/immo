@@ -2,7 +2,7 @@
 
 use App\Presentation\Controllers\AuthController;
 use App\Presentation\Controllers\BienController;
-use App\Presentation\Controllers\PromoteurController;
+use App\Presentation\Controllers\GestionPromoteurController;
 use App\Presentation\Controllers\ProprietaireController;
 use App\Presentation\Controllers\LocataireController;
 use App\Presentation\Controllers\ContratController;
@@ -52,11 +52,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/biens/{id}', [BienController::class, 'destroy']);
 
     // Promoteurs
-    Route::get('/promoteurs', [PromoteurController::class, 'index']);
-    Route::post('/promoteurs', [PromoteurController::class, 'store']);
-    Route::get('/promoteurs/{id}', [PromoteurController::class, 'show']);
-    Route::put('/promoteurs/{id}', [PromoteurController::class, 'update']);
-    Route::delete('/promoteurs/{id}', [PromoteurController::class, 'destroy']);
+    Route::get('/promoteurs', [GestionPromoteurController::class, 'index']);
+    Route::post('/promoteurs', [GestionPromoteurController::class, 'store']);
+    Route::get('/promoteurs/{id}', [GestionPromoteurController::class, 'show']);
+    Route::put('/promoteurs/{id}', [GestionPromoteurController::class, 'update']);
+    Route::delete('/promoteurs/{id}', [GestionPromoteurController::class, 'destroy']);
 
     // Propri??taires
     Route::get('/proprietaires', [ProprietaireController::class, 'index']);
